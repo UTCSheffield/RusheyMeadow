@@ -1,0 +1,46 @@
+span.point_sym_span {
+	/* Default neutral styles for Point spans */
+	display: inline;
+	margin: 0;
+	padding: 0;
+	font-size: 100%;
+	background-image: none;
+	border-width: 0;
+	clear: none;
+	clip: auto;
+	direction: inherit;
+	float: none;
+	height: auto;
+	min-height: 0;
+	max-height: none;
+	min-width: 0;
+	max-width: none;
+	outline-width: 0;
+	overflow: visible;
+	position: static;
+	visibility: inherit;
+	width: auto;
+	
+	/* Inherited styles that need to be inherited explicitly in IE using JavaScript */
+	background-color: transparent;
+	color: inherit;
+	cursor: inherit;
+	font-family: inherit;
+	direction: inherit;
+	font-style: inherit;
+	font-variant: inherit;
+	font-weight: inherit;
+	letter-spacing: inherit;
+	line-height: inherit;
+	text-transform: inherit;
+	white-space: inherit;
+	word-spacing: inherit;
+}
+
+.point_flash_proxy {
+	position: absolute;
+	width: 1px;
+	left: -1px;
+	top: 0;
+	overflow: hidden;
+}
