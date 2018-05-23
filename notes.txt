@@ -1,0 +1,35 @@
+Things to do:
+- 2 parts to app
+
+1: (Consultation)
+- App reguarly used that asks 4 questions to allow them to get information about their stay
+- Do they enjoy rushey meadows?
+- Take a photo of themselves for sign-in, cick picture of themselves
+- Pictures to say what activities/food they like - 10 sec for each picture press happy or sad face and press next
+- Yes/No question to say if the staff help them
+- After the questions are done, save button and move back to PIN
+
+- Data collection service of some kind from laptop
+
+2: (Activity)
+- 1 question
+- What do you want to do today/this weekend
+- Ask who first then ask the question
+- Database of pictures to upload so they can offer them, change image in app
+- Record date and time of children's choice
+
+3: (Review)
+- Print option
+- Record of all the data
+- Date/Time Child Consultation Choice
+- For activity show a calender with the children and their choices
+
+Design:
+- ipad
+- Balloons
+- Bubbles
+- Noise feedback
+- Symbol for every question, (1 or 2)
+- Needs to be engaging
+
+- Staff logon PIN code at the start of the app
