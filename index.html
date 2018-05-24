@@ -1,0 +1,53 @@
+<html>
+    <body>
+        <style>
+            .container input {
+                position: relative;
+                opacity: 0;
+                cursor: pointer;
+                height: 800px;
+                width: 200px;
+            }
+            .container {
+                display: block;
+                position: relative;
+                padding-left: 35px;
+                margin-bottom: 12px;
+                cursor: pointer;
+                font-size: 22px;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+            .checkmark {
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 800px;
+                width: 200px;
+                background-color: #eee;
+            }
+            .container input:checked ~ .checkmark {
+                background-color: #2196F3;
+            } 
+        </style>
+        <!--
+        <button onclick="js-function()" type="radio">
+            <img src="img/arrow-right.png" width=500 height=300>
+        </button>
+        <button onclick="js-function()" type="radio">
+            <img src="img/arrow-right.png" width=500 height=300>
+        </button>
+        -->
+        <label class="container">
+          <input type="checkbox" checked="checked">
+          <span class="checkmark"></span>
+        </label>
+        
+        <label class="container">
+          <input type="checkbox" checked="checked">
+          <span class="checkmark"></span>
+        </label>
+    </body>    
+</html>
