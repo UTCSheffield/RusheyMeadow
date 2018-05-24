@@ -1,0 +1,12 @@
+body {
+}
+
+#photos-container {
+    text-align: center;
+}
+
+.photo {
+    display: inline-block;
+    width: 30%;
+    margin-top: 40px;
+}
