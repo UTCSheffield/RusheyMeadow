@@ -5,6 +5,8 @@
 
 var photos = 0;
 
+var currentlySelectedChild;
+
 function clearStorage() {
     localStorage.clear();
     location.reload();
@@ -12,6 +14,18 @@ function clearStorage() {
 
 function removePhoto() {
     alert("TODO: Remove photos from list")
+}
+
+function confirmPhoto() {
+    var i = 0;
+    var rates = document.getElementsByName('photoPick');
+    for(var i = 0; i < rates.length; i++){
+        if(rates[i].checked){
+            var id = rates[i].getAttribute("id");
+            currentlySelectedChild = document.getElementById("photo" + i);
+            console.log(currentlySelectedChild.getAttribute("src"));
+        }
+    }
 }
 
 function createImage(source) {
