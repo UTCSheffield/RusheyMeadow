@@ -1,4 +1,6 @@
 body {
+    font-family: Helvetica, sans-serif;
+    color: black;
 }
 
 #photos-container {
@@ -12,19 +14,52 @@ body {
 
 section {
     height: 100%;
-    margin-bottom: 50px;
+    margin-bottom: 5%;
 }
 
 #bottom {
     position:fixed;
    left:0px;
    bottom:0px;
-   height:50px;
+   height:8%;
    width:100%;
    background:#999;
     text-align: center;
 }
 
 .confirm {
-    
+    margin-top: 10px;
+    height: 80%;
+    font-size: 20px;
 }
+
+
+.input-hidden {
+    position: absolute;
+    left: -9999px;
+}
+
+input[type=radio]:checked + label>img {
+    border: 1px solid #fff;
+    box-shadow: 0 0 3px 3px #090;
+}
+
+input[type=radio] + label>img {
+    /*border: 1px dashed #444;*/
+    border: solid;
+    width: 20%;
+    height: auto;
+    transition: 500ms all;
+}
+
+input[type=radio]:checked + label>img {
+    transform: 
+    scale(1.3);
+    /*
+    rotateZ(-10deg) 
+    rotateX(10deg);
+    */
+
+}
+
+

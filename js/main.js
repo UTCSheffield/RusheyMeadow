@@ -10,19 +10,36 @@ function clearStorage() {
     location.reload();
 }
 
+function removePhoto() {
+    alert("TODO: Remove photos from list")
+}
+
 function createImage(source) {
     
-    var imgDiv = $('<button></button>').attr({
+    var imgDiv = $('<input>').attr({
         'id': 'photo-box'+photos,
-        'class': "photo"
+        'type': 'radio',
+        'class': "input-hidden",
+        'name': "photoPick"
     }).appendTo('#photos-container');
-
+    
+    var imgDiv = $('<label></label>').attr({
+        'for': 'photo-box'+photos,
+        'class': 'photo-label'+photos
+    }).appendTo('#photos-container');
+    
     var img = $('<img />').attr({
         'id': 'photo'+photos,
         'class': "photo",
         'src': source
-    }).appendTo('#photo-box' + photos);
-    localStorage.setItem("photo" + photos, source);
+    }).appendTo('.photo-label' + photos);
+    try {
+        localStorage.setItem("photo" + photos, source);
+    } catch(e) {
+      if (e.code == 22) {
+        alert("Local Storage is full, no more pictures can be added.")
+      }
+    }
 
     photos++;
 }
