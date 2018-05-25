@@ -10,3 +10,22 @@ body {
     width: 30%;
     margin-top: 40px;
 }
+
+section {
+    height: 100%;
+    margin-bottom: 50px;
+}
+
+#bottom {
+    position:fixed;
+   left:0px;
+   bottom:0px;
+   height:50px;
+   width:100%;
+   background:#999;
+    text-align: center;
+}
+
+.confirm {
+    
+}

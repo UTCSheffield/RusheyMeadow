@@ -12,7 +12,7 @@ function clearStorage() {
 
 function createImage(source) {
     
-    var imgDiv = $('<div></div>').attr({
+    var imgDiv = $('<button></button>').attr({
         'id': 'photo-box'+photos,
         'class': "photo"
     }).appendTo('#photos-container');
