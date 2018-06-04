@@ -11,11 +11,15 @@
     
 </head>
 <body>
+    
     <section>
+        
         <h1>User Picker</h1>
         
-        <input type="file" id="photo-selector" accept="image/*" onchange="readURL(this);" />
-    
+        <input type="file" id="photo-selector" accept="image/*" onchange="" />
+        <input type="text" id="child-name" name="name"/>
+        <button onclick="readURL();">Add</button>
+        
         <button onclick="clearStorage();" >Clear Local Storage</button>
         <button onclick="removePhoto();">Remove selected photo</button>
         
@@ -26,10 +30,8 @@
         <div id="bottom">
             <button class="confirm" onclick="confirmPhoto();">Confirm</button>
         </div>
+        
     </section>
-    
-    
-    
     
     <script src="js/main.js"></script>
 </body>

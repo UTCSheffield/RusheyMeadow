@@ -1,15 +1,44 @@
 body {
     font-family: Helvetica, sans-serif;
     color: black;
+    background-color: crimson;
 }
 
 #photos-container {
     text-align: center;
 }
+
+.photo-container {
+    display: inline-block;
+    width: 20%;
+    min-width: 200px;
+    margin-left: 3%;
+    margin-right 3%;
+}
+
 .photo {
     display: inline-block;
-    width: 30%;
-    margin-top: 40px;
+    width: 100%;
+    margin-top: 10%;
+}
+
+.text-container {
+    display: inline-block;
+    position: absolute;
+    margin-left: -50px;
+    margin-top: -60px;
+    text-align: center;
+}
+
+.nameText {
+    display: inline-block;
+    color: white;
+    font-size: 1.2em;
+    text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
 }
 
 section {
@@ -47,7 +76,7 @@ input[type=radio]:checked + label>img {
 input[type=radio] + label>img {
     /*border: 1px dashed #444;*/
     border: solid;
-    width: 20%;
+    /*width: 50%;*/
     height: auto;
     transition: 500ms all;
 }
