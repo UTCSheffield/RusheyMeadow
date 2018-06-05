@@ -4,6 +4,29 @@ body {
     background-color: crimson;
 }
 
+#questions-container {
+    margin-top: 100px;
+    width: 80%;
+    margin-left: 10%;
+    background-color: firebrick;
+    height: 80%;
+    min-height: 400px;
+}
+
+.question {
+    padding: 20px 40px;
+    text-align: center;
+}
+
+.next-button {
+    font-size: 40px;
+    margin-top: 20px;
+}
+
+.question h2 {
+    font-size: 40px;
+}
+
 #photos-container {
     text-align: center;
 }

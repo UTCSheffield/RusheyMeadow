@@ -20,6 +20,10 @@ function changeSection(sectionOld, sectionNew) {
     });
 }
 
+function submitQuestion() {
+    alert("TODO: Submit question");
+}
+
 function clearStorage() {
     localStorage.clear();
     location.reload();
