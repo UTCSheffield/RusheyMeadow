@@ -8,6 +8,11 @@ body {
     text-align: center;
 }
 
+.section {
+    width: 100%;
+    display: inline-block;
+}
+
 .photo-container {
     display: inline-block;
     width: 20%;

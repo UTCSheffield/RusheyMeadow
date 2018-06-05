@@ -8,6 +8,18 @@ var photos = 0;
 var currentlySelectedChild;
 var currentlySelectedChildName;
 
+
+//Disable initial sections
+$("#2").fadeOut(0);
+
+function changeSection(sectionOld, sectionNew) {
+    $("#"+sectionOld).fadeOut(400, function() {
+        setTimeout(function(){ 
+            $("#"+sectionNew).fadeIn(400);
+        }, 400);  
+    });
+}
+
 function clearStorage() {
     localStorage.clear();
     location.reload();
@@ -43,6 +55,8 @@ function confirmPhoto() {
             console.log(currentlySelectedChild.getAttribute("src"));
             currentlySelectedChildName = document.getElementById("nameText"+i).textContent;
             console.log(currentlySelectedChildName);
+            changeSection("1", "2");
+            
         }
     }
 }
