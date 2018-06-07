@@ -1,7 +1,28 @@
+canvas{ 
+    display: block; vertical-align: bottom; 
+} 
+
+h1 {
+    margin-top: 0px;
+}
+
+#particles-js{ 
+    position:absolute; 
+    z-index: -1;
+    width: 100%; 
+    height: 100%; 
+    background-color: #b61924; 
+    /*background-image: url(""); 
+    /*background-repeat: no-repeat; 
+    background-size: cover; 
+    /*background-position: 50% 50%;*/
+}
+
 body {
     font-family: Helvetica, sans-serif;
     color: black;
     background-color: crimson;
+    margin: 0;
 }
 
 #questions-container {
@@ -9,6 +30,7 @@ body {
     width: 80%;
     margin-left: 10%;
     background-color: firebrick;
+    background-color: rgba(243, 0, 0, 0.5);
     height: 80%;
     min-height: 400px;
 }
@@ -29,11 +51,8 @@ body {
 
 #photos-container {
     text-align: center;
-}
-
-.section {
-    width: 100%;
-    display: inline-block;
+    width: auto;
+    pointer-events:none; 
 }
 
 .photo-container {
@@ -41,13 +60,15 @@ body {
     width: 20%;
     min-width: 200px;
     margin-left: 3%;
-    margin-right 3%;
+    margin-right: 3%;
+    pointer-events:auto; 
 }
 
 .photo {
     display: inline-block;
     width: 100%;
     margin-top: 10%;
+    
 }
 
 .text-container {
@@ -56,6 +77,7 @@ body {
     margin-left: -50px;
     margin-top: -60px;
     text-align: center;
+    pointer-events:none;
 }
 
 .nameText {
@@ -112,11 +134,6 @@ input[type=radio] + label>img {
 input[type=radio]:checked + label>img {
     transform: 
     scale(1.3);
-    /*
-    rotateZ(-10deg) 
-    rotateX(10deg);
-    */
-
 }
 
 
