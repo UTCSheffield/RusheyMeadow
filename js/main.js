@@ -21,7 +21,7 @@ function changeSection(sectionOld, sectionNew) {
 }
 
 function submitQuestion() {
-    alert("TODO: Submit question");
+    alert("TODO: Submit question")
 }
 
 function clearStorage() {
@@ -84,21 +84,24 @@ function createImage(source, name) {
         'class': 'photo-label'+photos
     }).appendTo('#photo-div'+photos);
     
-    var textDiv = $('<div></div>').attr({
-        'id': 'textDiv'+photos,
-        'class': 'text-container'
-    }).appendTo('#photo-div'+photos);
-    
-    var nameText = $('<p>'+name+'</p>').attr({
-        'class': 'nameText',
-        'id': 'nameText'+photos
-    }).appendTo('#textDiv'+photos);
     
     var img = $('<img />').attr({
         'id': 'photo'+photos,
         'class': "photo",
         'src': source
     }).appendTo('.photo-label' + photos);
+    
+    var textDiv = $('<div></div>').attr({
+        'id': 'textDiv'+photos,
+        'class': 'text-container'
+    }).appendTo('.photo-label' + photos);
+    /*'#photo-div'+photos '#textDiv'+photos*/
+    
+    var nameText = $('<p>'+name+'</p>').attr({
+        'class': 'nameText',
+        'id': 'nameText'+photos
+    }).appendTo('#textDiv'+photos);
+    
     try {
         localStorage.setItem("photo" + photos, source);
         localStorage.setItem("name" + photos, name)
@@ -150,5 +153,3 @@ for (i =0; i < 70; i++) {
 
     createImage(imageData, localStorage.getItem("name" + i));
 }
-
-    
