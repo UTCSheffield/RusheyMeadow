@@ -11,6 +11,7 @@ var currentlySelectedChildName;
 
 //Disable initial sections
 $("#2").fadeOut(0);
+$("#question2").fadeOut(0);
 
 function changeSection(sectionOld, sectionNew) {
     $("#"+sectionOld).fadeOut(400, function() {
@@ -20,8 +21,34 @@ function changeSection(sectionOld, sectionNew) {
     });
 }
 
-function submitQuestion() {
-    alert("TODO: Submit question")
+function changeQuestion(questionOld, questionNew) {
+    $("#question"+questionOld).fadeOut(400, function() {
+        setTimeout(function(){ 
+            $("#question"+questionNew).fadeIn(400);
+        }, 400);  
+    });
+}
+
+function submitQuestion(questionDiv) {
+    
+    var currentQuestionId = questionDiv.getAttribute("id");
+    var nextQuestionId = Number(currentQuestionId[currentQuestionId.length-1]);
+    
+    var rates = document.getElementsByName('pick' + nextQuestionId);
+    for(var i = 0; i < rates.length; i++){
+        if(rates[i].checked){
+            var id = rates[i].getAttribute("value");
+            
+            console.log(id);
+        }
+    }
+    
+    if(document.getElementById("question"+(nextQuestionId + 1).toString()) == null) {
+        alert("End of questions");
+        /*$("#"+currentQuestionId).fadeOut(400);*/
+    } else {
+        changeQuestion(currentQuestionId[currentQuestionId.length-1], nextQuestionId + 1);
+    }
 }
 
 function clearStorage() {

@@ -6,6 +6,23 @@ h1 {
     margin-top: 0px;
 }
 
+.left {
+    float: left;
+}
+
+.left, .right {
+    width: 20%;
+    height: 200px;
+}
+
+.right {
+    float: right;
+}
+
+.symbol {
+    width: 100%;
+}
+
 #particles-js{ 
     position:absolute; 
     z-index: -1;

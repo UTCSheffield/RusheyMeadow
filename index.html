@@ -39,10 +39,31 @@
         <h1>Question Sequence</h1>
         
         <div id="questions-container">
-            <div class="question">
-                <h2>Question here?</h2>
-                <button onclick="submitQuestion();" class="next-button">Next</button>
+            
+            <div id="question1" class="question">
+                <h2>1. Question Good or Bad</h2>
+                
+                <input name="pick1" id="left1" value="bad" class="input-hidden" type="radio" />
+                <label name="left1" class="left" for="left1">
+                    <img class="symbol" src="PEC/Bad%20Pec.fw.png">
+                </label>
+                
+                <input name="pick1" id="right1" value="good" class="input-hidden" type="radio" />
+                <label name="right1" class="right" for="right1">
+                    <img class="symbol" src="PEC/Good%20pec.fw.png">
+                </label>
+                
+                <button onclick="submitQuestion(this.parentNode);" class="next-button">Next</button>
+                
             </div>
+            
+            <div id="question2" class="question">
+                <h2>2. Question Picture Pick</h2>
+                
+                <button onclick="submitQuestion(this.parentNode);" class="next-button">Next</button>
+                
+            </div>
+            
         </div>
         
     </section>
