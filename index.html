@@ -7,6 +7,9 @@
     <script class="jsbin" src="js/jquery.min.js"></script>
     <script class="jsbin" src="js/jquery-ui.min.js"></script>
     
+    <link rel="stylesheet" href="css/pinstyle.css">
+    <script class="" src="js/pinjs.js"></script>
+    
     <link rel="stylesheet" href="css/main.css">
     
 </head>
@@ -15,11 +18,58 @@
     <div id="particles-js"></div>
     
     <section class="fill" id="0">
+        
+        <!--
         <div id="PIN-box">
             <p>Password (1234):</p>
             <input id="pin" type="number">
             <button onclick="enterApp();">Enter</button>
-        </div>
+        </div> -->
+        
+        <div id="pincode">
+            <div class="table">
+              <div class="cell">
+
+                <div id="anleitung">
+                  <p>
+                    <strong>Please enter the correct PIN-Code.</strong><br> It is: 1234 / Also try a wrong code
+                  </p>
+                </div>
+
+                <div id="fields">
+                  <div class="grid">
+                    <div class="grid__col grid__col--1-of-4 numberfield"><span></span></div>
+                    <div class="grid__col grid__col--1-of-4 numberfield"><span></span></div>
+                    <div class="grid__col grid__col--1-of-4 numberfield"><span></span></div>
+                    <div class="grid__col grid__col--1-of-4 numberfield"><span></span></div>
+                  </div>
+                </div>
+
+                <div id="numbers">
+                  <div class="grid">
+                    <div class="grid__col grid__col--1-of-3"><button>1</button></div>
+                    <div class="grid__col grid__col--1-of-3"><button>2</button></div>
+                    <div class="grid__col grid__col--1-of-3"><button>3</button></div>
+
+                    <div class="grid__col grid__col--1-of-3"><button>4</button></div>
+                    <div class="grid__col grid__col--1-of-3"><button>5</button></div>
+                    <div class="grid__col grid__col--1-of-3"><button>6</button></div>
+
+                    <div class="grid__col grid__col--1-of-3"><button>7</button></div>
+                    <div class="grid__col grid__col--1-of-3"><button>8</button></div>
+                    <div class="grid__col grid__col--1-of-3"><button>9</button></div>
+
+                    <div class="grid__col grid__col--1-of-3"></div>
+                    <div class="grid__col grid__col--1-of-3"><button>0</button></div>
+                    <div class="grid__col grid__col--1-of-3"></div>
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        <div id="restartbtn">RESTART</div>
     </section>
     
     <section id="3">
