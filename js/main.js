@@ -8,9 +8,9 @@ var photos = 0;
 var currentlySelectedChild;
 var currentlySelectedChildName;
 
-
 //Disable initial sections
-$("#2").fadeOut(0);
+$("#3").fadeOut(0);
+$("#4").fadeOut(0);
 $("#question2").fadeOut(0);
 
 function changeSection(sectionOld, sectionNew) {
@@ -40,15 +40,18 @@ function submitQuestion(questionDiv) {
             var id = rates[i].getAttribute("value");
             
             console.log(id);
+            
+            if(document.getElementById("question"+(nextQuestionId + 1).toString()) == null) {
+                alert("End of questions");
+                /*$("#"+currentQuestionId).fadeOut(400);*/
+            } else {
+                changeQuestion(currentQuestionId[currentQuestionId.length-1], nextQuestionId + 1);
+            }
+            
         }
     }
     
-    if(document.getElementById("question"+(nextQuestionId + 1).toString()) == null) {
-        alert("End of questions");
-        /*$("#"+currentQuestionId).fadeOut(400);*/
-    } else {
-        changeQuestion(currentQuestionId[currentQuestionId.length-1], nextQuestionId + 1);
-    }
+    
 }
 
 function clearStorage() {
@@ -60,20 +63,27 @@ function removePhoto() {
     var i = 0;
     var counter = 0;
     var rates = document.getElementsByName('photoPick');
-    localStorage.clear();
     for(var i = 0; i < rates.length; i++){
+        localStorage.removeItem("user"+i);
         if(!rates[i].checked){
             var id = rates[i].getAttribute("id");
             currentlySelectedChild = document.getElementById("photo" + i);
-            
-            localStorage.setItem("photo"+counter, currentlySelectedChild.getAttribute("src"));
-            
             currentlySelectedChildName = document.getElementById("nameText"+i).textContent;
-            localStorage.setItem("name"+counter, currentlySelectedChildName);
+            
+            userData = [counter, currentlySelectedChildName, currentlySelectedChild.getAttribute("src")];
+            localStorage.setItem("user"+counter, JSON.stringify(userData));
+            
             counter++;
         }
     }
     location.reload();
+}
+
+function enterApp() {
+    var password = document.getElementById("pin").value;
+    if(btoa(password.toString()) == "MTIzNA==") {
+        changeSection("0", "3");
+    }
 }
 
 function confirmPhoto() {
@@ -86,7 +96,7 @@ function confirmPhoto() {
             console.log(currentlySelectedChild.getAttribute("src"));
             currentlySelectedChildName = document.getElementById("nameText"+i).textContent;
             console.log(currentlySelectedChildName);
-            changeSection("1", "2");
+            changeSection("3", "4");
             
         }
     }
@@ -130,12 +140,12 @@ function createImage(source, name) {
     }).appendTo('#textDiv'+photos);
     
     try {
-        localStorage.setItem("photo" + photos, source);
-        localStorage.setItem("name" + photos, name)
+        var childData = [photos, name, source]; 
+        localStorage.setItem("user"+photos, JSON.stringify(childData));
     } catch(e) {
-      if (e.code == 22) {
-        alert("Local Storage is full, no more pictures can be added.")
-      }
+        if (e.code == 22) {
+            alert("Local Storage is full, no more pictures can be added.")
+        }
     }
 
     photos++;
@@ -171,12 +181,13 @@ function readURL() {
 var i;
 for (i =0; i < 70; i++) {
     
-    imageData = localStorage.getItem("photo" + i);
-    
-    if(imageData == null) {
-        continue;
+    if (localStorage.getItem("user" + i) === null) {
+        break;
     }
+
+    userData = JSON.parse(localStorage.getItem("user" + i));
+
     console.log("Creating photo " + i);
 
-    createImage(imageData, localStorage.getItem("name" + i));
+    createImage(userData[2], userData[1]);
 }
