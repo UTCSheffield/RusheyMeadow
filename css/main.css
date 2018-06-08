@@ -1,12 +1,172 @@
+canvas{ 
+    display: block; vertical-align: bottom; 
+} 
+
+h1 {
+    margin-top: 0px;
+}
+
+.left {
+    float: left;
+}
+
+.left, .right {
+    width: 20%;
+    height: 200px;
+}
+
+.right {
+    float: right;
+}
+
+.symbol {
+    width: 100%;
+}
+
+#particles-js{ 
+    position:absolute; 
+    z-index: -1;
+    width: 100%; 
+    height: 100%; 
+    background-color: #b61924; 
+    /*background-image: url(""); 
+    /*background-repeat: no-repeat; 
+    background-size: cover; 
+    /*background-position: 50% 50%;*/
+}
+
 body {
+    font-family: Helvetica, sans-serif;
+    color: black;
+    background-color: crimson;
+    margin: 0;
+}
+
+#questions-container {
+    margin-top: 100px;
+    width: 80%;
+    margin-left: 10%;
+    background-color: firebrick;
+    background-color: rgba(243, 0, 0, 0.5);
+    height: 80%;
+    min-height: 400px;
+}
+
+.question {
+    padding: 20px 40px;
+    text-align: center;
+}
+
+.next-button {
+    font-size: 40px;
+    margin-top: 20px;
+}
+
+.question h2 {
+    font-size: 40px;
 }
 
 #photos-container {
     text-align: center;
+    margin-top: 40px;
+    padding-bottom: 40px;
+    width: auto;
+    pointer-events:none; 
+}
+
+.photo-container {
+    display: inline-block;
+    width: 20%;
+    min-width: 200px;
+    margin-left: 3%;
+    margin-right: 3%;
+    pointer-events:auto; 
 }
 
 .photo {
     display: inline-block;
-    width: 30%;
-    margin-top: 40px;
+    width: 100%;
+    margin-top: 10%;
+    
 }
+
+.text-container {
+    text-align: center;
+    pointer-events:none;
+    position: relative;
+    margin-top: -50px;
+}
+
+.nameText {
+    
+    color: white;
+    
+    font-size: 1.2em;
+    text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
+
+section {
+    height: 100%;
+    margin-bottom: 5%;
+}
+
+#bottom {
+    position:fixed;
+   left:0px;
+   bottom:0px;
+   height:8%;
+   width:100%;
+   background:#999;
+    text-align: center;
+}
+
+.confirm {
+    margin-top: 10px;
+    height: 80%;
+    font-size: 20px;
+}
+
+
+.input-hidden {
+    position: absolute;
+    left: -9999px;
+}
+
+input[type=radio]:checked + label>img {
+    border: 1px solid #fff;
+    box-shadow: 0 0 3px 3px #090;
+}
+
+input[type=radio] + label>img {
+    /*border: 1px dashed #444;*/
+    border: solid;
+    /*width: 50%;*/
+    height: auto;
+    transition: 500ms all;
+}
+
+input[type=radio]:checked + label>img {
+    transform: 
+    scale(1.3);
+}
+
+input[type=radio] + label>div>p {
+    height: auto;
+    transition: 500ms all;
+    opacity: 0;
+}
+
+input[type=radio]:checked + label>div>p {
+    opacity: 1;
+  transition: opacity .2s ease-in-out;
+  -moz-transition: opacity .2s ease-in-out;
+  -webkit-transition: opacity .2s ease-in-out;
+    transform: 
+    scale(1.3);
+}
+
+

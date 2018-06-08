@@ -1,0 +1,1 @@
+get id of photo to remove, iterate through local storage from photo id to 999 and set value to null but store the values in an area which is iterated through to store them back in the database and refresh the page
