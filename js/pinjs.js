@@ -11,6 +11,7 @@ jQuery(document).ready(function($) {
       enterCode = enterCode + clickedNumber;
       var lengthCode = parseInt(enterCode.length);
       lengthCode--;
+        
       $("#fields .numberfield:eq(" + lengthCode + ")").addClass("active");
 
       if (lengthCode == 3) {

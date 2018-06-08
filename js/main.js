@@ -5,8 +5,7 @@
 
 var photos = 0;
 
-var currentlySelectedChild;
-var currentlySelectedChildName;
+var currentUserData;
 
 //Disable initial sections
 $("#3").fadeOut(0);
@@ -67,8 +66,8 @@ function removePhoto() {
         localStorage.removeItem("user"+i);
         if(!rates[i].checked){
             var id = rates[i].getAttribute("id");
-            currentlySelectedChild = document.getElementById("photo" + i);
-            currentlySelectedChildName = document.getElementById("nameText"+i).textContent;
+            var currentlySelectedChild = document.getElementById("photo" + i);
+            var currentlySelectedChildName = document.getElementById("nameText"+i).textContent;
             
             userData = [counter, currentlySelectedChildName, currentlySelectedChild.getAttribute("src")];
             localStorage.setItem("user"+counter, JSON.stringify(userData));
@@ -92,10 +91,11 @@ function confirmPhoto() {
     for(var i = 0; i < rates.length; i++){
         if(rates[i].checked){
             var id = rates[i].getAttribute("id");
-            currentlySelectedChild = document.getElementById("photo" + i);
-            console.log(currentlySelectedChild.getAttribute("src"));
-            currentlySelectedChildName = document.getElementById("nameText"+i).textContent;
-            console.log(currentlySelectedChildName);
+            
+            currentUserData = [i, document.getElementById("nameText"+i).textContent, document.getElementById("photo" + i).getAttribute("src")];
+            
+            console.log(JSON.stringify(currentUserData));
+            
             changeSection("3", "4");
             
         }
@@ -186,8 +186,6 @@ for (i =0; i < 70; i++) {
     }
 
     userData = JSON.parse(localStorage.getItem("user" + i));
-
-    console.log("Creating photo " + i);
 
     createImage(userData[2], userData[1]);
 }
