@@ -15,11 +15,7 @@ jQuery(document).ready(function($) {
       $("#fields .numberfield:eq(" + lengthCode + ")").addClass("active");
 
       if (lengthCode == 3) {
-
         if (enterCode == pin) {
-          /*$("#fields .numberfield").addClass("right");
-          $("#numbers").addClass("hide");
-          $("#anleitung p").html("Correct. Entering...");*/
             changeSection("0", "3");
 
         } else {

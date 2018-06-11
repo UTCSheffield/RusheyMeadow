@@ -28,7 +28,7 @@
   height: 667px;
   width: 375px;
   z-index: 9999;
-  background-color: #b61924;
+  background-color: rgba(243, 0, 0, 0.5);
   background-size: cover;
   background-position: center;
   color: #fff;
@@ -41,6 +41,7 @@
   left: 50%;
   margin-top: -335px;
   margin-left: -188px;
+  
 }
 
 #numbers {
@@ -53,6 +54,7 @@
   -moz-transition: all 1s ease-out;
   transition: all 1s ease-out;
   opacity: 1;
+    
 }
 
 #numbers.hide {
@@ -70,6 +72,25 @@
   font-size: 25px;
   line-height: 50px;
   border-radius: 100%;
+  opacity: 1;
+  outline: 0;
+  border: 2px solid #fff;
+    cursor: pointer;
+}
+
+#restartbtn {
+  width: 100px;
+  height: 50px;
+  margin-top: 60px;
+  margin-right: -10px;
+  /*background-color: rgba(0, 0, 0, 0.35);*/
+  float: right;
+  background-color: #8e121b;
+  border: 0;
+  color: #fff;
+  font-size: 25px;
+  line-height: 50px;
+  border-radius: 20%;
   opacity: 1;
   outline: 0;
   border: 2px solid #fff;

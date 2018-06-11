@@ -3,14 +3,44 @@
 //DONE: Remove images from the list
 //DONE: Format images correctly
 
-var photos = 0;
+document.onreadystatechange = function () {
+  var state = document.readyState
+  if (state == 'complete') {
+         document.getElementById('interactive');
+         document.getElementById('load').style.visibility="hidden";
+  }
+}
 
+var photos = 0;
 var currentUserData;
 
 //Disable initial sections
-$("#3").fadeOut(0);
-$("#4").fadeOut(0);
-$("#question2").fadeOut(0);
+
+for (var x = 0; x < 10; x++) {
+    if(document.getElementById(x.toString()) == null) {
+        continue;
+    } else {
+        $("#"+x.toString()).fadeOut(0);
+    }
+    
+}
+
+for (var x = 2; x < 10; x++) {
+    if(document.getElementById("question"+x.toString()) == null) {
+        break;
+    } else {
+        $("#question"+x.toString()).fadeOut(0);
+    }
+}
+
+try {
+    var url = window.location.href; // or window.location.href for current url
+    var captured = /page=([^&]+)/.exec(url)[1];
+    var result = captured ? captured : 0;
+    $("#"+result).fadeIn(400);
+} catch(e) {
+    $("#0").fadeIn(400);
+}
 
 function changeSection(sectionOld, sectionNew) {
     $("#"+sectionOld).fadeOut(400, function() {
@@ -55,7 +85,10 @@ function submitQuestion(questionDiv) {
 
 function clearStorage() {
     localStorage.clear();
-    location.reload();
+    //location.reload();
+    var url = window.location.href.split("?")[0];
+    url += '?page=3'
+    window.location.href = url;
 }
 
 function removePhoto() {
@@ -75,7 +108,9 @@ function removePhoto() {
             counter++;
         }
     }
-    location.reload();
+    var url = window.location.href.split("?")[0];
+    url += '?page=3'
+    window.location.href = url;
 }
 
 function enterApp() {
