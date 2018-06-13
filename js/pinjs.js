@@ -16,7 +16,7 @@ jQuery(document).ready(function($) {
 
       if (lengthCode == 3) {
         if (enterCode == pin) {
-            changeSection("0", "3");
+            changeSection("0", "1");
 
         } else {
           $("#fields").addClass("miss");

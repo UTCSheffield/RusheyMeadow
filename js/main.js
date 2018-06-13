@@ -15,7 +15,6 @@ var photos = 0;
 var currentUserData;
 
 //Disable initial sections
-
 for (var x = 0; x < 10; x++) {
     if(document.getElementById(x.toString()) == null) {
         continue;
@@ -25,16 +24,8 @@ for (var x = 0; x < 10; x++) {
     
 }
 
-for (var x = 2; x < 10; x++) {
-    if(document.getElementById("question"+x.toString()) == null) {
-        break;
-    } else {
-        $("#question"+x.toString()).fadeOut(0);
-    }
-}
-
 try {
-    var url = window.location.href; // or window.location.href for current url
+    var url = window.location.href;
     var captured = /page=([^&]+)/.exec(url)[1];
     var result = captured ? captured : 0;
     $("#"+result).fadeIn(400);
@@ -56,6 +47,30 @@ function changeQuestion(questionOld, questionNew) {
             $("#question"+questionNew).fadeIn(400);
         }, 400);  
     });
+}
+
+function consultation() {
+    changeSection("1", "3");
+    
+    for (var x = 2; x < 10; x++) {
+        if(document.getElementById("question"+x.toString()) == null) {
+            break;
+        } else {
+            $("#question"+x.toString()).fadeOut(0);
+        }
+    }
+}
+
+function activities() {
+    changeSection("1", "3");
+    
+    for (var x = 2; x < 10; x++) {
+        if(document.getElementById("question"+x.toString()) == null) {
+            break;
+        } else {
+            $("#question"+x.toString()).fadeOut(0);
+        }
+    }
 }
 
 function submitQuestion(questionDiv) {
@@ -85,7 +100,6 @@ function submitQuestion(questionDiv) {
 
 function clearStorage() {
     localStorage.clear();
-    //location.reload();
     var url = window.location.href.split("?")[0];
     url += '?page=3'
     window.location.href = url;
