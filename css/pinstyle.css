@@ -42,12 +42,12 @@
   
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (min-width: 900px) {
     #pincode {
-        height: 80%;
-        width: 90%;
-        margin-top: 15%;
-        margin-left: 5%;
+        height: 75%;
+        width: 50%;
+        margin-top: 10%;
+        margin-left: 25%;
     }
 }
 
