@@ -25,8 +25,8 @@
   /*font-family: 'Titillium Web', sans-serif;*/
   position: fixed;
   overflow: hidden;
-  height: 667px;
-  width: 375px;
+  height: 80%;
+  width: 50%;
   z-index: 9999;
   background-color: rgba(243, 0, 0, 0.5);
   background-size: cover;
@@ -39,8 +39,8 @@
   box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.6);
   top: 50%;
   left: 50%;
-  margin-top: -335px;
-  margin-left: -188px;
+  margin-top: -20%;
+  margin-left: -25%;
   
 }
 
