@@ -85,7 +85,11 @@ function submitQuestion(questionDiv) {
     var rates = document.getElementsByName('pick' + nextQuestionId);
     for(var i = 0; i < rates.length; i++){
         if(rates[i].checked){
+            
+            var audio = document.getElementById("audio");
+            audio.play();
             var id = rates[i].getAttribute("value");
+ 
             
             console.log(id);
             
