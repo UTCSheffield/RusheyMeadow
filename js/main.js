@@ -73,6 +73,10 @@ function activities() {
     }
 }
 
+function review() {
+    changeSection("1", "2");
+}
+
 function submitQuestion(questionDiv) {
     
     var currentQuestionId = questionDiv.getAttribute("id");
