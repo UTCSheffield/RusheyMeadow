@@ -42,11 +42,10 @@
   
 }
 
-@media only screen and (max-width: 900px) {
+/*@media only screen and (max-width: 900px) {
     #pincode {
         /*
         height: 75%;
-<<<<<<< HEAD
         width: 80%;
         margin-top: 10%;
         margin-left: 10%;
@@ -54,15 +53,13 @@
         padding-left: 10%;
         padding-right: 10px;
         */ /*Yeah have fun actually making this look good on mobile since I may or may not have given up on it (>_<)*/
-        
-=======
+       /* 
         width: 50%;
         margin-top: 5%;
         margin-left: 25%;
->>>>>>> c336f5c56067f16c58eefd8847a86ebf7237eda3
-    }
+    }*/
     
-}
+}*/
 
 #numbers {
   max-width: 300px;
