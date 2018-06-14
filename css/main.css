@@ -19,8 +19,54 @@ h1 {
     float: right;
 }
 
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.inputfile + label {
+    transition: all ease 0.3s;
+    padding: 10px 10px 10px 10px;
+    font-size: 25px;
+    border: none;
+    color: black;
+    background-color: white;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.inputfile:focus + label,
+.inputfile + label:hover {
+    background-color: red;
+    color: white;
+}
+
 .symbol {
     width: 100%;
+}
+
+input, button {
+    transition: all ease 0.3s;
+    padding: 10px 10px 10px 10px;
+    font-size: 25px;
+    border: none;
+    color: black;
+    background-color: white;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+input:hover, button:hover {
+    background-color: red;
+    color: white;
+}
+
+button:active, input:active {
+    
 }
 
 #particles-js{ 

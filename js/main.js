@@ -85,7 +85,11 @@ function submitQuestion(questionDiv) {
     var rates = document.getElementsByName('pick' + nextQuestionId);
     for(var i = 0; i < rates.length; i++){
         if(rates[i].checked){
+            
+            var audio = document.getElementById("audio");
+            audio.play();
             var id = rates[i].getAttribute("value");
+ 
             
             console.log(id);
             
@@ -100,6 +104,11 @@ function submitQuestion(questionDiv) {
     }
     
     
+}
+
+function fileUploaded() {
+    document.getElementById("file-text").innerHTML = "File Uploaded";
+    document.getElementById("child-name").focus();
 }
 
 function clearStorage() {
@@ -207,6 +216,8 @@ function createImage(source, name) {
 $("photo-selector").change(readURL);
 
 function readURL() {
+    
+    document.getElementById("file-text").innerHTML = "<i class='fa fa-upload'></i>Upload a picture";
     
     input = document.getElementById("photo-selector");
     childName = document.getElementById("child-name").value;
