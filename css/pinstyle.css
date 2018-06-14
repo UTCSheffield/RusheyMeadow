@@ -49,29 +49,23 @@
     }
     
     #pincode button{
-	   width: 15%;
+	   width: 12%;
     }
     
 }
 
-/*@media only screen and (max-width: 900px) {
+@media only screen and (max-width : 650px) {
     #pincode {
-        /*
-        height: 75%;
-        width: 80%;
-        margin-top: 10%;
-        margin-left: 10%;
-        margin-right: 10%;
-        padding-left: 10%;
-        padding-right: 10px;
-        */ /*Yeah have fun actually making this look good on mobile since I may or may not have given up on it (>_<)*/
-       /* 
-        width: 50%;
-        margin-top: 5%;
-        margin-left: 25%;
-    }*/
+        width: 60%;
+        margin-left: 20%;
+        height: auto;
+    }
     
-}*/
+    #pincode button{
+	   width: 5%;
+    }
+    
+}
 
 #numbers {
   max-width: 300px;
@@ -134,13 +128,15 @@
 
 #pincode button:active {
   background-color: darkred;
-  outline: 0;
     transform: scale(0.9);
  -webkit-tap-highlight-color: transparent;
+    outline: 0 !important
 }
 
 #pincode button:focus {
     -webkit-tap-highlight-color: transparent;
+    outline: none;
+    
 }
 
 #fields {
