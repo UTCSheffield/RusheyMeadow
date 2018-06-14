@@ -41,33 +41,6 @@
   
 }
 
-@media only screen and (max-width : 370px) {
-    #pincode {
-        width: 95%;
-        margin-left: 2.5%;
-        height: auto;
-    }
-    
-    #pincode button{
-	   width: 12%;
-    }
-    
-}
-
-@media only screen and (max-width : 650px) and (orientation:landscape) {
-    #pincode {
-        width: 60%;
-        margin-left: 20%;
-        height: auto;
-        font-size: 20px;
-    }
-    
-    #pincode button{
-	   width: 5%;
-    }
-    
-}
-
 #numbers {
   max-width: 300px;
   margin: 0 auto;
@@ -336,4 +309,105 @@
   color: #fff;
   text-decoration: none;
   text-align: center;
+}
+
+
+@media only screen and (max-width : 768px) {
+    #pincode {
+        width: 80%;
+        margin-left: 10%;
+        height: auto;
+        font-size: 28px;
+    }
+    #restartbtn {
+        margin-right: -5px;
+      width: 80px;
+      height: 50px;
+      margin-top: 80px;
+      font-size: 20px;
+      line-height: 50px;
+      border-radius: 20%;
+        padding-top: 0px;
+        
+    }
+    
+    #fields {
+      max-width: 400px;
+      padding: 0 30px;
+      margin: 60px auto;
+    }
+}
+
+@media only screen and (max-width : 370px) {
+    #pincode {
+        width: 95%;
+        margin-left: 2.5%;
+        height: auto;
+    }
+    
+    #pincode button{
+        width: 80px;
+        height: 80px;
+    }
+    #restartbtn {
+        margin-right: 10px;
+      width: 60px;
+      height: 50px;
+      margin-top: -80px;
+      font-size: 15px;
+      line-height: 50px;
+      border-radius: 20%;
+        padding-top: 0px;
+    }
+}
+
+
+@media only screen and (max-width : 1024px) and (orientation:landscape) {
+    #pincode {
+        width: 70%;
+        margin-left: 15%;
+    }
+    
+    #pincode button{
+	   
+    }
+    #restartbtn {
+        margin-right: -20px;
+      margin-top: -50px;
+      
+    }
+}
+
+
+@media only screen and (max-width : 650px) and (orientation:landscape) {
+    #pincode {
+        width: 60%;
+        margin-left: 20%;
+        height: auto;
+        font-size: 16px;
+        margin-top: 10px;
+    }
+    
+    #pincode button{
+	   width: 50px;
+        height: 50px;
+        font-size: 18px;
+         margin-bottom: 10px;
+        padding-top: 0px;
+    }
+    
+    #fields {
+        padding: 0 10px;
+        margin: 15px auto; 
+    }
+    #restartbtn {
+      width: 60px;
+      height: 30px;
+      margin-top: -60px;
+      font-size: 15px;
+      line-height: 50px;
+      border-radius: 20%;
+        padding-top: 0px;
+        padding-bottom: 60px;
+    }
 }
