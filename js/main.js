@@ -1,3 +1,5 @@
+/*globals:document */
+
 //DONE: Upload file and set it as image
 //DONE: Save that proccess so whenever the webpage is loaded then the new images are added again
 //DONE: Remove images from the list
@@ -77,6 +79,26 @@ function review() {
     changeSection("1", "2");
 }
 
+
+var Sounds = [
+    "sounds/216564__qubodup__hands-clapping.flac",
+    "sounds/113989__kastenfrosch__gewonnen",
+    "sounds/162395__zut50__yay",
+    "sounds/162458__kastenfrosch__gewonnen2",
+    "sounds/162458__kastenfrosch__gewonnen2",
+    "sounds/273925__lemonjolly__hooray-yeah",
+    "sounds/343835__tristan-lohengrin__happy-8bit-loop-01",
+    "398941__enviromaniac2__happyloop"
+]
+
+function PlaySound() {
+    var audio = document.getElementById("audio");
+    var x = Math.floor(Math.random() * Sounds.length);
+    //audio[0].src = Sounds[x];
+    audio.play();
+    
+}
+
 function submitQuestion(questionDiv) {
     
     var currentQuestionId = questionDiv.getAttribute("id");
@@ -86,8 +108,8 @@ function submitQuestion(questionDiv) {
     for(var i = 0; i < rates.length; i++){
         if(rates[i].checked){
             
-            var audio = document.getElementById("audio");
-            audio.play();
+            PlaySound();
+            
             var id = rates[i].getAttribute("value");
  
             
