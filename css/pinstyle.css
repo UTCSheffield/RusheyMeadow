@@ -343,7 +343,7 @@
         width: 95%;
         margin-left: 2.5%;
         height: auto;
-        font-size: 16px;
+        font-size: 12px;
     }
     
     #pincode button{
@@ -361,8 +361,8 @@
         padding-top: 0px;
     }
     #fields {
-        padding: 0 10px;
-        margin: 15px auto; 
+        padding: 0 5px;
+        margin: 8px auto; 
     }
 }
 
