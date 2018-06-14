@@ -42,14 +42,24 @@
   
 }
 
-@media only screen and (min-width: 900px) {
+/*@media only screen and (max-width: 900px) {
     #pincode {
+        /*
         height: 75%;
+        width: 80%;
+        margin-top: 10%;
+        margin-left: 10%;
+        margin-right: 10%;
+        padding-left: 10%;
+        padding-right: 10px;
+        */ /*Yeah have fun actually making this look good on mobile since I may or may not have given up on it (>_<)*/
+       /* 
         width: 50%;
         margin-top: 5%;
         margin-left: 25%;
-    }
-}
+    }*/
+    
+}*/
 
 #numbers {
   max-width: 300px;
@@ -69,8 +79,8 @@
 }
 
 #pincode button {
-  width: 70px;
-  height: 70px;
+  width: 110px;
+  height: 110px;
   margin-bottom: 10px;
   /*background-color: rgba(0, 0, 0, 0.35);*/
   background-color: #8e121b;
@@ -90,7 +100,8 @@
     -ms-user-select: none;
     user-select: none;
     transition: all .2s ease-in-out;
-    
+    margin-right: 10px;
+  margin-left: 10px;
 }
 
 #restartbtn {
