@@ -54,11 +54,12 @@
     
 }
 
-@media only screen and (max-width : 650px) {
+@media only screen and (max-width : 650px) and (orientation:landscape) {
     #pincode {
         width: 60%;
         margin-left: 20%;
         height: auto;
+        font-size: 20px;
     }
     
     #pincode button{
