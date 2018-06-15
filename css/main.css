@@ -93,7 +93,7 @@ body {
     height:100%;
     position:fixed;
     z-index:9999;
-    background:url("../img/loading2.gif") no-repeat center center rgba(243,0,0,1)
+    background:url("../img/loading.gif") no-repeat center center rgba(243,0,0,1)
 }
 
 #questions-container {
@@ -104,10 +104,10 @@ body {
     height: 80%;
     min-height: 600px;
     border-radius: 10px;
-  text-align: center;
-  -webkit-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.6);
-  -moz-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.6);
-  box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.6);
+    text-align: center;
+    -webkit-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.6);
+    -moz-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.6);
+    box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.6);
 }
 
 .question {
