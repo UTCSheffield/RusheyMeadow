@@ -244,3 +244,25 @@ input[type=radio]:checked + label>div>p {
     min-height: 400px;
     text-align: center;
 }
+
+@media only screen and (max-width : 370px) {
+    body {
+        font-size: 18px;
+    }
+    .next-button {
+        font-size: 40px;
+        margin-top: 10px;
+    }
+    .question h2 {
+        font-size: 22px;
+    }
+    .left, .right {
+        width: 45%;
+    }
+    #questions-container {
+        margin-top: 30px;
+        width: 80%;
+        height: 60%;
+        min-height: 400px;
+    }
+}
