@@ -93,7 +93,7 @@ body {
     height:100%;
     position:fixed;
     z-index:9999;
-    background:url("../img/loading2.gif") no-repeat center center rgba(243,0,0,1)
+    background:url("../img/loading.gif") no-repeat center center rgba(243,0,0,1)
 }
 
 #questions-container {
