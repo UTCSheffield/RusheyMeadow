@@ -95,7 +95,7 @@ function PlaySound() {
     var x = Math.floor(Math.random() * Sounds.length);
     audio.src = Sounds[x];
     audio.play();
-    
+    audio.stop(Sounds.currentTime + 2);
 }
 
 function submitQuestion(questionDiv) {
