@@ -39,7 +39,7 @@ jQuery(document).ready(function($) {
       $("#fields .numberfield").removeClass("active");
       $("#fields .numberfield").removeClass("right");
       $("#numbers").removeClass("hide");
-      $("#anleitung p").html("<strong>Please enter the correct PIN-Code.</strong><br> It is: 1234 / Also try a wrong code");
+      $("#anleitung p").html("<strong>Welcome to the RM Communications App</strong><br>Please enter the correct PIN-Code. (1234)");
     });
 
   });
