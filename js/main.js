@@ -82,19 +82,18 @@ function review() {
 
 var Sounds = [
     "sounds/216564__qubodup__hands-clapping.flac",
-    "sounds/113989__kastenfrosch__gewonnen",
-    "sounds/162395__zut50__yay",
-    "sounds/162458__kastenfrosch__gewonnen2",
-    "sounds/162458__kastenfrosch__gewonnen2",
-    "sounds/273925__lemonjolly__hooray-yeah",
-    "sounds/343835__tristan-lohengrin__happy-8bit-loop-01",
-    "398941__enviromaniac2__happyloop"
+    "sounds/113989__kastenfrosch__gewonnen.flac",
+    "sounds/162395__zut50__yay.flac",
+    "sounds/162458__kastenfrosch__gewonnen2.flac",
+    "sounds/273925__lemonjolly__hooray-yeah.flac",
+    "sounds/343835__tristan-lohengrin__happy-8bit-loop-01.flac",
+    "sounds/398941__enviromaniac2__happyloop.flac"
 ]
 
 function PlaySound() {
     var audio = document.getElementById("audio");
     var x = Math.floor(Math.random() * Sounds.length);
-    //audio[0].src = Sounds[x];
+    audio.src = Sounds[x];
     audio.play();
     
 }
