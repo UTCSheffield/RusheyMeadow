@@ -15,6 +15,7 @@ document.onreadystatechange = function () {
 
 var photos = 0;
 var currentUserData;
+var questions = "activities";
 
 //Disable initial sections
 for (var x = 0; x < 10; x++) {
@@ -44,35 +45,36 @@ function changeSection(sectionOld, sectionNew) {
 }
 
 function changeQuestion(questionOld, questionNew) {
-    $("#question"+questionOld).fadeOut(400, function() {
+    $("#"+questions+questionOld).fadeOut(400, function() {
         setTimeout(function(){ 
-            $("#question"+questionNew).fadeIn(400);
+            $("#"+questions+questionNew).fadeIn(400);
         }, 400);  
     });
 }
 
-function consultation() {
-    changeSection("1", "3");
-    
+function fadeQuestions() {
+    $("#consultation").fadeOut(0);
+    $("#activities").fadeOut(0);
+    $("#"+questions).fadeIn(0);
     for (var x = 2; x < 10; x++) {
-        if(document.getElementById("question"+x.toString()) == null) {
+        if(document.getElementById(questions+x.toString()) == null) {
             break;
         } else {
-            $("#question"+x.toString()).fadeOut(0);
+            $("#"+questions+x.toString()).fadeOut(0);
         }
     }
 }
 
+function consultation() {
+    changeSection("1", "3");
+    questions = "consultation";
+    fadeQuestions();
+}
+
 function activities() {
     changeSection("1", "3");
-    
-    for (var x = 2; x < 10; x++) {
-        if(document.getElementById("question"+x.toString()) == null) {
-            break;
-        } else {
-            $("#question"+x.toString()).fadeOut(0);
-        }
-    }
+    questions = "activities";
+    fadeQuestions();
 }
 
 function review() {
@@ -114,7 +116,7 @@ function submitQuestion(questionDiv) {
             
             console.log(id);
             
-            if(document.getElementById("question"+(nextQuestionId + 1).toString()) == null) {
+            if(document.getElementById(questions+(nextQuestionId + 1).toString()) == null) {
                 alert("End of questions");
                 /*$("#"+currentQuestionId).fadeOut(400);*/
             } else {
