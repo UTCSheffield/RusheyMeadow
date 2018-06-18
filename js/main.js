@@ -97,8 +97,14 @@ function PlaySound() {
     var x = Math.floor(Math.random() * Sounds.length);
     audio.src = Sounds[x];
     audio.play();
-    
+    setTimeout(function(){
+        console.log("Stopping");
+        var audio = document.getElementById("audio");
+        audio.pause();
+    }, 2000);
 }
+
+$(".choosable").on("click",PlaySound);
 
 function submitQuestion(questionDiv) {
     
