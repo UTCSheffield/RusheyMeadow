@@ -120,93 +120,23 @@
         <h1>Question Sequence</h1>
         
         <div id="questions-container">
-            
-            <div id="consultation">
-            
-            <div id="consultation1" class="question">
-                <h2>1. Do you enjoy Rushey Meadow?</h2>
+             
+            <div id="question" class="question">
+                <h2 id="questionName">1. Do you enjoy Rushey Meadow?</h2>
                 
-                <input name="pick1" id="left1" value="bad" class="input-hidden" type="radio" />
-                <label name="left1" class="left" for="left1">
+                <img id="questionPhoto" src="">
+                
+                <input name="pick" id="left" value="no" class="input-hidden" type="radio" />
+                <label name="left" class="left" for="left">
                     <img class="symbol choosable" src="PEC/No%20pec.fw.png">
                 </label>
                 
-                <input name="pick1" id="right1" value="good" class="input-hidden" type="radio" />
-                <label name="right1" class="right" for="right1">
+                <input name="pick" id="right" value="yes" class="input-hidden" type="radio" />
+                <label name="right" class="right" for="right">
                     <img class="symbol choosable" src="PEC/Yes%20pec.fw.png">
                 </label>
                 
-                <button onclick="submitQuestion(this.parentNode);" class="next-button">Next</button>
-                
-            </div>
-            
-            <div id="consultation2" class="question">
-                <h2>2. Do the staff help you?</h2>
-                
-                <button onclick="submitQuestion(this.parentNode);" class="next-button">Next</button>
-              
-                <input name="pick2" id="left2" value="bad" class="input-hidden" type="radio" />
-                <label name="left2" class="left" for="left2">
-                    <img class="symbol choosable" src="PEC/No%20pec.fw.png">
-                </label>
-                
-                <input name="pick2" id="right2" value="good" class="input-hidden" type="radio" />
-                <label name="right2" class="right" for="right2">
-                    <img class="symbol choosable" src="PEC/Yes%20pec.fw.png">
-                </label>
-            </div>
-            
-          <div id="consultation3" class="question">
-                <h2>4. What food do you like?</h2>
-                
-                <button onclick="submitQuestion(this.parentNode);" class="next-button">Next</button>
-              
-                <input name="pick1" id="left1" value="bad" class="input-hidden" type="radio" />
-                <label name="left1" class="left" for="left1">
-                    <img class="symbol choosable" src="PEC/Bad%20Pec.fw.png">
-                </label>
-                
-                <input name="pick1" id="right1" value="good" class="input-hidden" type="radio" />
-                <label name="right1" class="right" for="right1">
-                    <img class="symbol choosable" src="PEC/Good%20pec.fw.png">
-                </label>
-            </div>
-          
-          <div id="consultation4" class="question">
-                <h2>5.  What activities do you like?</h2>
-                
-                <button onclick="submitQuestion(this.parentNode);" class="next-button">Next</button>
-              
-                <input name="pick1" id="left1" value="bad" class="input-hidden" type="radio" />
-                <label name="left1" class="left" for="left1">
-                    <img class="symbol choosable" src="PEC/Bad%20Pec.fw.png">
-                </label>
-                
-                <input name="pick1" id="right1" value="good" class="input-hidden" type="radio" />
-                <label name="right1" class="right" for="right1">
-                    <img class="symbol choosable" src="PEC/Good%20pec.fw.png">
-                </label>
-            </div>
-                
-            </div>
-            
-            <div id="activities">
-            
-            <div id="activities1" class="question">
-                <h2>3. What would you like to do today?</h2>
-                
-                <button onclick="submitQuestion(this.parentNode);" class="next-button">Next</button>
-              
-                <input name="pick1" id="left1" value="bad" class="input-hidden" type="radio" />
-                <label name="left1" class="left" for="left1">
-                    <img class="symbol choosable" src="PEC/Bad%20Pec.fw.png">
-                </label>
-                
-                <input name="pick1" id="right1" value="good" class="input-hidden" type="radio" />
-                <label name="right1" class="right" for="right1">
-                    <img class="symbol choosable" src="PEC/Good%20pec.fw.png">
-                </label>
-            </div>
+                <button onclick="submitQuestion();" class="next-button">Next</button>
                 
             </div>
             

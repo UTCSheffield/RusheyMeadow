@@ -234,6 +234,10 @@ input[type=radio]:checked + label>div>p {
     height: 100%; 
 }
 
+#questionPhoto {
+    width: 100px;
+}
+
 #PIN-box {
     margin-top: 100px;
     width: 80%;

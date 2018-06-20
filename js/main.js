@@ -5,6 +5,55 @@
 //DONE: Remove images from the list
 //DONE: Format images correctly
 
+
+var Sounds = [
+    "sounds/216564__qubodup__hands-clapping.flac",
+    "sounds/113989__kastenfrosch__gewonnen.flac",
+    "sounds/162395__zut50__yay.flac",
+    "sounds/162458__kastenfrosch__gewonnen2.flac",
+    "sounds/273925__lemonjolly__hooray-yeah.flac",
+    "sounds/343835__tristan-lohengrin__happy-8bit-loop-01.flac",
+    "sounds/398941__enviromaniac2__happyloop.flac"
+]
+
+var questionData = {
+    "consultation": [
+       {
+          "question": "Do you enjoy Rushey Meadow?",
+          "picture": "img/Rushey Meadow.jpg",
+          "type": "feedback"
+        },
+        {
+          "question": "Do the staff help you?",
+          "picture": "img/Rushey Meadow.jpg",
+          "type": "feedback"
+        },
+        {
+          "question": "Do you like bagels?",
+          "picture": "img/food/Bagel.jpg",
+          "type": "food"
+        },
+        {
+          "question": "Do you enjoy the garden?",
+          "picture": "img/activities/GARDEN.JPG",
+          "type": "activities"
+        }
+      ],
+    "activities": [
+        {
+          "question": "Would you like to go to the seaside today?",
+          "picture": "img/activities/seaside.jpg",
+          "type": "today"
+        }
+    ]
+};
+
+if(localStorage.getItem("questions") === null) {
+    localStorage.setItem("questions", JSON.stringify(questionData));
+} else {
+    questionData = JSON.parse(localStorage.getItem("questions"));
+}
+
 document.onreadystatechange = function () {
   var state = document.readyState
   if (state == 'complete') {
@@ -16,6 +65,8 @@ document.onreadystatechange = function () {
 var photos = 0;
 var currentUserData;
 var questions = "activities";
+var currentQuestionData;
+var currentQuestion = 0;
 
 //Disable initial sections
 for (var x = 0; x < 10; x++) {
@@ -44,37 +95,33 @@ function changeSection(sectionOld, sectionNew) {
     });
 }
 
-function changeQuestion(questionOld, questionNew) {
-    $("#"+questions+questionOld).fadeOut(400, function() {
+function fadeQuestions() {
+    $("#question").fadeOut(400, function() {
         setTimeout(function(){ 
-            $("#"+questions+questionNew).fadeIn(400);
+            nextQuestion();
+            $("#question").fadeIn(400);
         }, 400);  
     });
 }
 
-function fadeQuestions() {
-    $("#consultation").fadeOut(0);
-    $("#activities").fadeOut(0);
-    $("#"+questions).fadeIn(0);
-    for (var x = 2; x < 10; x++) {
-        if(document.getElementById(questions+x.toString()) == null) {
-            break;
-        } else {
-            $("#"+questions+x.toString()).fadeOut(0);
-        }
-    }
+function nextQuestion() {
+    currentQuestionData = questionData[questions][currentQuestion];
+    document.getElementById("questionName").innerHTML = currentQuestionData["question"];
+    document.getElementById("questionPhoto").setAttribute("src", currentQuestionData["picture"]);
+    document.getElementById("left").checked = false;
+    document.getElementById("right").checked = false;
 }
 
 function consultation() {
     changeSection("1", "3");
     questions = "consultation";
-    fadeQuestions();
+    nextQuestion();
 }
 
 function activities() {
     changeSection("1", "3");
     questions = "activities";
-    fadeQuestions();
+    nextQuestion();
 }
 
 function review() {
@@ -82,23 +129,12 @@ function review() {
 }
 
 
-var Sounds = [
-    "sounds/216564__qubodup__hands-clapping.flac",
-    "sounds/113989__kastenfrosch__gewonnen.flac",
-    "sounds/162395__zut50__yay.flac",
-    "sounds/162458__kastenfrosch__gewonnen2.flac",
-    "sounds/273925__lemonjolly__hooray-yeah.flac",
-    "sounds/343835__tristan-lohengrin__happy-8bit-loop-01.flac",
-    "sounds/398941__enviromaniac2__happyloop.flac"
-]
-
 function PlaySound() {
     var audio = document.getElementById("audio");
     var x = Math.floor(Math.random() * Sounds.length);
     audio.src = Sounds[x];
     audio.play();
     setTimeout(function(){
-        console.log("Stopping");
         var audio = document.getElementById("audio");
         audio.pause();
     }, 2000);
@@ -107,27 +143,17 @@ function PlaySound() {
 $(".choosable").on("click",PlaySound);
 
 function submitQuestion(questionDiv) {
-    
-    var currentQuestionId = questionDiv.getAttribute("id");
-    var nextQuestionId = Number(currentQuestionId[currentQuestionId.length-1]);
-    
-    var rates = document.getElementsByName('pick' + nextQuestionId);
+    var rates = document.getElementsByName('pick');
     for(var i = 0; i < rates.length; i++){
         if(rates[i].checked){
             
             PlaySound();
             
+            currentQuestion += 1;
+            fadeQuestions();
+            
             var id = rates[i].getAttribute("value");
- 
-            
             console.log(id);
-            
-            if(document.getElementById(questions+(nextQuestionId + 1).toString()) == null) {
-                alert("End of questions");
-                /*$("#"+currentQuestionId).fadeOut(400);*/
-            } else {
-                changeQuestion(currentQuestionId[currentQuestionId.length-1], nextQuestionId + 1);
-            }
             
         }
     }
@@ -270,6 +296,7 @@ function readURL() {
         alert("You did not enter a photo. Please try again.")
     }
 }
+
 
 var i;
 for (i =0; i < 70; i++) {
