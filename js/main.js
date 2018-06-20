@@ -7,13 +7,15 @@
 
 
 var Sounds = [
-    "sounds/216564__qubodup__hands-clapping.flac",
-    "sounds/113989__kastenfrosch__gewonnen.flac",
+    "sounds/216564__qubodup__hands-clapping_cut.flac",
+    "sounds/113989__kastenfrosch__gewonnen_cut.flac",
     "sounds/162395__zut50__yay.flac",
-    "sounds/162458__kastenfrosch__gewonnen2.flac",
-    "sounds/273925__lemonjolly__hooray-yeah.flac",
-    "sounds/343835__tristan-lohengrin__happy-8bit-loop-01.flac",
-    "sounds/398941__enviromaniac2__happyloop.flac"
+    "sounds/162458__kastenfrosch__gewonnen2_cut.flac",
+    "sounds/273925__lemonjolly__hooray-yeah_cut.flac",
+    "sounds/343835__tristan-lohengrin__happy-8bit-loop-01_cut.flac",
+    "sounds/398941__enviromaniac2__happyloop_cut.flac",
+    "sounds/242207__wagna__fanfare_cut.flac"
+
 ]
 
 var questionData = {
@@ -128,7 +130,6 @@ function review() {
     changeSection("1", "2");
 }
 
-
 function PlaySound() {
     var audio = document.getElementById("audio");
     var x = Math.floor(Math.random() * Sounds.length);
@@ -137,7 +138,7 @@ function PlaySound() {
     setTimeout(function(){
         var audio = document.getElementById("audio");
         audio.pause();
-    }, 2000);
+    }, 2000); 
 }
 
 $(".choosable").on("click",PlaySound);
