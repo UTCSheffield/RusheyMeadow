@@ -101,17 +101,22 @@ function fadeQuestions() {
     $("#question").fadeOut(400, function() {
         setTimeout(function(){ 
             nextQuestion();
-            $("#question").fadeIn(400);
         }, 400);  
     });
 }
 
 function nextQuestion() {
-    currentQuestionData = questionData[questions][currentQuestion];
-    document.getElementById("questionName").innerHTML = currentQuestionData["question"];
-    document.getElementById("questionPhoto").setAttribute("src", currentQuestionData["picture"]);
-    document.getElementById("left").checked = false;
-    document.getElementById("right").checked = false;
+    if(currentQuestion >= questionData[questions].length) {
+        alert("End Of Questions!");
+    } else {
+        currentQuestionData = questionData[questions][currentQuestion];
+        document.getElementById("questionName").innerHTML = currentQuestionData["question"];
+        document.getElementById("questionPhoto").setAttribute("src", currentQuestionData["picture"]);
+        document.getElementById("left").checked = false;
+        document.getElementById("right").checked = false;
+        $("#question").fadeIn(400);
+    }
+    
 }
 
 function consultation() {
