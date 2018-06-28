@@ -87,7 +87,7 @@
     </section>
     
     <section id="2">
-        
+        <p id="data"></p>
         <div id="calendar"></div>
         <script src="js/moment.js"></script>
         <script src="js/calendar.js"></script>
@@ -98,7 +98,7 @@
         <h1>User Picker</h1>
         
         <input type="file" class="inputfile" name="file" id="photo-selector" accept="image/*" onchange="fileUploaded();"/>
-        <label id="file-text" for="photo-selector"><i class="fa fa-upload"></i>Upload a picture</label>
+        <label id="file-text" for="photo-selector"><i class="fa fa-upload"></i>Get Picture of Child</label>
         <input type="text" id="child-name" name="name" placeholder="Child Name"/>
         <button onclick="readURL();">Add</button>
         
@@ -137,6 +137,8 @@
                 </label>
                 
                 <button onclick="submitQuestion();" class="next-button">Next</button>
+                
+                <button id="skip" onclick="skipQuestion();" class="next-button">Skip</button>
                 
             </div>
             

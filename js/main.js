@@ -15,7 +15,6 @@ var Sounds = [
     "sounds/343835__tristan-lohengrin__happy-8bit-loop-01_cut.flac",
     "sounds/398941__enviromaniac2__happyloop_cut.flac",
     "sounds/242207__wagna__fanfare_cut.flac"
-
 ]
 
 var questionData = {
@@ -50,10 +49,24 @@ var questionData = {
     ]
 };
 
+var answerData = [
+    
+];
+
 if(localStorage.getItem("questions") === null) {
     localStorage.setItem("questions", JSON.stringify(questionData));
-} else {
-    questionData = JSON.parse(localStorage.getItem("questions"));
+} else { 
+    if(window.location.href.substr(window.location.href.length - 4) == "?new") {
+        localStorage.setItem("questions", JSON.stringify(questionData));
+    } else {
+        questionData = JSON.parse(localStorage.getItem("questions"));
+    }
+}
+
+if(localStorage.getItem("answers") === null) {
+    localStorage.setItem("answers", JSON.stringify(answerData));
+} else { 
+    answerData = JSON.parse(localStorage.getItem("answers"));
 }
 
 document.onreadystatechange = function () {
@@ -105,16 +118,50 @@ function fadeQuestions() {
     });
 }
 
+function skipQuestion() {
+    currentQuestion += 1;
+    fadeQuestions();
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth()+1; //January is 0!
+    var yyyy = today.getFullYear();
+
+    if(dd<10) {
+        dd = '0'+dd
+    } 
+
+    if(mm<10) {
+        mm = '0'+mm
+    } 
+
+    today = dd + '/' + mm + '/' + yyyy;
+
+    if(answerData[currentUserData[0]][questions][today] == null) {
+        answerData[currentUserData[0]][questions][today] = {};
+    } else {
+        answerData[currentUserData[0]][questions][today] = answerData[currentUserData[0]][questions][today];
+    }
+
+    answerData[currentUserData[0]][questions][today][questionData[questions][currentQuestion]["question"]] = "Question Skipped";                
+
+    console.log(answerData);
+    localStorage.setItem("answers", JSON.stringify(answerData));
+}
+
 function nextQuestion() {
+    
     if(currentQuestion >= questionData[questions].length) {
         alert("End Of Questions!");
     } else {
+        
         currentQuestionData = questionData[questions][currentQuestion];
         document.getElementById("questionName").innerHTML = currentQuestionData["question"];
         document.getElementById("questionPhoto").setAttribute("src", currentQuestionData["picture"]);
         document.getElementById("left").checked = false;
         document.getElementById("right").checked = false;
+        $("#skip").fadeOut(0);
         $("#question").fadeIn(400);
+        setTimeout(function(){ $("#skip").fadeIn(400); }, 60000);
     }
     
 }
@@ -122,17 +169,16 @@ function nextQuestion() {
 function consultation() {
     changeSection("1", "3");
     questions = "consultation";
-    nextQuestion();
 }
 
 function activities() {
     changeSection("1", "3");
     questions = "activities";
-    nextQuestion();
 }
 
 function review() {
     changeSection("1", "2");
+    document.getElementById("data").innerHTML = answerData;
 }
 
 function PlaySound() {
@@ -157,10 +203,35 @@ function submitQuestion(questionDiv) {
             
             currentQuestion += 1;
             fadeQuestions();
+            fadeQuestions();
             
             var id = rates[i].getAttribute("value");
-            console.log(id);
             
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth()+1; //January is 0!
+            var yyyy = today.getFullYear();
+
+            if(dd<10) {
+                dd = '0'+dd
+            } 
+
+            if(mm<10) {
+                mm = '0'+mm
+            } 
+
+            today = dd + '/' + mm + '/' + yyyy;
+            
+            if(answerData[currentUserData[0]][questions][today] == null) {
+                answerData[currentUserData[0]][questions][today] = {};
+            } else {
+                answerData[currentUserData[0]][questions][today] = answerData[currentUserData[0]][questions][today];
+            }
+
+            answerData[currentUserData[0]][questions][today][questionData[questions][currentQuestion]["question"]] = id;                
+            
+            console.log(answerData);
+            localStorage.setItem("answers", JSON.stringify(answerData));
         }
     }
     
@@ -220,6 +291,7 @@ function confirmPhoto() {
             console.log(JSON.stringify(currentUserData));
             
             changeSection("3", "4");
+            nextQuestion();
             
         }
     }
@@ -265,6 +337,10 @@ function createImage(source, name) {
     try {
         var childData = [photos, name, source]; 
         localStorage.setItem("user"+photos, JSON.stringify(childData));
+        answerData[childData[0]] = {
+            "consultation": {},
+            "activities": {}
+        };
     } catch(e) {
         if (e.code == 22) {
             alert("Local Storage is full, no more pictures can be added.")
