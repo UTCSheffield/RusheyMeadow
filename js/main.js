@@ -64,7 +64,6 @@ if(localStorage.getItem("questions") === null) {
 }
 
 if(localStorage.getItem("answers") === null) {
-    localStorage.setItem("answers", JSON.stringify(answerData));
 } else { 
     answerData = JSON.parse(localStorage.getItem("answers"));
 }
@@ -144,7 +143,6 @@ function skipQuestion() {
 
     answerData[currentUserData[0]][questions][today][questionData[questions][currentQuestion]["question"]] = "Question Skipped";                
 
-    console.log(answerData);
     localStorage.setItem("answers", JSON.stringify(answerData));
 }
 
@@ -178,7 +176,31 @@ function activities() {
 
 function review() {
     changeSection("1", "2");
-    document.getElementById("data").innerHTML = answerData;
+    dataText = ""
+    var calendarData = [];
+    
+    for(var i = 0; i < 70; i++){
+        if(localStorage.getItem("user"+i) === null) {
+            break;
+        }
+        dataText += JSON.parse(localStorage.getItem("user"+i))[1] + ": " + JSON.stringify(answerData[i]) + "\n";
+        if(answerData[i]["consultation"] != null) {
+            for(var dateX in answerData[i]["consultation"]) {
+                console.log(dateX);
+                calendarData.push({eventName: "Consultation - " + JSON.parse(localStorage.getItem("user"+i))[1], calendar: "Consultation", color: 'orange', date: dateX.substring(0, 2)});
+            } 
+        }
+        if(answerData[i]["activities"] != null) {
+            for(var dateX in answerData[i]["activities"]) {
+                console.log(dateX);
+                calendarData.push({eventName: "Activities - " + JSON.parse(localStorage.getItem("user"+i))[1], calendar: "Activities", color: 'blue', date: dateX.substring(0, 2)});
+            } 
+        }
+        
+    }
+    
+    var calendar = new Calendar('#calendar', calendarData);
+    document.getElementById("data").innerHTML = dataText;
 }
 
 function PlaySound() {
@@ -201,9 +223,7 @@ function submitQuestion(questionDiv) {
             
             PlaySound();
             
-            currentQuestion += 1;
-            fadeQuestions();
-            fadeQuestions();
+            
             
             var id = rates[i].getAttribute("value");
             
@@ -223,15 +243,15 @@ function submitQuestion(questionDiv) {
             today = dd + '/' + mm + '/' + yyyy;
             
             if(answerData[currentUserData[0]][questions][today] == null) {
-                answerData[currentUserData[0]][questions][today] = {};
+                answerData[currentUserData[0]][questions][today] = [];
             } else {
                 answerData[currentUserData[0]][questions][today] = answerData[currentUserData[0]][questions][today];
             }
-
-            answerData[currentUserData[0]][questions][today][questionData[questions][currentQuestion]["question"]] = id;                
-            
-            console.log(answerData);
+            answerData[currentUserData[0]][questions][today][currentQuestion] = [questionData[questions][currentQuestion]["question"], id];         
             localStorage.setItem("answers", JSON.stringify(answerData));
+            
+            currentQuestion += 1;
+            fadeQuestions();
         }
     }
     
@@ -337,10 +357,14 @@ function createImage(source, name) {
     try {
         var childData = [photos, name, source]; 
         localStorage.setItem("user"+photos, JSON.stringify(childData));
-        answerData[childData[0]] = {
+        if(answerData[childData[0]] == null) {
+            answerData[childData[0]] = {
             "consultation": {},
             "activities": {}
-        };
+            }; 
+        }
+        
+        localStorage.setItem("answers", JSON.stringify(answerData));
     } catch(e) {
         if (e.code == 22) {
             alert("Local Storage is full, no more pictures can be added.")

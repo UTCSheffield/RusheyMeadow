@@ -56,7 +56,7 @@
     var self = this;
     
     this.events.forEach(function(ev) {
-     ev.date = self.current.clone().date(Math.random() * (29 - 1) + 1);
+     ev.date = self.current.clone().date(ev["date"]);
     });
     
     
@@ -321,7 +321,7 @@
 }();
 
 !function() {
-  var data = [
+  /*var data = [
     { eventName: 'Lunch Meeting w/ Mark', calendar: 'Work', color: 'orange' },
     { eventName: 'Interview - Jr. Web Developer', calendar: 'Work', color: 'orange' },
     { eventName: 'Demo New App to the Board', calendar: 'Work', color: 'orange' },
@@ -341,15 +341,14 @@
     { eventName: 'Bowling Team', calendar: 'Other', color: 'green' },
     { eventName: 'Teach Kids to Code', calendar: 'Other', color: 'green' },
     { eventName: 'Startup Weekend', calendar: 'Other', color: 'green' }
-  ];
-
+  ];*/
   
 
   function addDate(ev) {
     
   }
 
-  var calendar = new Calendar('#calendar', data);
+  
 
 }();
 
