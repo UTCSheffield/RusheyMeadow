@@ -9,7 +9,7 @@
     
     <link rel="stylesheet" href="css/pinstyle.css">
     <link rel="stylesheet" href="css/calendar.css">
-    <link rel="stylesheet" href="css/main.css?cb=1">
+    <link rel="stylesheet" href="css/main.css">
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -87,7 +87,7 @@
     </section>
     
     <section id="2">
-        
+        <p id="data"></p>
         <div id="calendar"></div>
         <script src="js/moment.js"></script>
         <script src="js/calendar.js"></script>
@@ -98,7 +98,7 @@
         <h1>User Picker</h1>
         
         <input type="file" class="inputfile" name="file" id="photo-selector" accept="image/*" onchange="fileUploaded();"/>
-        <label id="file-text" for="photo-selector"><i class="fa fa-upload"></i>Upload a picture</label>
+        <label id="file-text" for="photo-selector"><i class="fa fa-upload"></i>Get Picture of Child</label>
         <input type="text" id="child-name" name="name" placeholder="Child Name"/>
         <button onclick="readURL();">Add</button>
         
@@ -120,94 +120,33 @@
         <h1>Question Sequence</h1>
         
         <div id="questions-container">
-            
-                  <div id="question1" class="question">
-                <h2>1. Do you enjoy Rushey Meadow?</h2>
+             
+            <div id="question" class="question">
+                <h2 id="questionName">1. Do you enjoy Rushey Meadow?</h2>
                 
-                <input name="pick1" id="left1" value="bad" class="input-hidden" type="radio" />
-                <label name="left1" class="left" for="left1">
-                    <img class="symbol" src="PEC/No%20pec.fw.png">
+                <img id="questionPhoto" src="">
+                
+                <input name="pick" id="left" value="no" class="input-hidden" type="radio" />
+                <label name="left" class="left" for="left">
+                    <img class="symbol choosable" src="PEC/No%20pec.fw.png">
                 </label>
                 
-                <input name="pick1" id="right1" value="good" class="input-hidden" type="radio" />
-                <label name="right1" class="right" for="right1">
-                    <img class="symbol" src="PEC/Yes%20pec.fw.png">
+                <input name="pick" id="right" value="yes" class="input-hidden" type="radio" />
+                <label name="right" class="right" for="right">
+                    <img class="symbol choosable" src="PEC/Yes%20pec.fw.png">
                 </label>
                 
-                <button onclick="submitQuestion(this.parentNode);" class="next-button">Next</button>
+                <button onclick="submitQuestion();" class="next-button">Next</button>
                 
-            </div>
-            
-            <div id="question2" class="question">
-                <h2>2. Do the staff help you?</h2>
+                <button id="skip" onclick="skipQuestion();" class="next-button">Skip</button>
                 
-                <button onclick="submitQuestion(this.parentNode);" class="next-button">Next</button>
-              
-                <input name="pick1" id="left1" value="bad" class="input-hidden" type="radio" />
-                <label name="left1" class="left" for="left1">
-                    <img class="symbol" src="PEC/No%20pec.fw.png">
-                </label>
-                
-                <input name="pick1" id="right1" value="good" class="input-hidden" type="radio" />
-                <label name="right1" class="right" for="right1">
-                    <img class="symbol" src="PEC/Yes%20pec.fw.png">
-                </label>
-            </div>
-            
-          
-          <div id="question3" class="question">
-                <h2>3. What would you like to do today?</h2>
-                
-                <button onclick="submitQuestion(this.parentNode);" class="next-button">Next</button>
-              
-                <input name="pick1" id="left1" value="bad" class="input-hidden" type="radio" />
-                <label name="left1" class="left" for="left1">
-                    <img class="symbol" src="PEC/Bad%20Pec.fw.png">
-                </label>
-                
-                <input name="pick1" id="right1" value="good" class="input-hidden" type="radio" />
-                <label name="right1" class="right" for="right1">
-                    <img class="symbol" src="PEC/Good%20pec.fw.png">
-                </label>
-            </div>
-          
-          <div id="question4" class="question">
-                <h2>4. What food do you like?</h2>
-                
-                <button onclick="submitQuestion(this.parentNode);" class="next-button">Next</button>
-              
-                <input name="pick1" id="left1" value="bad" class="input-hidden" type="radio" />
-                <label name="left1" class="left" for="left1">
-                    <img class="symbol" src="PEC/Bad%20Pec.fw.png">
-                </label>
-                
-                <input name="pick1" id="right1" value="good" class="input-hidden" type="radio" />
-                <label name="right1" class="right" for="right1">
-                    <img class="symbol" src="PEC/Good%20pec.fw.png">
-                </label>
-            </div>
-          
-          <div id="question5" class="question">
-                <h2>5.  What activities do you like?</h2>
-                
-                <button onclick="submitQuestion(this.parentNode);" class="next-button">Next</button>
-              
-                <input name="pick1" id="left1" value="bad" class="input-hidden" type="radio" />
-                <label name="left1" class="left" for="left1">
-                    <img class="symbol" src="PEC/Bad%20Pec.fw.png">
-                </label>
-                
-                <input name="pick1" id="right1" value="good" class="input-hidden" type="radio" />
-                <label name="right1" class="right" for="right1">
-                    <img class="symbol" src="PEC/Good%20pec.fw.png">
-                </label>
             </div>
             
         </div>
         
     </section>
         
-    <script src="http://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>  <!--stats.js lib --> 
+    <script src="js/particle.min.js"></script>  <!--stats.js lib --> 
         
     <script src="js/main.js"></script>
     <script class="" src="js/pinjs.js"></script>

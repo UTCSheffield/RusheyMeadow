@@ -104,10 +104,10 @@ body {
     height: 80%;
     min-height: 600px;
     border-radius: 10px;
-  text-align: center;
-  -webkit-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.6);
-  -moz-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.6);
-  box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.6);
+    text-align: center;
+    -webkit-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.6);
+    -moz-box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.6);
+    box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.6);
 }
 
 .question {
@@ -234,6 +234,10 @@ input[type=radio]:checked + label>div>p {
     height: 100%; 
 }
 
+#questionPhoto {
+    width: 100px;
+}
+
 #PIN-box {
     margin-top: 100px;
     width: 80%;
@@ -243,4 +247,26 @@ input[type=radio]:checked + label>div>p {
     height: 80%;
     min-height: 400px;
     text-align: center;
+}
+
+@media only screen and (max-width : 370px) {
+    body {
+        font-size: 18px;
+    }
+    .next-button {
+        font-size: 40px;
+        margin-top: 10px;
+    }
+    .question h2 {
+        font-size: 22px;
+    }
+    .left, .right {
+        width: 45%;
+    }
+    #questions-container {
+        margin-top: 30px;
+        width: 80%;
+        height: 60%;
+        min-height: 400px;
+    }
 }
