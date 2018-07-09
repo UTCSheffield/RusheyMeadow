@@ -5,6 +5,18 @@
 //DONE: Remove images from the list
 //DONE: Format images correctly
 
+var questionaires = new PouchDB('questionaires');
+
+var questionairesRemote = new PouchDB('https://admin:a49e11246037@couchdb-009fed.smileupps.com/questionnaires/');
+
+questionaires.sync(questionairesRemote).on('complete', function () {
+  // yay, we're in sync!
+    
+    
+}).on('error', function (err) {
+  // boo, we hit an error!
+});
+
 
 var Sounds = [
     "sounds/216564__qubodup__hands-clapping_cut.flac",
@@ -52,6 +64,29 @@ var questionData = {
 var answerData = [
     
 ];
+
+function createQuestionaires(){
+    questionaires.put(todo, function callback(err, result) {
+    if (!err) {
+      console.log('Successfully posted a todo!');
+    }
+  });
+
+}
+
+questionaires.allDocs({include_docs: true, descending: true}, function(err, doc) {
+    if(err){
+            createQuestionaires();
+
+    }
+        console.log(doc.rows);
+        if(doc.rows.length == 0){
+            createQuestionaires();
+
+        }
+    }
+  });
+
 
 if(localStorage.getItem("questions") === null) {
     localStorage.setItem("questions", JSON.stringify(questionData));
