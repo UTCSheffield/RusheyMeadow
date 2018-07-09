@@ -53,6 +53,14 @@ var answerData = [
     
 ];
 
+function setItem(key, value) {
+    
+}
+
+function getItem(key) {
+    
+}
+
 if(localStorage.getItem("questions") === null) {
     localStorage.setItem("questions", JSON.stringify(questionData));
 } else { 
@@ -176,31 +184,47 @@ function activities() {
 
 function review() {
     changeSection("1", "2");
-    dataText = ""
-    var calendarData = [];
     
-    for(var i = 0; i < 70; i++){
-        if(localStorage.getItem("user"+i) === null) {
-            break;
-        }
-        dataText += JSON.parse(localStorage.getItem("user"+i))[1] + ": " + JSON.stringify(answerData[i]) + "\n";
-        if(answerData[i]["consultation"] != null) {
-            for(var dateX in answerData[i]["consultation"]) {
-                console.log(dateX);
-                calendarData.push({eventName: "Consultation - " + JSON.parse(localStorage.getItem("user"+i))[1], calendar: "Consultation", color: 'orange', date: dateX.substring(0, 2)});
-            } 
-        }
-        if(answerData[i]["activities"] != null) {
-            for(var dateX in answerData[i]["activities"]) {
-                console.log(dateX);
-                calendarData.push({eventName: "Activities - " + JSON.parse(localStorage.getItem("user"+i))[1], calendar: "Activities", color: 'blue', date: dateX.substring(0, 2)});
-            } 
-        }
+    for(var i = 0; i < answerData.length; i++){
+        var button = $('<button>'+JSON.parse(localStorage.getItem("user"+i))[1]+'</button>').attr({
+            'onclick': 'reviewSelect('+i+');'
+        }).appendTo('#2');
         
+        var dataDiv = $('<div></div>').attr({
+            'id': 'data-'+i,
+            'class': 'data-panel'
+        }).appendTo('#2');
+        
+        for (var key in answerData[i]) {
+            if (!answerData[i].hasOwnProperty(key)) continue;
+            
+            var title = $('<h1>' + key.charAt(0).toUpperCase() + key.substr(1) + '</h1>').attr({
+                class: 'date'
+            }).appendTo('#data-'+i);
+            
+            var d = 0;
+
+            var obj = answerData[i][key];
+            for (var prop in obj) {
+                if(!obj.hasOwnProperty(prop)) continue;
+
+                var dateDiv = $('<div></div>').attr({
+                    'id': 'date'+i+'-'+d+'-div', 
+                    'class': 'date-div'
+                }).appendTo('#data-'+i);
+                
+                var dateTitle = $('<h2>'+prop+'</h2>').appendTo('#date'+i+'-'+d+'-div');
+                
+                for(z = 0; z < obj[prop].length; z++) {
+                    var q = $('<h3>'+obj[prop][z][0]+': '+obj[prop][z][1]+'</h3>').appendTo('#date'+i+'-'+d+'-div');
+                }
+
+                d++;
+            }
+        }
     }
-    
-    var calendar = new Calendar('#calendar', calendarData);
-    document.getElementById("data").innerHTML = dataText;
+
+    document.getElementById("data").innerHTML = JSON.stringify(answerData);
 }
 
 function PlaySound() {
@@ -222,14 +246,11 @@ function submitQuestion(questionDiv) {
         if(rates[i].checked){
             
             PlaySound();
-            
-            
-            
             var id = rates[i].getAttribute("value");
             
             var today = new Date();
             var dd = today.getDate();
-            var mm = today.getMonth()+1; //January is 0!
+            var mm = today.getMonth()+1; 
             var yyyy = today.getFullYear();
 
             if(dd<10) {
@@ -256,6 +277,10 @@ function submitQuestion(questionDiv) {
     }
     
     
+}
+
+function reviewSelect(i) {
+    $( "#data-"+i ).toggleClass( "expanded" )
 }
 
 function fileUploaded() {
@@ -307,8 +332,6 @@ function confirmPhoto() {
             var id = rates[i].getAttribute("id");
             
             currentUserData = [i, document.getElementById("nameText"+i).textContent, document.getElementById("photo" + i).getAttribute("src")];
-            
-            console.log(JSON.stringify(currentUserData));
             
             changeSection("3", "4");
             nextQuestion();
