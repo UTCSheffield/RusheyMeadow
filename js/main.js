@@ -139,9 +139,7 @@ function fadeQuestions() {
     });
 }
 
-function skipQuestion() {
-    currentQuestion += 1;
-    fadeQuestions();
+function storeAnswer(question, answer){
     var today = new Date();
     var dd = today.getDate();
     var mm = today.getMonth() + 1; //January is 0!
@@ -159,23 +157,23 @@ function skipQuestion() {
 
     var answer = {
         _id:currentChild.name+"-"+currentQuestion+"-"+today,
-        question:""
-        
-        
-    }
-    if (answerData[currentUserData[0]][questions][today] == null) {
-        answerData[currentUserData[0]][questions][today] = {};
-    } else {
-        answerData[currentUserData[0]][questions][today] = answerData[currentUserData[0]][questions][today];
-    }
+        question:question,
+        child:currentChild.name,
+        date:today,
+        answer:answer
+    };
+    
+    answers.put(answer).then(function(result){
+    });
+}
 
-    answerData[currentUserData[0]][questions][today][questionData[questions][currentQuestion]["question"]] = "Question Skipped";
-
-    localStorage.setItem("answers", JSON.stringify(answerData));
+function skipQuestion() {
+    currentQuestion += 1;
+    fadeQuestions();
+    storeAnswer(currentQuestion, "Question Skipped");
 }
 
 function nextQuestion() {
-
     if (currentQuestion >= questionData[questions].length) {
         alert("End Of Questions!");
     } else {
@@ -260,35 +258,10 @@ function submitQuestion(questionDiv) {
     var rates = document.getElementsByName('pick');
     for (var i = 0; i < rates.length; i++) {
         if (rates[i].checked) {
-
             PlaySound();
 
-
-
             var id = rates[i].getAttribute("value");
-
-            var today = new Date();
-            var dd = today.getDate();
-            var mm = today.getMonth() + 1; //January is 0!
-            var yyyy = today.getFullYear();
-
-            if (dd < 10) {
-                dd = '0' + dd
-            }
-
-            if (mm < 10) {
-                mm = '0' + mm
-            }
-
-            today = dd + '/' + mm + '/' + yyyy;
-
-            if (answerData[currentUserData[0]][questions][today] == null) {
-                answerData[currentUserData[0]][questions][today] = [];
-            } else {
-                answerData[currentUserData[0]][questions][today] = answerData[currentUserData[0]][questions][today];
-            }
-            answerData[currentUserData[0]][questions][today][currentQuestion] = [questionData[questions][currentQuestion]["question"], id];
-            localStorage.setItem("answers", JSON.stringify(answerData));
+            storeAnswer(currentQuestion, id);
 
             currentQuestion += 1;
             fadeQuestions();
