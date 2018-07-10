@@ -16,8 +16,9 @@ var sCouchBaseURL = 'https://admin:a49e11246037@couchdb-009fed.smileupps.com/';
 
 var questionairesRemote = new PouchDB(sCouchBaseURL+'questionnaires/');
 
-questionaires.sync(questionairesRemote).on('complete', function (data) {
-    console.log("questionaires in sync data", data);
+questionaires.sync(questionairesRemote).on('change', function (data) {
+    console.log("questionaires in sync data changed", data);
+    listChildren();
     // yay, we're in sync!
 }).on('error', function (err) {
     console.log("Error syncing questionaires", err);
@@ -54,6 +55,9 @@ function listChildren(){
         include_docs:true
     }).then(function(result){
         console.log("result", result.rows);
+       
+        $('#photos-container').children().remove();
+        
         result.rows.forEach(function(row){  
             var child = row.doc;
             createImage(child.source, child.name);
