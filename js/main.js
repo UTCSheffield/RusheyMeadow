@@ -7,14 +7,14 @@
 
 
 var Sounds = [
-    "sounds/216564__qubodup__hands-clapping_cut.flac",
-    "sounds/113989__kastenfrosch__gewonnen_cut.flac",
-    "sounds/162395__zut50__yay.flac",
-    "sounds/162458__kastenfrosch__gewonnen2_cut.flac",
-    "sounds/273925__lemonjolly__hooray-yeah_cut.flac",
-    "sounds/343835__tristan-lohengrin__happy-8bit-loop-01_cut.flac",
-    "sounds/398941__enviromaniac2__happyloop_cut.flac",
-    "sounds/242207__wagna__fanfare_cut.flac"
+    "sounds/216564__qubodup__hands-clapping_cut.wav",
+    "sounds/113989__kastenfrosch__gewonnen_cut.wav",
+    "sounds/162395__zut50__yay.wav",
+    "sounds/162458__kastenfrosch__gewonnen2_cut.wav",
+    "sounds/273925__lemonjolly__hooray-yeah_cut.wav",
+    "sounds/343835__tristan-lohengrin__happy-8bit-loop-01_cut.wav",
+    "sounds/398941__enviromaniac2__happyloop_cut.wav",
+    "sounds/242207__wagna__fanfare_cut.wav"
 ]
 
 var questionData = {
@@ -208,10 +208,7 @@ function PlaySound() {
     var x = Math.floor(Math.random() * Sounds.length);
     audio.src = Sounds[x];
     audio.play();
-    setTimeout(function(){
-        var audio = document.getElementById("audio");
-        audio.pause();
-    }, 2000); 
+    
 }
 
 $(".choosable").on("click",PlaySound);
