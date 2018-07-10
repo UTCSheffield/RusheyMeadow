@@ -11,8 +11,8 @@ var answerData, questionData;
 
 var questionaires = new PouchDB('questionaires');
 
-//var sCouchBaseURL = 'https://app:r1sh2ym12d3w@couchdb-009fed.smileupps.com/';
-var sCouchBaseURL = '//app:a49e11246037@couchdb-009fed.smileupps.com/';
+var sCouchBaseURL = 'https://app:r1sh2ym12d3w@couchdb-009fed.smileupps.com/';
+var sCouchBaseURL = 'https://admin:a49e11246037@couchdb-009fed.smileupps.com/';
 
 var questionairesRemote = new PouchDB(sCouchBaseURL+'questionnaires/');
 
@@ -39,12 +39,11 @@ answers.sync(answersRemote).on('complete', function (data) {
 var children = new PouchDB('children');
 var childrenRemote = new PouchDB(sCouchBaseURL+'children/');
 
-children.sync(childrenRemote,{
-  live: true
-}).on('complete', function (data) {
+children.sync(childrenRemote//,{live: true}
+             ).on('complete', function (data) {
     console.log("children in snyc data", data);
     // yay, we're in sync!
-    listChildren()
+    
 }).on('error', function (err) {
     console.log("Error syncing children", err);
     // boo, we hit an error!
@@ -63,7 +62,7 @@ function listChildren(){
         console.log("child fetching error ", err);
     });
 };
-
+listChildren();
 var Sounds = [
     "sounds/216564__qubodup__hands-clapping_cut.flac",
     "sounds/113989__kastenfrosch__gewonnen_cut.flac",
@@ -413,11 +412,18 @@ function readURL() {
 
         reader.onload = function (e) {
             var child = {
+                _id:childName,
                 source:e.target.result,
                 name:childName
             }
-            children.put(child);
-            createImage(child.source, child.name);
+            
+            children.put(child).then(function(result){
+                
+                createImage(child.source, child.name);
+            }).catch(function(err){
+                console.log("put child error", err);
+            });
+            
 
         };
 
