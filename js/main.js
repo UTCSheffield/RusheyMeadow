@@ -157,6 +157,12 @@ function skipQuestion() {
 
     today = dd + '/' + mm + '/' + yyyy;
 
+    var answer = {
+        _id:currentChild.name+"-"+currentQuestion+"-"+today,
+        question:""
+        
+        
+    }
     if (answerData[currentUserData[0]][questions][today] == null) {
         answerData[currentUserData[0]][questions][today] = {};
     } else {
@@ -342,7 +348,7 @@ function confirmPhoto() {
 
             //var id = rates[i].getAttribute("id");
             
-            children.get(rates[i].value).then(function (child) {
+            children.get(rates[i].value).then(function(child) {
                 console.log("child", child);
                 currentChild = child;
 
