@@ -16,7 +16,7 @@ var sCouchBaseURL = 'https://admin:a49e11246037@couchdb-009fed.smileupps.com/';
 
 var questionairesRemote = new PouchDB(sCouchBaseURL+'questionnaires/');
 
-questionaires.sync(questionairesRemote).on('change', function (data) {
+questionaires.sync(questionairesRemote,{live: true}).on('change', function (data) {
     console.log("questionaires in sync data changed", data);
     listChildren();
     // yay, we're in sync!
@@ -29,8 +29,8 @@ questionaires.sync(questionairesRemote).on('change', function (data) {
 var answers = new PouchDB('answers');
 var answersRemote = new PouchDB(sCouchBaseURL+'answers/');
 
-answers.sync(answersRemote).on('complete', function (data) {
-    console.log("answers in snyc data", data);
+answers.sync(answersRemote,{live: true}).on('changed', function (data) {
+    console.log("answers in sync data", data);
     // yay, we're in sync!
 }).on('error', function (err) {
     console.log("Error syncing answers", err);
@@ -40,15 +40,19 @@ answers.sync(answersRemote).on('complete', function (data) {
 var children = new PouchDB('children');
 var childrenRemote = new PouchDB(sCouchBaseURL+'children/');
 
-children.sync(childrenRemote//,{live: true}
-             ).on('complete', function (data) {
-    console.log("children in snyc data", data);
-    // yay, we're in sync!
-    
-}).on('error', function (err) {
-    console.log("Error syncing children", err);
-    // boo, we hit an error!
-});
+function syncChildren(){
+    children.sync(childrenRemote,{live: true}
+                 ).on('change', function (data) {
+        console.log("children in snyc data", data);
+        listChildren();
+        // yay, we're in sync!
+
+    }).on('error', function (err) {
+        console.log("Error syncing children", err);
+        // boo, we hit an error!
+    });
+}
+syncChildren();
 
 function listChildren(){
     children.allDocs({
@@ -66,7 +70,9 @@ function listChildren(){
         console.log("child fetching error ", err);
     });
 };
+
 listChildren();
+
 var Sounds = [
     "sounds/216564__qubodup__hands-clapping_cut.flac",
     "sounds/113989__kastenfrosch__gewonnen_cut.flac",
@@ -89,6 +95,7 @@ document.onreadystatechange = function () {
 
 var photos = 0;
 var currentUserData;
+var currentChild;
 var questions = "activities";
 var currentQuestionData;
 var currentQuestion = 0;
@@ -327,14 +334,25 @@ function confirmPhoto() {
     var rates = document.getElementsByName('photoPick');
     for (i = 0; i < rates.length; i++) {
         if (rates[i].checked) {
+            console.log("Checked", rates[i]);
+            
             var id = rates[i].getAttribute("id");
+            children.get(rate[i].value()).then(function(child){
+                console.log("child", child);
+                currentChild = child;
+                
+                currentUserData = [i, child.name, child.source];
 
-            currentUserData = [i, document.getElementById("nameText" + i).textContent, document.getElementById("photo" + i).getAttribute("src")];
+                //console.log(JSON.stringify(currentUserData));
 
-            console.log(JSON.stringify(currentUserData));
+                changeSection("3", "4");
+                nextQuestion();
 
-            changeSection("3", "4");
-            nextQuestion();
+                
+            }).catch(function(err){
+                console.log("Error Fetching Child");
+            })    
+            
 
         }
     }
@@ -351,7 +369,8 @@ function createImage(source, name) {
         'id': 'photo-box' + photos,
         'type': 'radio',
         'class': "input-hidden",
-        'name': "photoPick"
+        'name': "photoPick",
+        "value":name
     }).appendTo('#photo-div' + photos);
 
     var imgDiv = $('<label></label>').attr({
@@ -424,6 +443,7 @@ function readURL() {
             children.put(child).then(function(result){
                 
                 createImage(child.source, child.name);
+                syncChildren();
             }).catch(function(err){
                 console.log("put child error", err);
             });
