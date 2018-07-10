@@ -11,12 +11,13 @@ var answerData, questionData;
 
 var questionaires = new PouchDB('questionaires');
 
-var sCouchBaseURL = 'https://app:r1sh2ym12d3w@couchdb-009fed.smileupps.com/';
 var sCouchBaseURL = 'https://admin:a49e11246037@couchdb-009fed.smileupps.com/';
 
-var questionairesRemote = new PouchDB(sCouchBaseURL+'questionnaires/');
+var questionairesRemote = new PouchDB(sCouchBaseURL + 'questionnaires/');
 
-questionaires.sync(questionairesRemote,{live: true}).on('change', function (data) {
+questionaires.sync(questionairesRemote, {
+    live: true
+}).on('change', function (data) {
     console.log("questionaires in sync data changed", data);
     listChildren();
     // yay, we're in sync!
@@ -27,9 +28,11 @@ questionaires.sync(questionairesRemote,{live: true}).on('change', function (data
 
 
 var answers = new PouchDB('answers');
-var answersRemote = new PouchDB(sCouchBaseURL+'answers/');
+var answersRemote = new PouchDB(sCouchBaseURL + 'answers/');
 
-answers.sync(answersRemote,{live: true}).on('changed', function (data) {
+answers.sync(answersRemote, {
+    live: true
+}).on('changed', function (data) {
     console.log("answers in sync data", data);
     // yay, we're in sync!
 }).on('error', function (err) {
@@ -38,12 +41,13 @@ answers.sync(answersRemote,{live: true}).on('changed', function (data) {
 });
 
 var children = new PouchDB('children');
-var childrenRemote = new PouchDB(sCouchBaseURL+'children/');
+var childrenRemote = new PouchDB(sCouchBaseURL + 'children/');
 
-function syncChildren(){
-    children.sync(childrenRemote,{live: true}
-                 ).on('change', function (data) {
-        console.log("children in snyc data", data);
+function syncChildren() {
+    children.sync(childrenRemote, {
+        live: true
+    }).on('change', function (data) {
+        console.log("children in sync data", data);
         listChildren();
         // yay, we're in sync!
 
@@ -54,19 +58,19 @@ function syncChildren(){
 }
 syncChildren();
 
-function listChildren(){
+function listChildren() {
     children.allDocs({
-        include_docs:true
-    }).then(function(result){
+        include_docs: true
+    }).then(function (result) {
         console.log("result", result.rows);
-       
+
         $('#photos-container').children().remove();
-        
-        result.rows.forEach(function(row){  
+
+        result.rows.forEach(function (row) {
             var child = row.doc;
             createImage(child.source, child.name);
-        });  
-    }).catch(function(err){
+        });
+    }).catch(function (err) {
         console.log("child fetching error ", err);
     });
 };
@@ -334,13 +338,14 @@ function confirmPhoto() {
     var rates = document.getElementsByName('photoPick');
     for (i = 0; i < rates.length; i++) {
         if (rates[i].checked) {
-            console.log("Checked", rates[i]);
+            console.log("Checked", rates[i].value);
+
+            //var id = rates[i].getAttribute("id");
             
-            var id = rates[i].getAttribute("id");
-            children.get(rate[i].value()).then(function(child){
+            children.get(rates[i].value).then(function (child) {
                 console.log("child", child);
                 currentChild = child;
-                
+
                 currentUserData = [i, child.name, child.source];
 
                 //console.log(JSON.stringify(currentUserData));
@@ -348,11 +353,11 @@ function confirmPhoto() {
                 changeSection("3", "4");
                 nextQuestion();
 
-                
-            }).catch(function(err){
-                console.log("Error Fetching Child");
-            })    
-            
+
+            }).catch(function (err) {
+                console.log("Error Fetching Child", err);
+            })
+
 
         }
     }
@@ -370,7 +375,7 @@ function createImage(source, name) {
         'type': 'radio',
         'class': "input-hidden",
         'name': "photoPick",
-        "value":name
+        "value": name
     }).appendTo('#photo-div' + photos);
 
     var imgDiv = $('<label></label>').attr({
@@ -396,22 +401,6 @@ function createImage(source, name) {
         'id': 'nameText' + photos
     }).appendTo('#textDiv' + photos);
 
-    try {
-        var childData = [photos, name, source];
-        localStorage.setItem("user" + photos, JSON.stringify(childData));
-        if (answerData[childData[0]] == null) {
-            answerData[childData[0]] = {
-                "consultation": {},
-                "activities": {}
-            };
-        }
-
-        localStorage.setItem("answers", JSON.stringify(answerData));
-    } catch (e) {
-        if (e.code == 22) {
-            alert("Local Storage is full, no more pictures can be added.")
-        }
-    }
 
     photos++;
 }
@@ -435,19 +424,19 @@ function readURL() {
 
         reader.onload = function (e) {
             var child = {
-                _id:childName,
-                source:e.target.result,
-                name:childName
+                _id: childName,
+                source: e.target.result,
+                name: childName
             }
-            
-            children.put(child).then(function(result){
-                
+
+            children.put(child).then(function (result) {
+
                 createImage(child.source, child.name);
                 syncChildren();
-            }).catch(function(err){
+            }).catch(function (err) {
                 console.log("put child error", err);
             });
-            
+
 
         };
 
@@ -456,6 +445,3 @@ function readURL() {
         alert("You did not enter a photo. Please try again.")
     }
 }
-
-
-
