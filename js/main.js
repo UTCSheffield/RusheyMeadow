@@ -214,18 +214,28 @@ function activities() {
     questions = "activities";
 }
 
+function admin() {
+    changeSection("1", "5");
+}
+
+function back(current, next) {
+    changeSection(current, next);
+}
+
 function review() {
     changeSection("1", "2");
     
     for(var i = 0; i < answerData.length; i++){
-        var button = $('<button>'+JSON.parse(localStorage.getItem("user"+i))[1]+'</button>').attr({
+        var button = $('<button>'+JSON.parse(localStorage.getItem("user"+i))[1]+' >'+'</button>').attr({
             'onclick': 'reviewSelect('+i+');'
-        }).appendTo('#2');
+        }).appendTo('#data-panels');
         
         var dataDiv = $('<div></div>').attr({
             'id': 'data-'+i,
             'class': 'data-panel'
-        }).appendTo('#2');
+        }).appendTo('#data-panels');
+        
+        $( "#data-"+i ).toggleClass( "expanded" );
         
         for (var key in answerData[i]) {
             if (!answerData[i].hasOwnProperty(key)) continue;
@@ -256,7 +266,7 @@ function review() {
         }
     }
 
-    document.getElementById("data").innerHTML = JSON.stringify(answerData);
+//    document.getElementById("data").innerHTML = JSON.stringify(answerData);
 }
 
 function PlaySound() {
@@ -309,12 +319,19 @@ function submitQuestion(questionDiv) {
 }
 
 function reviewSelect(i) {
-    $( "#data-"+i ).toggleClass( "expanded" )
+    if( $( "#data-"+i ).hasClass("expanded") == true) {
+        for(var b = 0; b < 100; b++) {
+            if($( "#data-"+b ).hasClass("expanded") == false) {
+                $( "#data-"+b ).addClass("expanded");
+            }
+        }
+    }
+    $( "#data-"+i ).toggleClass( "expanded" );
 }
 
-function fileUploaded() {
-    document.getElementById("file-text").innerHTML = "File Uploaded";
-    document.getElementById("child-name").focus();
+function fileUploaded(id, focus) {
+    document.getElementById(id).innerHTML = "File Uploaded";
+    document.getElementById(focus).focus();
 }
 
 function clearStorage() {
@@ -367,6 +384,10 @@ function confirmPhoto() {
             
         }
     }
+}
+
+function addPECSymbol() {
+    
 }
 
 function createImage(source, name) {

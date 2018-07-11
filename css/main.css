@@ -236,10 +236,23 @@ section {
     
 }
 
+section {
+    overflow: hidden;
+}
+
+#data-panels {
+    overflow: hidden;
+    overflow-y: scroll;
+    pointer-events: none;
+}
 
 .input-hidden {
     position: absolute;
     left: -9999px;
+}
+
+button {
+    pointer-events: all;
 }
 
 input[type=radio]:checked + label>img {

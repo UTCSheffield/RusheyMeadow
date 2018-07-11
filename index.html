@@ -85,18 +85,23 @@
         <button onclick="consultation();">Consultation</button>
         <button onclick="activities();">Activities</button>
         <button onclick="review();">Review</button>
+        <button onclick="admin();">Admin</button>
+        
+        <button id="back" onclick="back('1','0');">Back</button>
         
     </section>
     
     <section id="2">
         <button onclick="Print();" id="printButton">Print</button>
+        <button id="back" onclick="back('2','1');">Back</button>
         <p id="data"></p>
+        <div id="data-panels"></div>
     </section>
     
     <section id="3">
         <h1>User Picker</h1>
         
-        <input type="file" class="inputfile" name="file" id="photo-selector" accept="image/*" onchange="fileUploaded();"/>
+        <input type="file" class="inputfile" name="file" id="photo-selector" accept="image/*" onchange="fileUploaded('file-text', 'child-name');"/>
         <label id="file-text" for="photo-selector"><i class="fa fa-upload"></i>Get Picture of Child</label>
         <input type="text" id="child-name" name="name" placeholder="Child Name"/>
         <button onclick="readURL();">Add</button>
@@ -110,6 +115,7 @@
         
         <div id="bottom">
             <button class="confirm" onclick="confirmPhoto();">Confirm</button>
+            <button id="back" onclick="back('3','1');">Back</button>
         </div>
         
     </section>
@@ -147,6 +153,11 @@
     
     <section id="5">
         <h1>Admin</h1>
+        <input type="file" class="inputfile" id="pec-selector" name="filePEC" accept="image/*" onchange="fileUploaded('file-text-pec', 'pec-name');"/>
+        <label id="file-text-pec" for="pec-selector"><i class="fa fa-upload"></i>Upload PEC</label>
+        <input type="text" id="pec-name" name="name" placeholder="PEC Key Word"/>
+        <button onclick="addPECSymbol();">Add Symbol</button>
+        <button id="back" onclick="back('5','1');">Back</button>
     </section>
         
     <script src="js/particle.min.js"></script>  <!--stats.js lib --> 
