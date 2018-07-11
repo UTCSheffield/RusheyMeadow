@@ -309,6 +309,22 @@ input[type=radio]:checked + label>div>p {
     text-align: center;
 }
 
+.icon {
+    font-size: 100px;
+    padding: 20px;
+}
+
+.icon-button {
+	display: inline;
+    text-align: center;
+    margin: 0 auto;
+}
+
+#icons {
+    margin: 20 auto;
+    text-align: center;
+}
+
 @media only screen and (max-width : 370px) {
     body {
         font-size: 18px;

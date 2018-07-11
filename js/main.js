@@ -233,7 +233,7 @@ function back(current, next) {
 
 function review() {
     changeSection("1", "2");
-    
+    $('#data-panels').html("");
     for(var i = 0; i < answerData.length; i++){
         var button = $('<button>'+JSON.parse(localStorage.getItem("user"+i))[1]+' >'+'</button>').attr({
             'onclick': 'reviewSelect('+i+');'
