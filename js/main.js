@@ -7,12 +7,13 @@
 //DONE: Remove images from the list
 //DONE: Format images correctly
 
-var answerData, questionData;
+var testingMode = true;
 
-var questionaires = new PouchDB('questionaires');
+var answerData, questionData;
 
 var sCouchBaseURL = 'https://admin:a49e11246037@couchdb-009fed.smileupps.com/';
 
+var questionaires = new PouchDB('questionaires');
 var questionairesRemote = new PouchDB(sCouchBaseURL + 'questionnaires/');
 
 questionaires.sync(questionairesRemote, {
@@ -77,18 +78,6 @@ function listChildren() {
 
 listChildren();
 
-var Sounds = [
-    "sounds/216564__qubodup__hands-clapping_cut.flac",
-    "sounds/113989__kastenfrosch__gewonnen_cut.flac",
-    "sounds/162395__zut50__yay.flac",
-    "sounds/162458__kastenfrosch__gewonnen2_cut.flac",
-    "sounds/273925__lemonjolly__hooray-yeah_cut.flac",
-    "sounds/343835__tristan-lohengrin__happy-8bit-loop-01_cut.flac",
-    "sounds/398941__enviromaniac2__happyloop_cut.flac",
-    "sounds/242207__wagna__fanfare_cut.flac"
-];
-
-
 document.onreadystatechange = function () {
     var state = document.readyState;
     if (state === 'complete') {
@@ -100,7 +89,7 @@ document.onreadystatechange = function () {
 var photos = 0;
 var currentUserData;
 var currentChild;
-var questions = "activities";
+var questionMode = "consultation";//"activities";
 var currentQuestionData;
 var currentQuestion = 0;
 
@@ -123,6 +112,22 @@ try {
     $("#0").fadeIn(400);
 }
 
+var aQuestions = [];
+function loadQuestions(qMode){
+    questionaires.allDocs({
+        include_docs: true
+    }).then(function (result) {
+        console.log("result", result.rows);
+        aQuestions = result.rows.filter(function(row){
+            return row.questionaire == qMode;
+        });
+    }).catch(function (err) {
+        console.log("question fetching error ", err);
+    });
+}
+
+loadQuestions(questionMode);
+
 function changeSection(sectionOld, sectionNew) {
     $("#" + sectionOld).fadeOut(400, function () {
         setTimeout(function () {
@@ -131,7 +136,7 @@ function changeSection(sectionOld, sectionNew) {
     });
 }
 
-function fadeQuestions() {
+function fadequestions() {
     $("#question").fadeOut(400, function () {
         setTimeout(function () {
             nextQuestion();
@@ -155,30 +160,34 @@ function storeAnswer(question, answer){
 
     today = dd + '/' + mm + '/' + yyyy;
 
-    var answer = {
+    var answerRecord = {
         _id:currentChild.name+"-"+currentQuestion+"-"+today,
+        testing:testingMode,
         question:question,
         child:currentChild.name,
         date:today,
         answer:answer
     };
     
-    answers.put(answer).then(function(result){
+    answers.put(answerRecord).then(function(result){
+        console.log("answer stored", result);
+    }).catch(function (err) {
+        console.log("Answer storing error ", err);
     });
 }
 
 function skipQuestion() {
     currentQuestion += 1;
-    fadeQuestions();
+    fadequestions();
     storeAnswer(currentQuestion, "Question Skipped");
 }
 
 function nextQuestion() {
-    if (currentQuestion >= questionData[questions].length) {
-        alert("End Of Questions!");
+    
+    if (currentQuestion >= aQuestions.length) {
+        alert("End Of questions!");
     } else {
-
-        currentQuestionData = questionData[questions][currentQuestion];
+        currentQuestionData = aQuestions[currentQuestion];
         document.getElementById("questionName").innerHTML = currentQuestionData["question"];
         document.getElementById("questionPhoto").setAttribute("src", currentQuestionData["picture"]);
         document.getElementById("left").checked = false;
@@ -189,17 +198,16 @@ function nextQuestion() {
             $("#skip").fadeIn(400);
         }, 60000);
     }
-
 }
 
 function consultation() {
     changeSection("1", "3");
-    questions = "consultation";
+    questionMode = "consultation";
 }
 
 function activities() {
     changeSection("1", "3");
-    questions = "activities";
+    questionMode = "activities";
 }
 
 function review() {
@@ -264,7 +272,7 @@ function submitQuestion(questionDiv) {
             storeAnswer(currentQuestion, id);
 
             currentQuestion += 1;
-            fadeQuestions();
+            fadequestions();
         }
     }
 
@@ -387,7 +395,6 @@ function createImage(source, name) {
 $("photo-selector").change(readURL);
 
 function readURL() {
-
     document.getElementById("file-text").innerHTML = "<i class='fa fa-upload'></i>Upload a picture";
 
     var input = document.getElementById("photo-selector");
@@ -405,18 +412,16 @@ function readURL() {
             var child = {
                 _id: childName,
                 source: e.target.result,
-                name: childName
-            }
+                name: childName,
+                test:testingMode
+            };
 
             children.put(child).then(function (result) {
-
                 createImage(child.source, child.name);
                 syncChildren();
             }).catch(function (err) {
                 console.log("put child error", err);
             });
-
-
         };
 
         reader.readAsDataURL(input.files[0]);
