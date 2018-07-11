@@ -153,12 +153,12 @@
     
     <section id="5">
         <h1>Admin</h1>
+        <button id="back" onclick="back('5','1');">Back</button>
         <h2>Add PEC Symbol</h2>
         <input type="file" class="inputfile" id="pec-selector" name="filePEC" accept="image/*" onchange="fileUploaded('file-text-pec', 'pec-name');"/>
         <label id="file-text-pec" for="pec-selector"><i class="fa fa-upload"></i>Upload PEC</label>
         <input type="text" id="pec-name" name="name" placeholder="PEC Key Word"/>
         <button onclick="addPECSymbol();">Add Symbol</button>
-        <button id="back" onclick="back('5','1');">Back</button>
         <br>
         <h2>Add Question</h2>
         <select id="questionSection">
