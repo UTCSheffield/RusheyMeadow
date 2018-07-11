@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="css/pinstyle.css" media="all">
     <link rel="stylesheet" href="css/main.css" media="all">
     
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
@@ -80,19 +82,19 @@
     </section>
     
     <section id="1">
-        
-        <button onclick="consultation();">Consultation</button>
-        <button onclick="activities();">Activities</button>
-        <button onclick="review();">Review</button>
-        <button onclick="admin();">Admin</button>
-        
-        <button id="back" onclick="back('1','0');">Back</button>
+        <div id="icons">
+            <button class="icon-button" onclick="consultation();"><i class="fas fa-edit icon"></i><br>Consultation</button>
+            <button class="icon-button" onclick="activities();"><i class="fas fa-football-ball icon"></i><br>Activities</button>
+            <button class="icon-button" onclick="review();"><i class="fas fa-clipboard-list icon"></i><br>Review</button>
+            <button class="icon-button" onclick="admin();"><i class="fas fa-unlock-alt icon"></i><br>Admin</button>
+        </div>
+        <button id="back" onclick="back('1','0');"><i class="fas fa-backward"></i> Back</button>
         
     </section>
     
     <section id="2">
         <button onclick="Print();" id="printButton">Print</button>
-        <button id="back" onclick="back('2','1');">Back</button>
+        <button id="back" onclick="back('2','1');"><i class="fas fa-backward"></i> Back</button>
         <p id="data"></p>
         <div id="data-panels"></div>
     </section>
@@ -105,7 +107,6 @@
         <input type="text" id="child-name" name="name" placeholder="Child Name"/>
         <button onclick="readURL();">Add</button>
         
-        <button onclick="clearStorage();" >Clear Local Storage</button>
         <button onclick="removePhoto();">Remove selected photo</button>
         
         
@@ -114,7 +115,7 @@
         
         <div id="bottom">
             <button class="confirm" onclick="confirmPhoto();">Confirm</button>
-            <button id="back" onclick="back('3','1');">Back</button>
+            <button id="back" onclick="back('3','1');"><i class="fas fa-backward"></i> Back</button>
         </div>
         
     </section>
@@ -152,7 +153,8 @@
     
     <section id="5">
         <h1>Admin</h1>
-        <button id="back" onclick="back('5','1');">Back</button>
+        <button onclick="clearStorage();" >Clear Local Storage</button>
+        <button id="back" onclick="back('5','1');"><i class="fas fa-backward"></i> Back</button>
         <h2>Add PEC Symbol</h2>
         <input type="file" class="inputfile" id="pec-selector" name="filePEC" accept="image/*" onchange="fileUploaded('file-text-pec', 'pec-name');"/>
         <label id="file-text-pec" for="pec-selector"><i class="fa fa-upload"></i>Upload PEC</label>
@@ -161,18 +163,22 @@
         <br>
         <h2>Add Question</h2>
         <select id="questionSection">
-          <option value="consultation">Consultation</option>
-          <option value="activities">Activities</option>
+            <option value="consultation">Consultation</option>
+            <option value="activities">Activities</option>
         </select>
         <input type="text" id="question-name" name="name" placeholder="Question"/>
         <input type="file" class="inputfile" id="question-image" name="fileQuestion" accept="image/*" onchange="fileUploaded('file-text-question', 'question-type');"/>
         <label id="file-text-question" for="question-image"><i class="fa fa-upload"></i>Upload Question Image</label>
-        
-        <input type="text" id="question-type" name="type" placeholder="Type"/>
+        <select id="questionTypeSelect">
+            <option value="feedback">Feed<i class="fas fa-backward"></i> Back</option>
+            <option value="food">Food</option>
+            <option value="activities">Activities</option>
+            <option value="today">Today</option>
+        </select>
         <button onclick="addQuestion();">Add Question</button>
         <br>
-        <p>Only update this text if you know exactly what you're doing! You might brake something.</p>
-        <textarea id="question-text" cols="80" rows="40"></textarea>
+        <p>Only update this text if you know exactly what you're doing! You might break something.</p>
+        <textarea id="question-text" cols="80" rows="35"></textarea>
         <button onclick="changeQuestions();">Update Questions Text</button>
         
     </section>
