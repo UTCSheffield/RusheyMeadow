@@ -57,6 +57,7 @@ function syncChildren() {
         // boo, we hit an error!
     });
 }
+
 syncChildren();
 
 function listChildren() {
@@ -78,6 +79,36 @@ function listChildren() {
 
 listChildren();
 
+var Sounds = [
+    "sounds/216564__qubodup__hands-clapping_cut.wav",
+    "sounds/113989__kastenfrosch__gewonnen_cut.wav",
+    "sounds/162395__zut50__yay.wav",
+    "sounds/162458__kastenfrosch__gewonnen2_cut.wav",
+    "sounds/273925__lemonjolly__hooray-yeah_cut.wav",
+    "sounds/343835__tristan-lohengrin__happy-8bit-loop-01_cut.wav",
+    "sounds/398941__enviromaniac2__happyloop_cut.wav",
+    "sounds/242207__wagna__fanfare_cut.wav"
+]
+
+var symbols = [
+    {
+        name: "ballon",
+        source: "https://images-na.ssl-images-amazon.com/images/I/61T-V%2B7ItoL._SY355_.jpg"
+        },
+    {
+        name: "want",
+        source: "PEC/Want pec.fw.png"
+        },
+    {
+        name: "like",
+        source: "PEC/Like pec.fw.png"
+        }
+    ];
+
+
+
+
+
 document.onreadystatechange = function () {
     var state = document.readyState;
     if (state === 'complete') {
@@ -89,7 +120,7 @@ document.onreadystatechange = function () {
 var photos = 0;
 var currentUserData;
 var currentChild;
-var questionMode = "consultation";//"activities";
+var questionMode = "consultation"; //"activities";
 var currentQuestionData;
 var currentQuestion = 0;
 
@@ -113,13 +144,19 @@ try {
 }
 
 var aQuestions = [];
-function loadQuestions(qMode){
+
+function loadQuestions(qMode) {
     questionaires.allDocs({
         include_docs: true
     }).then(function (result) {
-        console.log("result", result.rows);
-        aQuestions = result.rows.filter(function(row){
-            return row.questionaire == qMode;
+        console.log("result", result);
+
+        aQuestions = result.rows.filter(function (row) {
+            console.log("rows in filter", row, "qMode", qMode);
+
+            return row.doc.questionnaire == qMode;
+        }).map(function (row) {
+            return row.doc;
         });
     }).catch(function (err) {
         console.log("question fetching error ", err);
@@ -129,6 +166,7 @@ function loadQuestions(qMode){
 loadQuestions(questionMode);
 
 function changeSection(sectionOld, sectionNew) {
+    currentQuestion = 0;
     $("#" + sectionOld).fadeOut(400, function () {
         setTimeout(function () {
             $("#" + sectionNew).fadeIn(400);
@@ -144,7 +182,16 @@ function fadequestions() {
     });
 }
 
-function storeAnswer(question, answer){
+function Print() {
+    printJS({
+        printable: 'body',
+        type: 'html',
+        css: "css/main.css"
+    });
+}
+
+
+function storeAnswer(question, answer) {
     var today = new Date();
     var dd = today.getDate();
     var mm = today.getMonth() + 1; //January is 0!
@@ -161,15 +208,15 @@ function storeAnswer(question, answer){
     today = dd + '/' + mm + '/' + yyyy;
 
     var answerRecord = {
-        _id:currentChild.name+"-"+currentQuestion+"-"+today,
-        testing:testingMode,
-        question:question,
-        child:currentChild.name,
-        date:today,
-        answer:answer
+        _id: currentChild.name + "-" + currentQuestion + "-" + today,
+        testing: testingMode,
+        question: question,
+        child: currentChild.name,
+        date: today,
+        answer: answer
     };
-    
-    answers.put(answerRecord).then(function(result){
+
+    answers.put(answerRecord).then(function (result) {
         console.log("answer stored", result);
     }).catch(function (err) {
         console.log("Answer storing error ", err);
@@ -182,13 +229,27 @@ function skipQuestion() {
     storeAnswer(currentQuestion, "Question Skipped");
 }
 
+function getHTML(sentence) {
+
+    symbols.forEach(function (symbol) {
+        var imgtag = '<img class="pec" src="' + symbol.source + '" alt="' + symbol.name + '" >';
+        sentence = sentence.replace(symbol.name, imgtag);
+    })
+    return sentence;
+}
+
 function nextQuestion() {
-    
+    console.log("currentQuestion", currentQuestion);
+    console.log("aQuestions", aQuestions);
+
     if (currentQuestion >= aQuestions.length) {
         alert("End Of questions!");
     } else {
         currentQuestionData = aQuestions[currentQuestion];
-        document.getElementById("questionName").innerHTML = currentQuestionData["question"];
+        var html = getHTML(currentQuestionData["question"]);
+
+        document.getElementById("questionName").innerHTML = html;
+
         document.getElementById("questionPhoto").setAttribute("src", currentQuestionData["picture"]);
         document.getElementById("left").checked = false;
         document.getElementById("right").checked = false;
@@ -210,43 +271,67 @@ function activities() {
     questionMode = "activities";
 }
 
+function changeQuestions() {
+    questionData = JSON.parse($("#question-text").text());
+}
+
+function addQuestion() {
+
+}
+
+function admin() {
+    changeSection("1", "5");
+    $("#question-text").text(JSON.stringify(questionData, null, 4));
+}
+
+function back(current, next) {
+    changeSection(current, next);
+}
+
 function review() {
     changeSection("1", "2");
-    var dataText = ""
-    var calendarData = [];
+    for (var i = 0; i < answerData.length; i++) {
+        var button = $('<button>' + JSON.parse(localStorage.getItem("user" + i))[1] + ' >' + '</button>').attr({
+            'onclick': 'reviewSelect(' + i + ');'
+        }).appendTo('#data-panels');
 
-    for (var i = 0; i < 70; i++) {
-        if (localStorage.getItem("user" + i) === null) {
-            break;
-        }
-        dataText += JSON.parse(localStorage.getItem("user" + i))[1] + ": " + JSON.stringify(answerData[i]) + "\n";
-        if (answerData[i]["consultation"] != null) {
-            for (var dateX in answerData[i]["consultation"]) {
-                console.log(dateX);
-                calendarData.push({
-                    eventName: "Consultation - " + JSON.parse(localStorage.getItem("user" + i))[1],
-                    calendar: "Consultation",
-                    color: 'orange',
-                    date: dateX.substring(0, 2)
-                });
+        var dataDiv = $('<div></div>').attr({
+            'id': 'data-' + i,
+            'class': 'data-panel'
+        }).appendTo('#data-panels');
+
+        $("#data-" + i).toggleClass("expanded");
+
+        for (var key in answerData[i]) {
+            if (!answerData[i].hasOwnProperty(key)) continue;
+
+            var title = $('<h1>' + key.charAt(0).toUpperCase() + key.substr(1) + '</h1>').attr({
+                class: 'date'
+            }).appendTo('#data-' + i);
+
+            var d = 0;
+
+            var obj = answerData[i][key];
+            for (var prop in obj) {
+                if (!obj.hasOwnProperty(prop)) continue;
+
+                var dateDiv = $('<div></div>').attr({
+                    'id': 'date' + i + '-' + d + '-div',
+                    'class': 'date-div'
+                }).appendTo('#data-' + i);
+
+                var dateTitle = $('<h2>' + prop + '</h2>').appendTo('#date' + i + '-' + d + '-div');
+
+                for (z = 0; z < obj[prop].length; z++) {
+                    var q = $('<h3>' + obj[prop][z][0] + ': ' + obj[prop][z][1] + '</h3>').appendTo('#date' + i + '-' + d + '-div');
+                }
+
+                d++;
             }
         }
-        if (answerData[i]["activities"] != null) {
-            for (var dateX in answerData[i]["activities"]) {
-                console.log(dateX);
-                calendarData.push({
-                    eventName: "Activities - " + JSON.parse(localStorage.getItem("user" + i))[1],
-                    calendar: "Activities",
-                    color: 'blue',
-                    date: dateX.substring(0, 2)
-                });
-            }
-        }
-
     }
 
-    var calendar = new Calendar('#calendar', calendarData);
-    document.getElementById("data").innerHTML = dataText;
+    //    document.getElementById("data").innerHTML = JSON.stringify(answerData);
 }
 
 function PlaySound() {
@@ -254,21 +339,17 @@ function PlaySound() {
     var x = Math.floor(Math.random() * Sounds.length);
     audio.src = Sounds[x];
     audio.play();
-    setTimeout(function () {
-        var audio = document.getElementById("audio");
-        audio.pause();
-    }, 2000);
 }
 
 $(".choosable").on("click", PlaySound);
 
 function submitQuestion(questionDiv) {
-    var rates = document.getElementsByName('pick');
-    for (var i = 0; i < rates.length; i++) {
-        if (rates[i].checked) {
+    var photoElements = document.getElementsByName('pick');
+    for (var i = 0; i < photoElements.length; i++) {
+        if (photoElements[i].checked) {
             PlaySound();
 
-            var id = rates[i].getAttribute("value");
+            var id = photoElements[i].getAttribute("value");
             storeAnswer(currentQuestion, id);
 
             currentQuestion += 1;
@@ -279,9 +360,20 @@ function submitQuestion(questionDiv) {
 
 }
 
-function fileUploaded() {
-    document.getElementById("file-text").innerHTML = "File Uploaded";
-    document.getElementById("child-name").focus();
+function reviewSelect(i) {
+    if ($("#data-" + i).hasClass("expanded") == true) {
+        for (var b = 0; b < 100; b++) {
+            if ($("#data-" + b).hasClass("expanded") == false) {
+                $("#data-" + b).addClass("expanded");
+            }
+        }
+    }
+    $("#data-" + i).toggleClass("expanded");
+}
+
+function fileUploaded(id, focus) {
+    document.getElementById(id).innerHTML = "File Uploaded";
+    document.getElementById(focus).focus();
 }
 
 function clearStorage() {
@@ -294,11 +386,11 @@ function clearStorage() {
 function removePhoto() {
     var i = 0;
     var counter = 0;
-    var rates = document.getElementsByName('photoPick');
-    for (i = 0; i < rates.length; i++) {
+    var photoElements = document.getElementsByName('photoPick');
+    for (i = 0; i < photoElements.length; i++) {
         localStorage.removeItem("user" + i);
-        if (!rates[i].checked) {
-            var id = rates[i].getAttribute("id");
+        if (!photoElements[i].checked) {
+            var id = photoElements[i].getAttribute("id");
             var currentlySelectedChild = document.getElementById("photo" + i);
             var currentlySelectedChildName = document.getElementById("nameText" + i).textContent;
 
@@ -322,14 +414,12 @@ function enterApp() {
 
 function confirmPhoto() {
     var i = 0;
-    var rates = document.getElementsByName('photoPick');
-    for (i = 0; i < rates.length; i++) {
-        if (rates[i].checked) {
-            console.log("Checked", rates[i].value);
+    var photoElements = document.getElementsByName('photoPick');
+    for (i = 0; i < photoElements.length; i++) {
+        if (photoElements[i].checked) {
+            console.log("Checked", photoElements[i].value);
 
-            //var id = rates[i].getAttribute("id");
-            
-            children.get(rates[i].value).then(function(child) {
+            children.get(photoElements[i].value).then(function (child) {
                 console.log("child", child);
                 currentChild = child;
 
@@ -340,14 +430,15 @@ function confirmPhoto() {
                 changeSection("3", "4");
                 nextQuestion();
 
-
             }).catch(function (err) {
                 console.log("Error Fetching Child", err);
-            })
-
-
+            });
         }
     }
+}
+
+function addPECSymbol() {
+
 }
 
 function createImage(source, name) {
@@ -413,7 +504,7 @@ function readURL() {
                 _id: childName,
                 source: e.target.result,
                 name: childName,
-                test:testingMode
+                test: testingMode
             };
 
             children.put(child).then(function (result) {

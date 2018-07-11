@@ -19,6 +19,12 @@ h1 {
     float: right;
 }
 
+#printButton {
+    bottom: 5px;
+    right: 5px;
+    position: fixed;
+}
+
 .inputfile {
 	width: 0.1px;
 	height: 0.1px;
@@ -49,7 +55,7 @@ h1 {
     width: 100%;
 }
 
-input, button {
+input, button, select {
     transition: all ease 0.3s;
     padding: 10px 10px 10px 10px;
     font-size: 25px;
@@ -69,6 +75,37 @@ button:active, input:active {
     
 }
 
+.data-panel {
+    display: block;
+    transition: all 1s ease-in-out;
+    background-color: white;
+    border-radius: 10px;
+    width: 80%;
+    margin-top: 5px;
+    height: auto;
+    max-height: 1000px;
+    opacity: 1;
+    margin-bottom: 5px;
+    pointer-events: none;
+}
+
+.expanded {
+    max-height: 0px;
+    opacity: 0;
+}
+
+.date {
+    font-size: 40px;
+}
+
+.date-div {
+    padding: 20px 30px;
+}
+
+.q {
+    padding-left: 5px;
+}
+
 #particles-js{ 
     position:absolute; 
     z-index: -1;
@@ -79,6 +116,13 @@ button:active, input:active {
     /*background-repeat: no-repeat; 
     background-size: cover; 
     /*background-position: 50% 50%;*/
+    top: 0px;
+}
+
+@media print {
+    #particles-js {
+        opacity: 0;
+    }
 }
 
 body {
@@ -188,10 +232,26 @@ section {
     font-size: 20px;
 }
 
+.pec {
+    
+}
+
+section {
+}
+
+#data-panels {
+    overflow: hidden;
+    overflow-y: scroll;
+    pointer-events: none;
+}
 
 .input-hidden {
     position: absolute;
     left: -9999px;
+}
+
+button {
+    pointer-events: all;
 }
 
 input[type=radio]:checked + label>img {
