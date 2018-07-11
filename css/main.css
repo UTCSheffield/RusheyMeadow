@@ -19,6 +19,12 @@ h1 {
     float: right;
 }
 
+#printButton {
+    bottom: 5px;
+    right: 5px;
+    position: fixed;
+}
+
 .inputfile {
 	width: 0.1px;
 	height: 0.1px;
@@ -224,6 +230,10 @@ section {
     margin-top: 10px;
     height: 80%;
     font-size: 20px;
+}
+
+.pec {
+    
 }
 
 

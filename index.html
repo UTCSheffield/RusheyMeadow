@@ -14,8 +14,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
+    <script src="js/print.min.js"></script>
+    
 </head>
-<body>
+<body id="body">
      <audio id="audio">
   <source src="Rushey meadows/216564__qubodup__hands-clapping.flac" type="audio/flac">
   Your browser does not support the audio tag.
@@ -87,6 +89,7 @@
     </section>
     
     <section id="2">
+        <button onclick="Print();" id="printButton">Print</button>
         <p id="data"></p>
     </section>
     
@@ -140,6 +143,10 @@
             
         </div>
         
+    </section>
+    
+    <section id="5">
+        <h1>Admin</h1>
     </section>
         
     <script src="js/particle.min.js"></script>  <!--stats.js lib --> 

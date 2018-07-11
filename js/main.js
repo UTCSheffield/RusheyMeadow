@@ -17,6 +17,21 @@ var Sounds = [
     "sounds/242207__wagna__fanfare_cut.wav"
 ]
 
+var symbols = [ 
+  {
+  	name:"ballon",
+    source:"https://images-na.ssl-images-amazon.com/images/I/61T-V%2B7ItoL._SY355_.jpg"
+  },
+  {
+  	name:"want",
+    source:"PEC/Want pec.fw.png"
+  },
+{
+    name:"like",
+    source:"PEC/Like pec.fw.png"
+}
+];
+
 var questionData = {
     "consultation": [
        {
@@ -125,6 +140,10 @@ function fadeQuestions() {
     });
 }
 
+function Print() {
+    printJS({printable:'body', type:'html', css: "css/main.css"});
+}
+
 function skipQuestion() {
     currentQuestion += 1;
     fadeQuestions();
@@ -154,6 +173,15 @@ function skipQuestion() {
     localStorage.setItem("answers", JSON.stringify(answerData));
 }
 
+function getHTML(sentence){
+    
+    symbols.forEach(function(symbols){
+        var imgtag='<img class="pec" src="'+symbols.source+'" alt="'+symbols.name+'" >';
+        sentence=sentence.replace(symbols.name, imgtag);	
+    })
+    return sentence;
+}
+
 function nextQuestion() {
     
     if(currentQuestion >= questionData[questions].length) {
@@ -161,7 +189,11 @@ function nextQuestion() {
     } else {
         
         currentQuestionData = questionData[questions][currentQuestion];
-        document.getElementById("questionName").innerHTML = currentQuestionData["question"];
+
+        var html = getHTML(currentQuestionData["question"]);
+
+        //document.getElementById('text').innerHTML = html;
+        document.getElementById("questionName").innerHTML = html;
         document.getElementById("questionPhoto").setAttribute("src", currentQuestionData["picture"]);
         document.getElementById("left").checked = false;
         document.getElementById("right").checked = false;
