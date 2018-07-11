@@ -118,7 +118,6 @@ document.onreadystatechange = function () {
 };
 
 var photos = 0;
-var currentUserData;
 var currentChild;
 var questionMode = "consultation"; //"activities";
 var currentQuestionData;
@@ -149,11 +148,7 @@ function loadQuestions(qMode) {
     questionaires.allDocs({
         include_docs: true
     }).then(function (result) {
-        console.log("result", result);
-
         aQuestions = result.rows.filter(function (row) {
-            console.log("rows in filter", row, "qMode", qMode);
-
             return row.doc.questionnaire == qMode;
         }).map(function (row) {
             return row.doc;
@@ -208,7 +203,7 @@ function storeAnswer(question, answer) {
     today = dd + '/' + mm + '/' + yyyy;
 
     var answerRecord = {
-        _id: currentChild.name + "-" + currentQuestion + "-" + today,
+        //_id: currentChild.name + "-" + question + "-" + today,
         testing: testingMode,
         question: question,
         child: currentChild.name,
@@ -216,7 +211,7 @@ function storeAnswer(question, answer) {
         answer: answer
     };
 
-    answers.put(answerRecord).then(function (result) {
+    answers.post(answerRecord).then(function (result) {
         console.log("answer stored", result);
     }).catch(function (err) {
         console.log("Answer storing error ", err);
@@ -226,7 +221,7 @@ function storeAnswer(question, answer) {
 function skipQuestion() {
     currentQuestion += 1;
     fadequestions();
-    storeAnswer(currentQuestion, "Question Skipped");
+    storeAnswer(aQuestions[currentQuestion].question, "Question Skipped");
 }
 
 function getHTML(sentence) {
@@ -239,11 +234,12 @@ function getHTML(sentence) {
 }
 
 function nextQuestion() {
-    console.log("currentQuestion", currentQuestion);
-    console.log("aQuestions", aQuestions);
+    //console.log("currentQuestion", currentQuestion);
+    //console.log("aQuestions", aQuestions);
 
     if (currentQuestion >= aQuestions.length) {
-        alert("End Of questions!");
+        //alert("End Of questions!");
+        changeSection("3", "1");
     } else {
         currentQuestionData = aQuestions[currentQuestion];
         var html = getHTML(currentQuestionData["question"]);
@@ -287,6 +283,7 @@ function admin() {
 function back(current, next) {
     changeSection(current, next);
 }
+
 
 function review() {
     changeSection("1", "2");
@@ -350,7 +347,8 @@ function submitQuestion(questionDiv) {
             PlaySound();
 
             var id = photoElements[i].getAttribute("value");
-            storeAnswer(currentQuestion, id);
+            //console.log("aQuestions["+currentQuestion+"]", aQuestions[currentQuestion]);
+            storeAnswer(aQuestions[currentQuestion].question, id);
 
             currentQuestion += 1;
             fadequestions();
@@ -507,7 +505,7 @@ function readURL() {
                 test: testingMode
             };
 
-            children.put(child).then(function (result) {
+            children.post(child).then(function (result) {
                 createImage(child.source, child.name);
                 syncChildren();
             }).catch(function (err) {
