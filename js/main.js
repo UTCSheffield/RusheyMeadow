@@ -27,6 +27,8 @@ questionaires.sync(questionairesRemote, {
     // boo, we hit an error!
 });
 
+var currentTimeout = 0;
+
 
 var answers = new PouchDB('answers');
 var answersRemote = new PouchDB(sCouchBaseURL + 'answers/');
@@ -251,7 +253,8 @@ function nextQuestion() {
         document.getElementById("right").checked = false;
         $("#skip").fadeOut(0);
         $("#question").fadeIn(400);
-        setTimeout(function () {
+        clearTimeout(currentTimeout);
+        currentTimeout = setTimeout(function () {
             $("#skip").fadeIn(400);
         }, 60000);
     }
