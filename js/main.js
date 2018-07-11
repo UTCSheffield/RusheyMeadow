@@ -218,6 +218,10 @@ function changeQuestions() {
     questionData = JSON.parse($("#question-text").text());
 }
 
+function addQuestion() {
+
+}
+
 function admin() {
     changeSection("1", "5");
     $("#question-text").text(JSON.stringify(questionData, null, 4));

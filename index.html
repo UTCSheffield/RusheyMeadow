@@ -153,15 +153,29 @@
     
     <section id="5">
         <h1>Admin</h1>
+        <h2>Add PEC Symbol</h2>
         <input type="file" class="inputfile" id="pec-selector" name="filePEC" accept="image/*" onchange="fileUploaded('file-text-pec', 'pec-name');"/>
         <label id="file-text-pec" for="pec-selector"><i class="fa fa-upload"></i>Upload PEC</label>
         <input type="text" id="pec-name" name="name" placeholder="PEC Key Word"/>
         <button onclick="addPECSymbol();">Add Symbol</button>
         <button id="back" onclick="back('5','1');">Back</button>
         <br>
+        <h2>Add Question</h2>
+        <select id="questionSection">
+          <option value="consultation">Consultation</option>
+          <option value="activities">Activities</option>
+        </select>
+        <input type="text" id="question-name" name="name" placeholder="Question"/>
+        <input type="file" class="inputfile" id="question-image" name="fileQuestion" accept="image/*" onchange="fileUploaded('file-text-question', 'question-type');"/>
+        <label id="file-text-question" for="question-image"><i class="fa fa-upload"></i>Upload Question Image</label>
+        
+        <input type="text" id="question-type" name="type" placeholder="Type"/>
+        <button onclick="addQuestion();">Add Question</button>
+        <br>
         <p>Only update this text if you know exactly what you're doing! You might brake something.</p>
-        <textarea id="question-text" cols="80" rows="50"></textarea>
-        <button onclick="changeQuestions();">Update Questions</button>
+        <textarea id="question-text" cols="80" rows="40"></textarea>
+        <button onclick="changeQuestions();">Update Questions Text</button>
+        
     </section>
         
     <script src="js/particle.min.js"></script>  <!--stats.js lib --> 
