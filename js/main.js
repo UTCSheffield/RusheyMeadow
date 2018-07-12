@@ -260,11 +260,13 @@ function nextQuestion() {
 function consultation() {
     changeSection("1", "3");
     questionMode = "consultation";
+    loadQuestions(questionMode);
 }
 
 function activities() {
     changeSection("1", "3");
     questionMode = "activities";
+    loadQuestions(questionMode);
 }
 
 function changeQuestions() {
