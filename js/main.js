@@ -27,6 +27,8 @@ questionaires.sync(questionairesRemote, {
     // boo, we hit an error!
 });
 
+var currentTimeout = 0;
+
 
 var answers = new PouchDB('answers');
 var answersRemote = new PouchDB(sCouchBaseURL + 'answers/');
@@ -80,14 +82,14 @@ function listChildren() {
 listChildren();
 
 var Sounds = [
-    "sounds/216564__qubodup__hands-clapping_cut.wav",
-    "sounds/113989__kastenfrosch__gewonnen_cut.wav",
-    "sounds/162395__zut50__yay.wav",
-    "sounds/162458__kastenfrosch__gewonnen2_cut.wav",
-    "sounds/273925__lemonjolly__hooray-yeah_cut.wav",
-    "sounds/343835__tristan-lohengrin__happy-8bit-loop-01_cut.wav",
-    "sounds/398941__enviromaniac2__happyloop_cut.wav",
-    "sounds/242207__wagna__fanfare_cut.wav"
+    "sounds/113989__kastenfrosch__gewonnen.flac",
+    "sounds/162395__zut50__yay.flac",
+    "sounds/162458__kastenfrosch__gewonnen2.flac",
+    "sounds/216564__qubodup__hands-clapping.flac",
+    "sounds/242207__wagna__fanfare.flac",
+    "sounds/273925__lemonjolly__hooray-yeah.flac",
+    "sounds/343835__tristan-lohengrin__happy-8bit-loop-01.flac"//,
+    //"sounds/398941__enviromaniac2__happyloop.flac"
 ]
 
 var symbols = [
@@ -251,7 +253,8 @@ function nextQuestion() {
         document.getElementById("right").checked = false;
         $("#skip").fadeOut(0);
         $("#question").fadeIn(400);
-        setTimeout(function () {
+        clearTimeout(currentTimeout);
+        currentTimeout = setTimeout(function () {
             $("#skip").fadeIn(400);
         }, 60000);
     }
@@ -279,7 +282,7 @@ function addQuestion() {
 
 function admin() {
     changeSection("1", "5");
-    $("#question-text").text(JSON.stringify(questionData, null, 4));
+//    $("#question-text").text();
 }
 
 function back(current, next) {
