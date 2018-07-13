@@ -433,6 +433,7 @@ function changePIN() {
           });
         }).then(function() {
             alert("PIN Successfully Changed");
+            pin = btoa($("#newPIN").val());
             $("#oldPIN").val("");
             $("#newPIN").val("");
         }).catch(function (err) {
