@@ -177,9 +177,17 @@
         </select>
         <button onclick="addQuestion();">Add Question</button>
         <br>
+        <label class="label">Old PIN</label>
+        <input type="text" class="pin-input" id="oldPIN" name="old-pin" pattern="[0-9]{4}" maxlength="4">
+        <label class="label">New PIN</label>
+        <input type="text" class="pin-input" id="newPIN" name="new-pin" pattern="[0-9]{4}" maxlength="4">
+        
+        <button onclick="changePIN();">Change PIN</button>
+<!--
         <p>Only update this text if you know exactly what you're doing! You might break something.</p>
         <textarea id="question-text" cols="80" rows="35"></textarea>
         <button onclick="changeQuestions();">Update Questions Text</button>
+-->
         
     </section>
         

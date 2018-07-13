@@ -18,8 +18,6 @@ jQuery(document).ready(function($) {
       
     preferences.get("PIN").then(function(data) {
         pin = data.value;
-        
-        
     });
       
     

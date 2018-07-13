@@ -7,6 +7,35 @@
 //DONE: Remove images from the list
 //DONE: Format images correctly
 
+var pin = "";
+
+var sCouchBaseURL = null;
+
+var preferences = null;
+var preferencesRemote = null;
+
+jQuery(document).ready(function($) {
+  $(document).ready(function() {
+
+    sCouchBaseURL = 'https://admin:a49e11246037@couchdb-009fed.smileupps.com/';
+
+    preferences = new PouchDB('preferences');
+    preferencesRemote = new PouchDB(sCouchBaseURL + 'preferences/');
+
+    preferences.sync(preferencesRemote, {
+        live: true
+    }).on('change', function (data) {
+        console.log("preferences in sync data changed", data);
+    }).on('error', function (err) {
+        console.log("Error syncing preferences", err);
+    });
+      
+    preferences.get("PIN").then(function(data) {
+        pin = data.value;
+    });
+  }); 
+});
+
 var testingMode = true;
 
 var answerData, questionData;
@@ -241,9 +270,19 @@ function nextQuestion() {
 
     if (currentQuestion >= aQuestions.length) {
         //alert("End Of questions!");
-        changeSection("3", "1");
+        changeSection("4", "3");
+        currentQuestion = 0;
     } else {
         currentQuestionData = aQuestions[currentQuestion];
+        
+        if(currentQuestionData["type"] == "food" || currentQuestionData["type"] == "activities") {
+            if(questionMode == "consultation") {
+                currentQuestionData["question"] = "Do you like " + currentQuestionData["question"] + "?";
+            } else {
+                currentQuestionData["question"] = "Would you like " + currentQuestionData["question"] + " today?";
+            }
+        }
+        
         var html = getHTML(currentQuestionData["question"]);
 
         document.getElementById("questionName").innerHTML = html;
@@ -378,6 +417,35 @@ function reviewSelect(i) {
 function fileUploaded(id, focus) {
     document.getElementById(id).innerHTML = "File Uploaded";
     document.getElementById(focus).focus();
+}
+
+function changePIN() {
+    if(btoa($("#oldPIN").val()) == pin) {
+        preferences.get("PIN").then(function(data) {
+            pin = data.value;
+        });
+        
+        preferences.get('PIN').then(function(doc) {
+          return preferences.put({
+            _id: 'PIN',
+            _rev: doc._rev,
+            value: btoa($("#newPIN").val())
+          });
+        }).then(function() {
+            alert("PIN Successfully Changed");
+            $("#oldPIN").val("");
+            $("#newPIN").val("");
+        }).catch(function (err) {
+            alert("PIN Upload Failed");
+            $("#oldPIN").val("");
+            $("#newPIN").val("");
+          console.log(err);
+        });
+    } else {
+        alert("Old PIN Incorrect.");
+        $("#oldPIN").val("");
+        $("#newPIN").val("");
+    }
 }
 
 function clearStorage() {

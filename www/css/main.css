@@ -19,6 +19,20 @@ h1 {
     float: right;
 }
 
+.label {
+    transition: all ease 0.3s;
+    padding: 10px 10px 10px 10px;
+    font-size: 25px;
+    border: none;
+    color: black;
+    background-color: #ccc;
+    border-radius: 5px;
+}
+
+.pin-input {
+    width: 100px;
+}
+
 #printButton {
     bottom: 5px;
     right: 5px;
