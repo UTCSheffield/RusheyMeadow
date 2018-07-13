@@ -1,11 +1,30 @@
 jQuery(document).ready(function($) {
   $(document).ready(function() {
 
-    var pin = (+!![] + []) + (!+[] + !![] + []) + (!+[] + !![] + !![] + []) + (!+[] + !![] + !![] + !![] + []);
-    var enterCode = "";
-    enterCode.toString();
+    var sCouchBaseURL = 'https://admin:a49e11246037@couchdb-009fed.smileupps.com/';
 
-    $("#numbers button").click(function() {
+    var preferences = new PouchDB('preferences');
+    var preferencesRemote = new PouchDB(sCouchBaseURL + 'preferences/');
+
+    preferences.sync(preferencesRemote, {
+        live: true
+    }).on('change', function (data) {
+        console.log("preferences in sync data changed", data);
+    }).on('error', function (err) {
+        console.log("Error syncing preferences", err);
+    });
+    
+    var pin = "";
+      
+    preferences.get("PIN").then(function(data) {
+        pin = data.value;
+    });
+      
+    
+      var enterCode = "";
+    enterCode.toString();
+        
+         $("#numbers button").click(function() {
 
       var clickedNumber = $(this).text().toString();
       enterCode = enterCode + clickedNumber;
@@ -15,7 +34,7 @@ jQuery(document).ready(function($) {
       $("#fields .numberfield:eq(" + lengthCode + ")").addClass("active");
 
       if (lengthCode == 3) {
-        if (enterCode == pin) {
+        if (btoa(enterCode) == pin) {
             changeSection("0", "1");
 
         } else {
@@ -33,6 +52,7 @@ jQuery(document).ready(function($) {
       } else {}
 
     });
+   
     
     $("#restartbtn").click(function(){
       enterCode = "";

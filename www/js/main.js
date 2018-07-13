@@ -7,23 +7,52 @@
 //DONE: Remove images from the list
 //DONE: Format images correctly
 
+var pin = "";
+
+var sCouchBaseURL = null;
+
+var preferences = null;
+var preferencesRemote = null;
+
+jQuery(document).ready(function($) {
+  $(document).ready(function() {
+
+    sCouchBaseURL = 'https://admin:a49e11246037@couchdb-009fed.smileupps.com/';
+
+    preferences = new PouchDB('preferences');
+    preferencesRemote = new PouchDB(sCouchBaseURL + 'preferences/');
+
+    preferences.sync(preferencesRemote, {
+        live: true
+    }).on('change', function (data) {
+        console.log("preferences in sync data changed", data);
+    }).on('error', function (err) {
+        console.log("Error syncing preferences", err);
+    });
+      
+    preferences.get("PIN").then(function(data) {
+        pin = data.value;
+    });
+  }); 
+});
+
 var testingMode = true;
 
 var answerData, questionData;
 
 var sCouchBaseURL = 'https://admin:a49e11246037@couchdb-009fed.smileupps.com/';
 
-var questionaires = new PouchDB('questionaires');
-var questionairesRemote = new PouchDB(sCouchBaseURL + 'questionnaires/');
+var questionnaires = new PouchDB('questionnaires');
+var questionnairesRemote = new PouchDB(sCouchBaseURL + 'questionnaires/');
 
-questionaires.sync(questionairesRemote, {
+questionnaires.sync(questionnairesRemote, {
     live: true
 }).on('change', function (data) {
-    console.log("questionaires in sync data changed", data);
+    console.log("questionnaires in sync data changed", data);
     listChildren();
     // yay, we're in sync!
 }).on('error', function (err) {
-    console.log("Error syncing questionaires", err);
+    console.log("Error syncing questionnaires", err);
     // boo, we hit an error!
 });
 
@@ -148,7 +177,7 @@ try {
 var aQuestions = [];
 
 function loadQuestions(qMode) {
-    questionaires.allDocs({
+    questionnaires.allDocs({
         include_docs: true
     }).then(function (result) {
         aQuestions = result.rows.filter(function (row) {
@@ -242,9 +271,19 @@ function nextQuestion() {
 
     if (currentQuestion >= aQuestions.length) {
         //alert("End Of questions!");
-        changeSection("3", "1");
+        changeSection("4", "3");
+        currentQuestion = 0;
     } else {
         currentQuestionData = aQuestions[currentQuestion];
+        
+        if(currentQuestionData["type"] == "food" || currentQuestionData["type"] == "activities") {
+            if(questionMode == "consultation") {
+                currentQuestionData["question"] = "Do you like " + currentQuestionData["question"] + "?";
+            } else {
+                currentQuestionData["question"] = "Would you like " + currentQuestionData["question"] + " today?";
+            }
+        }
+        
         var html = getHTML(currentQuestionData["question"]);
 
         document.getElementById("questionName").innerHTML = html;
@@ -381,6 +420,36 @@ function fileUploaded(id, focus) {
     document.getElementById(focus).focus();
 }
 
+function changePIN() {
+    if(btoa($("#oldPIN").val()) == pin) {
+        preferences.get("PIN").then(function(data) {
+            pin = data.value;
+        });
+        
+        preferences.get('PIN').then(function(doc) {
+          return preferences.put({
+            _id: 'PIN',
+            _rev: doc._rev,
+            value: btoa($("#newPIN").val())
+          });
+        }).then(function() {
+            alert("PIN Successfully Changed");
+            pin = btoa($("#newPIN").val());
+            $("#oldPIN").val("");
+            $("#newPIN").val("");
+        }).catch(function (err) {
+            alert("PIN Upload Failed");
+            $("#oldPIN").val("");
+            $("#newPIN").val("");
+          console.log(err);
+        });
+    } else {
+        alert("Old PIN Incorrect.");
+        $("#oldPIN").val("");
+        $("#newPIN").val("");
+    }
+}
+
 function clearStorage() {
     localStorage.clear();
     var url = window.location.href.split("?")[0];
@@ -394,26 +463,17 @@ function removePhoto() {
     var photoElements = document.getElementsByName('photoPick');
     for (i = 0; i < photoElements.length; i++) {
         localStorage.removeItem("user" + i);
-        if (!photoElements[i].checked) {
-            var id = photoElements[i].getAttribute("id");
-            var currentlySelectedChild = document.getElementById("photo" + i);
-            var currentlySelectedChildName = document.getElementById("nameText" + i).textContent;
-
-            var userData = [counter, currentlySelectedChildName, currentlySelectedChild.getAttribute("src")];
-            localStorage.setItem("user" + counter, JSON.stringify(userData));
-
-            counter++;
+        if (photoElements[i].checked) {
+            children.get(document.getElementById("nameText" + i).textContent).then(function(child) {
+                return children.remove(child);
+                
+            }).then(function() {
+                listChildren();
+            }).catch(function (err) {
+                console.log("Error Deleting Child: ", err);
+            });
+        
         }
-    }
-    var url = window.location.href.split("?")[0];
-    url += '?page=3'
-    window.location.href = url;
-}
-
-function enterApp() {
-    var password = document.getElementById("pin").value;
-    if (btoa(password.toString()) == "MTIzNA==") {
-        changeSection("0", "3");
     }
 }
 
