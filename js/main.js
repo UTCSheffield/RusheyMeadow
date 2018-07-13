@@ -116,6 +116,7 @@ document.onreadystatechange = function () {
     if (state === 'complete') {
         document.getElementById('interactive');
         document.getElementById('load').style.visibility = "hidden";
+        
     }
 };
 
@@ -524,3 +525,4 @@ function readURL() {
         alert("You did not enter a photo. Please try again.")
     }
 }
+
