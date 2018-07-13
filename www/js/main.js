@@ -13,17 +13,17 @@ var answerData, questionData;
 
 var sCouchBaseURL = 'https://admin:a49e11246037@couchdb-009fed.smileupps.com/';
 
-var questionaires = new PouchDB('questionaires');
-var questionairesRemote = new PouchDB(sCouchBaseURL + 'questionnaires/');
+var questionnaires = new PouchDB('questionnaires');
+var questionnairesRemote = new PouchDB(sCouchBaseURL + 'questionnaires/');
 
-questionaires.sync(questionairesRemote, {
+questionnaires.sync(questionnairesRemote, {
     live: true
 }).on('change', function (data) {
-    console.log("questionaires in sync data changed", data);
+    console.log("questionnaires in sync data changed", data);
     listChildren();
     // yay, we're in sync!
 }).on('error', function (err) {
-    console.log("Error syncing questionaires", err);
+    console.log("Error syncing questionnaires", err);
     // boo, we hit an error!
 });
 
@@ -147,7 +147,7 @@ try {
 var aQuestions = [];
 
 function loadQuestions(qMode) {
-    questionaires.allDocs({
+    questionnaires.allDocs({
         include_docs: true
     }).then(function (result) {
         aQuestions = result.rows.filter(function (row) {
@@ -404,13 +404,6 @@ function removePhoto() {
             });
         
         }
-    }
-}
-
-function enterApp() {
-    var password = document.getElementById("pin").value;
-    if (btoa(password.toString()) == "MTIzNA==") {
-        changeSection("0", "3");
     }
 }
 
