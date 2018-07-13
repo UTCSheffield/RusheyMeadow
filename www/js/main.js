@@ -393,20 +393,18 @@ function removePhoto() {
     var photoElements = document.getElementsByName('photoPick');
     for (i = 0; i < photoElements.length; i++) {
         localStorage.removeItem("user" + i);
-        if (!photoElements[i].checked) {
-            var id = photoElements[i].getAttribute("id");
-            var currentlySelectedChild = document.getElementById("photo" + i);
-            var currentlySelectedChildName = document.getElementById("nameText" + i).textContent;
-
-            var userData = [counter, currentlySelectedChildName, currentlySelectedChild.getAttribute("src")];
-            localStorage.setItem("user" + counter, JSON.stringify(userData));
-
-            counter++;
+        if (photoElements[i].checked) {
+            children.get(document.getElementById("nameText" + i).textContent).then(function(child) {
+                return children.remove(child);
+                
+            }).then(function() {
+                listChildren();
+            }).catch(function (err) {
+                console.log("Error Deleting Child: ", err);
+            });
+        
         }
     }
-    var url = window.location.href.split("?")[0];
-    url += '?page=3'
-    window.location.href = url;
 }
 
 function enterApp() {
