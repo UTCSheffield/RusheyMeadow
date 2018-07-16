@@ -607,15 +607,24 @@ function createImage(source, name) {
 $("photo-selector").change(readURL);
 
 function readURL() {
-    document.getElementById("file-text").innerHTML = "<i class='fa fa-upload'></i>Upload a picture";
-
+    
     var input = document.getElementById("photo-selector");
     var childName = document.getElementById("child-name").value;
-
+    
+    childName = childName.toUpperCase();
+    var initials = childName.split(" ");
+    
+//    if(initials.length != 2 || initials[0].length != 1 || initials[1].length != 1) {
+//        alert("The name must be in initial format (eg: J U)");
+//        return;
+//    }
+    
     if (childName == "") {
-        alert("You did not enter a name. Please try again.")
+        alert("You did not enter a name. Please try again.");
         return;
     }
+    
+    document.getElementById("file-text").innerHTML = "<i class='fa fa-upload'></i>Get Picture of Child";
 
     if (input.files && input.files[0]) {
         var reader = new FileReader();
