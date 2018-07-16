@@ -45,16 +45,18 @@ var sCouchBaseURL = 'https://admin:a49e11246037@couchdb-009fed.smileupps.com/';
 var questionnaires = new PouchDB('questionnaires');
 var questionnairesRemote = new PouchDB(sCouchBaseURL + 'questionnaires/');
 
-questionnaires.sync(questionnairesRemote, {
-    live: true
-}).on('change', function (data) {
-    console.log("questionnaires in sync data changed", data);
-    listChildren();
-    // yay, we're in sync!
-}).on('error', function (err) {
-    console.log("Error syncing questionnaires", err);
-    // boo, we hit an error!
-});
+function syncQuestions() {
+    questionnaires.sync(questionnairesRemote, {
+        live: true
+    }).on('change', function (data) {
+        console.log("questionnaires in sync data changed", data);
+        // yay, we're in sync!
+    }).on('error', function (err) {
+        console.log("Error syncing questionnaires", err);
+        // boo, we hit an error!
+    });
+}
+syncQuestions();
 
 var currentTimeout = 0;
 
@@ -343,13 +345,51 @@ function changeQuestions() {
 }
 
 function addQuestion() {
+    var input = document.getElementById("question-image");
+    var questionName = document.getElementById("question-name").value;
+    
+    var questionSection = $("#questionSection option:selected").val();
+    var questionType = $("#questionTypeSelect option:selected").val();
+    
+    if (questionName == "") {
+        alert("You did not enter a question. Please try again.");
+        return;
+    }
+    
+    document.getElementById("file-text-question").innerHTML = "<i class='fa fa-upload'></i>Upload Question Image";
 
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            var questionNew = {
+//                _id: pecName,
+                type: questionType,
+                question: questionName,
+                picture: e.target.result,
+                questionnaire: questionSection
+            };
+
+            questionnaires.post(questionNew).then(function (result) {
+                alert("Question Added");
+                syncQuestions();
+            }).catch(function (err) {
+                console.log("put question error", err);
+            });
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        alert("You did not upload a photo. Please try again.")
+    }
 }
 
 function admin() {
     changeSection("1", "5");
 //    $("#question-text").text();
-    
+    $('#today1').empty();
+    $('#today2').empty();
+    $('#today3').empty();
     questionnaires.allDocs({
         include_docs: true
     }).then(function (result) {
