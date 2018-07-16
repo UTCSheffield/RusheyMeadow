@@ -275,7 +275,7 @@ function nextQuestion() {
     } else {
         currentQuestionData = aQuestions[currentQuestion];
         
-        if(currentQuestionData["type"] == "food" || currentQuestionData["type"] == "activities") {
+        if(currentQuestionData["type"] == "food" || currentQuestionData["type"] == "today" || currentQuestionData["type"] == "activity" || currentQuestionData["type"] == "activities") {
             if(questionMode == "consultation") {
                 currentQuestionData["question"] = "Do you like " + currentQuestionData["question"] + "?";
             } else {
