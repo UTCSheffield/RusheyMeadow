@@ -121,31 +121,35 @@ var Sounds = [
     //"sounds/398941__enviromaniac2__happyloop.flac"
 ]
 
-var symbols = [
-    {
-        name: "ballon",
-        source: "https://images-na.ssl-images-amazon.com/images/I/61T-V%2B7ItoL._SY355_.jpg"
-        },
-    {
-        name: "want",
-        source: "PEC/Want pec.fw.png"
-        },
-    {
-        name: "like",
-        source: "PEC/Like pec.fw.png"
-        }
-    ];
+var symbols = new PouchDB('pec');
+var symbolsRemote = new PouchDB(sCouchBaseURL + 'pec/');
 
+var symbolsArray = []
 
+function syncSymbols() {
+    symbols.sync(symbolsRemote, {
+        live: true
+    }).on('changed', function (data) {
+        console.log("symbols in sync data", data);
+        // yay, we're in sync!
+    }).on('error', function (err) {
+        console.log("Error syncing symbols", err);
+        // boo, we hit an error!
+    });
+    symbols.allDocs({
+        include_docs: true
+    }).then(function (result) {
+        symbolsArray = result;
+    });
+}
 
-
+syncSymbols();
 
 document.onreadystatechange = function () {
     var state = document.readyState;
     if (state === 'complete') {
         document.getElementById('interactive');
         document.getElementById('load').style.visibility = "hidden";
-        
     }
 };
 
@@ -280,10 +284,9 @@ function skipQuestion() {
 }
 
 function getHTML(sentence) {
-
-    symbols.forEach(function (symbol) {
-        var imgtag = '<img class="pec" src="' + symbol.source + '" alt="' + symbol.name + '" >';
-        sentence = sentence.replace(symbol.name, imgtag);
+    symbolsArray.rows.forEach(function (symbol) {
+        var imgtag = '<img class="pec" src="' + symbol.doc.source + '" alt="' + symbol.doc._id + '" >';
+        sentence = sentence.replace(symbol.doc._id, imgtag);
     })
     return sentence;
 }
@@ -559,7 +562,37 @@ function confirmPhoto() {
 }
 
 function addPECSymbol() {
+    var input = document.getElementById("pec-selector");
+    var pecName = document.getElementById("pec-name").value;
+    
+    if (pecName == "") {
+        alert("You did not enter a PEC name. Please try again.");
+        return;
+    }
+    
+    document.getElementById("file-text-pec").innerHTML = "<i class='fa fa-upload'></i>Upload PEC";
 
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            var symbolNew = {
+                _id: pecName,
+                source: e.target.result
+            };
+
+            symbols.post(symbolNew).then(function (result) {
+                alert("Symbol Added");
+                syncSymbols();
+            }).catch(function (err) {
+                console.log("put symbol error", err);
+            });
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        alert("You did not upload a photo. Please try again.")
+    }
 }
 
 function createImage(source, name) {
@@ -611,9 +644,9 @@ function readURL() {
     var input = document.getElementById("photo-selector");
     var childName = document.getElementById("child-name").value;
     
-    childName = childName.toUpperCase();
-    var initials = childName.split(" ");
-    
+//    childName = childName.toUpperCase();
+//    var initials = childName.split(" ");
+//    
 //    if(initials.length != 2 || initials[0].length != 1 || initials[1].length != 1) {
 //        alert("The name must be in initial format (eg: J U)");
 //        return;
