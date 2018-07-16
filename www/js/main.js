@@ -392,46 +392,97 @@ function back(current, next) {
 function review() {
     changeSection("1", "2");
     $('#data-panels').html("");
-    for(var i = 0; i < answerData.length; i++){
-        var button = $('<button>'+JSON.parse(localStorage.getItem("user"+i))[1]+' >'+'</button>').attr({
-            'onclick': 'reviewSelect('+i+');'
-        }).appendTo('#data-panels');
+    
+    children.allDocs({
+            include_docs: true
+        }).then(function (children) {
+            var counter = 0;
+            children.rows.forEach(function (childGot) {
+                var child = childGot.doc;
+                
+                counter += 1;
+                
+                var newCount = counter;
+                
+                var button = $('<button>'+child.name+' >'+'</button>').attr({
+                    'onclick': 'reviewSelect('+counter+');'
+                }).appendTo('#data-panels');
+                
+                 var dataDiv = $('<div></div>').attr({
+                    'id': 'data-' + counter,
+                    'class': 'data-panel'
+                }).appendTo('#data-panels');
 
-        var dataDiv = $('<div></div>').attr({
-            'id': 'data-' + i,
-            'class': 'data-panel'
-        }).appendTo('#data-panels');
+                $("#data-" + counter).toggleClass("expanded");
+                
+                var answerData = [];
+                
+                answers.allDocs({
+                    include_docs: true
+                }).then(function (answersAll) {
+                    
+                    answerData = answersAll.rows.filter(function (row) {
+                        return row.doc.child == child.name;
+                    });
+                    console.log(answerData);
+                    for(a in answerData) {
+                        answer = answerData[a].doc;
+                        var q = $("<h3>" + answer.date + ": " + answer.question + " " + answer.answer + "</h3>").appendTo('#data-' + newCount);
+                    }
+                    
+                    
+                });
+                
+            });
 
-        $("#data-" + i).toggleClass("expanded");
-
-        for (var key in answerData[i]) {
-            if (!answerData[i].hasOwnProperty(key)) continue;
-
-            var title = $('<h1>' + key.charAt(0).toUpperCase() + key.substr(1) + '</h1>').attr({
-                class: 'date'
-            }).appendTo('#data-' + i);
-
-            var d = 0;
-
-            var obj = answerData[i][key];
-            for (var prop in obj) {
-                if (!obj.hasOwnProperty(prop)) continue;
-
-                var dateDiv = $('<div></div>').attr({
-                    'id': 'date' + i + '-' + d + '-div',
-                    'class': 'date-div'
-                }).appendTo('#data-' + i);
-
-                var dateTitle = $('<h2>' + prop + '</h2>').appendTo('#date' + i + '-' + d + '-div');
-
-                for (z = 0; z < obj[prop].length; z++) {
-                    var q = $('<h3>' + obj[prop][z][0] + ': ' + obj[prop][z][1] + '</h3>').appendTo('#date' + i + '-' + d + '-div');
-                }
-
-                d++;
-            }
-        }
-    }
+        }).catch(function (err) {
+            console.log("child fetching error ", err);
+        });
+    
+    
+    
+    
+        
+//        for(var i = 0; i < answerData.length; i++){
+//            var button = $('<button>'+JSON.parse(localStorage.getItem("user"+i))[1]+' >'+'</button>').attr({
+//                'onclick': 'reviewSelect('+i+');'
+//            }).appendTo('#data-panels');
+//
+//            var dataDiv = $('<div></div>').attr({
+//                'id': 'data-' + i,
+//                'class': 'data-panel'
+//            }).appendTo('#data-panels');
+//
+//            $("#data-" + i).toggleClass("expanded");
+//
+//            for (var key in answerData[i]) {
+//                if (!answerData[i].hasOwnProperty(key)) continue;
+//
+//                var title = $('<h1>' + key.charAt(0).toUpperCase() + key.substr(1) + '</h1>').attr({
+//                    class: 'date'
+//                }).appendTo('#data-' + i);
+//
+//                var d = 0;
+//
+//                var obj = answerData[i][key];
+//                for (var prop in obj) {
+//                    if (!obj.hasOwnProperty(prop)) continue;
+//
+//                    var dateDiv = $('<div></div>').attr({
+//                        'id': 'date' + i + '-' + d + '-div',
+//                        'class': 'date-div'
+//                    }).appendTo('#data-' + i);
+//
+//                    var dateTitle = $('<h2>' + prop + '</h2>').appendTo('#date' + i + '-' + d + '-div');
+//
+//                    for (z = 0; z < obj[prop].length; z++) {
+//                        var q = $('<h3>' + obj[prop][z][0] + ': ' + obj[prop][z][1] + '</h3>').appendTo('#date' + i + '-' + d + '-div');
+//                    }
+//
+//                    d++;
+//                }
+//            }
+//        }
 
     //    document.getElementById("data").innerHTML = JSON.stringify(answerData);
 }
