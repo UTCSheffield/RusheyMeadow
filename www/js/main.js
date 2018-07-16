@@ -45,16 +45,18 @@ var sCouchBaseURL = 'https://admin:a49e11246037@couchdb-009fed.smileupps.com/';
 var questionnaires = new PouchDB('questionnaires');
 var questionnairesRemote = new PouchDB(sCouchBaseURL + 'questionnaires/');
 
-questionnaires.sync(questionnairesRemote, {
-    live: true
-}).on('change', function (data) {
-    console.log("questionnaires in sync data changed", data);
-    listChildren();
-    // yay, we're in sync!
-}).on('error', function (err) {
-    console.log("Error syncing questionnaires", err);
-    // boo, we hit an error!
-});
+function syncQuestions() {
+    questionnaires.sync(questionnairesRemote, {
+        live: true
+    }).on('change', function (data) {
+        console.log("questionnaires in sync data changed", data);
+        // yay, we're in sync!
+    }).on('error', function (err) {
+        console.log("Error syncing questionnaires", err);
+        // boo, we hit an error!
+    });
+}
+syncQuestions();
 
 var currentTimeout = 0;
 
@@ -121,24 +123,29 @@ var Sounds = [
     //"sounds/398941__enviromaniac2__happyloop.flac"
 ]
 
-var symbols = [
-    {
-        name: "ballon",
-        source: "https://images-na.ssl-images-amazon.com/images/I/61T-V%2B7ItoL._SY355_.jpg"
-        },
-    {
-        name: "want",
-        source: "PEC/Want pec.fw.png"
-        },
-    {
-        name: "like",
-        source: "PEC/Like pec.fw.png"
-        }
-    ];
+var symbols = new PouchDB('pec');
+var symbolsRemote = new PouchDB(sCouchBaseURL + 'pec/');
 
+var symbolsArray = []
 
+function syncSymbols() {
+    symbols.sync(symbolsRemote, {
+        live: true
+    }).on('changed', function (data) {
+        console.log("symbols in sync data", data);
+        // yay, we're in sync!
+    }).on('error', function (err) {
+        console.log("Error syncing symbols", err);
+        // boo, we hit an error!
+    });
+    symbols.allDocs({
+        include_docs: true
+    }).then(function (result) {
+        symbolsArray = result;
+    });
+}
 
-
+syncSymbols();
 
 document.onreadystatechange = function () {
     var state = document.readyState;
@@ -179,15 +186,38 @@ function loadQuestions(qMode) {
     questionnaires.allDocs({
         include_docs: true
     }).then(function (result) {
-        aQuestions = result.rows.filter(function (row) {
-            return row.doc.questionnaire == qMode;
-        }).map(function (row) {
-            return row.doc;
-        });
+        if(qMode == "activities") {
+            
+            preferences.get("activities").then(function(data) {
+                questions = data.value;
+                aQuestions = []
+                for(var q in questions) {
+                    var toPush = result.rows.filter(function (row) {
+                        return row.doc._id == questions[q];
+                    });
+//                    }).map(function (row) {
+//                        return row.doc;
+//                    });
+                    
+                    aQuestions.push(toPush[0].doc);
+                }
+                
+            });
+            
+        } else {
+            aQuestions = result.rows.filter(function (row) {
+                return row.doc.questionnaire == "consultation";
+            }).map(function (row) {
+                return row.doc;
+            }); 
+        }
+        
     }).catch(function (err) {
         console.log("question fetching error ", err);
     });
 }
+
+
 
 loadQuestions(questionMode);
 
@@ -256,10 +286,9 @@ function skipQuestion() {
 }
 
 function getHTML(sentence) {
-
-    symbols.forEach(function (symbol) {
-        var imgtag = '<img class="pec" src="' + symbol.source + '" alt="' + symbol.name + '" >';
-        sentence = sentence.replace(symbol.name, imgtag);
+    symbolsArray.rows.forEach(function (symbol) {
+        var imgtag = '<img class="pec" src="' + symbol.doc.source + '" alt="' + symbol.doc._id + '" >';
+        sentence = sentence.replace(symbol.doc._id, imgtag);
     })
     return sentence;
 }
@@ -267,12 +296,12 @@ function getHTML(sentence) {
 function nextQuestion() {
     //console.log("currentQuestion", currentQuestion);
     //console.log("aQuestions", aQuestions);
-
     if (currentQuestion >= aQuestions.length) {
         //alert("End Of questions!");
         changeSection("4", "3");
         currentQuestion = 0;
     } else {
+        
         currentQuestionData = aQuestions[currentQuestion];
         
         if(currentQuestionData["type"] == "food" || currentQuestionData["type"] == "activities") {
@@ -316,62 +345,184 @@ function changeQuestions() {
 }
 
 function addQuestion() {
+    var input = document.getElementById("question-image");
+    var questionName = document.getElementById("question-name").value;
+    
+    var questionSection = $("#questionSection option:selected").val();
+    var questionType = $("#questionTypeSelect option:selected").val();
+    
+    if (questionName == "") {
+        alert("You did not enter a question. Please try again.");
+        return;
+    }
+    
+    document.getElementById("file-text-question").innerHTML = "<i class='fa fa-upload'></i>Upload Question Image";
 
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            var questionNew = {
+//                _id: pecName,
+                type: questionType,
+                question: questionName,
+                picture: e.target.result,
+                questionnaire: questionSection
+            };
+
+            questionnaires.post(questionNew).then(function (result) {
+                alert("Question Added");
+                syncQuestions();
+            }).catch(function (err) {
+                console.log("put question error", err);
+            });
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        alert("You did not upload a photo. Please try again.")
+    }
 }
 
 function admin() {
     changeSection("1", "5");
 //    $("#question-text").text();
+    $('#today1').empty();
+    $('#today2').empty();
+    $('#today3').empty();
+    questionnaires.allDocs({
+        include_docs: true
+    }).then(function (result) {
+        aQuestions = result.rows.filter(function (row) {
+            return row.doc.questionnaire == "consultation" && row.doc.type == "activities";
+        }).forEach(function (row) {
+            
+            for(var i = 1; i < 4; i++) {
+                var option = $('<option>' + "Would you like " + row.doc.question + " today?" + '</option>').attr({
+                    'value': row.doc._id
+                }).appendTo('#today'+i);  
+            }
+            
+        });
+    }).catch(function (err) {
+        console.log("question fetching error ", err);
+    });
+    
+}
+
+function setActivities() {
+    preferences.get('activities').then(function(doc) {
+          return preferences.put({
+            _id: 'activities',
+            _rev: doc._rev,
+            value: [$("#today1 option:selected").val(), $("#today2 option:selected").val(), $("#today3 option:selected").val()]
+          });
+        }).then(function(row) {
+            alert("Questions Set!");
+        }).catch(function (err) {
+            alert("Question Activity Settings Error");
+          console.log(err);
+        });
 }
 
 function back(current, next) {
     changeSection(current, next);
 }
 
-
 function review() {
     changeSection("1", "2");
     $('#data-panels').html("");
-    for(var i = 0; i < answerData.length; i++){
-        var button = $('<button>'+JSON.parse(localStorage.getItem("user"+i))[1]+' >'+'</button>').attr({
-            'onclick': 'reviewSelect('+i+');'
-        }).appendTo('#data-panels');
+    
+    children.allDocs({
+            include_docs: true
+        }).then(function (children) {
+            var counter = 0;
+            children.rows.forEach(function (childGot) {
+                var child = childGot.doc;
+                
+                counter += 1;
+                
+                var newCount = counter;
+                
+                var button = $('<button>'+child.name+' >'+'</button>').attr({
+                    'onclick': 'reviewSelect('+counter+');'
+                }).appendTo('#data-panels');
+                
+                 var dataDiv = $('<div></div>').attr({
+                    'id': 'data-' + counter,
+                    'class': 'data-panel'
+                }).appendTo('#data-panels');
 
-        var dataDiv = $('<div></div>').attr({
-            'id': 'data-' + i,
-            'class': 'data-panel'
-        }).appendTo('#data-panels');
+                $("#data-" + counter).toggleClass("expanded");
+                
+                var answerData = [];
+                
+                answers.allDocs({
+                    include_docs: true
+                }).then(function (answersAll) {
+                    
+                    answerData = answersAll.rows.filter(function (row) {
+                        return row.doc.child == child.name;
+                    });
+                    console.log(answerData);
+                    for(a in answerData) {
+                        answer = answerData[a].doc;
+                        var q = $("<h3>" + answer.date + ": " + answer.question + " " + answer.answer + "</h3>").appendTo('#data-' + newCount);
+                    }
+                    
+                    
+                });
+                
+            });
 
-        $("#data-" + i).toggleClass("expanded");
-
-        for (var key in answerData[i]) {
-            if (!answerData[i].hasOwnProperty(key)) continue;
-
-            var title = $('<h1>' + key.charAt(0).toUpperCase() + key.substr(1) + '</h1>').attr({
-                class: 'date'
-            }).appendTo('#data-' + i);
-
-            var d = 0;
-
-            var obj = answerData[i][key];
-            for (var prop in obj) {
-                if (!obj.hasOwnProperty(prop)) continue;
-
-                var dateDiv = $('<div></div>').attr({
-                    'id': 'date' + i + '-' + d + '-div',
-                    'class': 'date-div'
-                }).appendTo('#data-' + i);
-
-                var dateTitle = $('<h2>' + prop + '</h2>').appendTo('#date' + i + '-' + d + '-div');
-
-                for (z = 0; z < obj[prop].length; z++) {
-                    var q = $('<h3>' + obj[prop][z][0] + ': ' + obj[prop][z][1] + '</h3>').appendTo('#date' + i + '-' + d + '-div');
-                }
-
-                d++;
-            }
-        }
-    }
+        }).catch(function (err) {
+            console.log("child fetching error ", err);
+        });
+    
+    
+    
+    
+        
+//        for(var i = 0; i < answerData.length; i++){
+//            var button = $('<button>'+JSON.parse(localStorage.getItem("user"+i))[1]+' >'+'</button>').attr({
+//                'onclick': 'reviewSelect('+i+');'
+//            }).appendTo('#data-panels');
+//
+//            var dataDiv = $('<div></div>').attr({
+//                'id': 'data-' + i,
+//                'class': 'data-panel'
+//            }).appendTo('#data-panels');
+//
+//            $("#data-" + i).toggleClass("expanded");
+//
+//            for (var key in answerData[i]) {
+//                if (!answerData[i].hasOwnProperty(key)) continue;
+//
+//                var title = $('<h1>' + key.charAt(0).toUpperCase() + key.substr(1) + '</h1>').attr({
+//                    class: 'date'
+//                }).appendTo('#data-' + i);
+//
+//                var d = 0;
+//
+//                var obj = answerData[i][key];
+//                for (var prop in obj) {
+//                    if (!obj.hasOwnProperty(prop)) continue;
+//
+//                    var dateDiv = $('<div></div>').attr({
+//                        'id': 'date' + i + '-' + d + '-div',
+//                        'class': 'date-div'
+//                    }).appendTo('#data-' + i);
+//
+//                    var dateTitle = $('<h2>' + prop + '</h2>').appendTo('#date' + i + '-' + d + '-div');
+//
+//                    for (z = 0; z < obj[prop].length; z++) {
+//                        var q = $('<h3>' + obj[prop][z][0] + ': ' + obj[prop][z][1] + '</h3>').appendTo('#date' + i + '-' + d + '-div');
+//                    }
+//
+//                    d++;
+//                }
+//            }
+//        }
 
     //    document.getElementById("data").innerHTML = JSON.stringify(answerData);
 }
@@ -502,7 +653,37 @@ function confirmPhoto() {
 }
 
 function addPECSymbol() {
+    var input = document.getElementById("pec-selector");
+    var pecName = document.getElementById("pec-name").value;
+    
+    if (pecName == "") {
+        alert("You did not enter a PEC name. Please try again.");
+        return;
+    }
+    
+    document.getElementById("file-text-pec").innerHTML = "<i class='fa fa-upload'></i>Upload PEC";
 
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            var symbolNew = {
+                _id: pecName,
+                source: e.target.result
+            };
+
+            symbols.post(symbolNew).then(function (result) {
+                alert("Symbol Added");
+                syncSymbols();
+            }).catch(function (err) {
+                console.log("put symbol error", err);
+            });
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        alert("You did not upload a photo. Please try again.")
+    }
 }
 
 function createImage(source, name) {
@@ -550,15 +731,24 @@ function createImage(source, name) {
 $("photo-selector").change(readURL);
 
 function readURL() {
-    document.getElementById("file-text").innerHTML = "<i class='fa fa-upload'></i>Upload a picture";
-
+    
     var input = document.getElementById("photo-selector");
     var childName = document.getElementById("child-name").value;
-
+    
+//    childName = childName.toUpperCase();
+//    var initials = childName.split(" ");
+//    
+//    if(initials.length != 2 || initials[0].length != 1 || initials[1].length != 1) {
+//        alert("The name must be in initial format (eg: J U)");
+//        return;
+//    }
+    
     if (childName == "") {
-        alert("You did not enter a name. Please try again.")
+        alert("You did not enter a name. Please try again.");
         return;
     }
+    
+    document.getElementById("file-text").innerHTML = "<i class='fa fa-upload'></i>Get Picture of Child";
 
     if (input.files && input.files[0]) {
         var reader = new FileReader();
@@ -584,3 +774,4 @@ function readURL() {
         alert("You did not enter a photo. Please try again.")
     }
 }
+

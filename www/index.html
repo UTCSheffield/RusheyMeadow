@@ -15,9 +15,15 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<<<<<<< HEAD
 
     <script src="js/print.min.js"></script>
 
+=======
+    
+
+    
+>>>>>>> d92885f22ee44e70acfef9fc70de87c06208c6f8
 </head>
 
 <body id="body">
@@ -38,6 +44,7 @@
             <div class="table">
                 <div class="cell">
 
+<<<<<<< HEAD
                     <div id="anleitung">
                         <p>
                             <strong>Welcome to the RM Communications App</strong><br>Please enter the correct PIN-Code. (1234)
@@ -71,6 +78,13 @@
                             <div class="grid__col grid__col--1-of-3"><button>0</button></div>
                             <div class="grid__col grid__col--1-of-3"></div>
                             <div id="restartbtn">Clear</div>
+=======
+                <div id="anleitung">
+                  <p>
+                    <strong>Welcome to the RM Communications App</strong><br>Please enter the correct PIN-Code.
+                  </p>
+                </div>
+>>>>>>> d92885f22ee44e70acfef9fc70de87c06208c6f8
 
 
 
@@ -106,7 +120,12 @@
 
         <input type="file" class="inputfile" name="file" id="photo-selector" accept="image/*" onchange="fileUploaded('file-text', 'child-name');" />
         <label id="file-text" for="photo-selector"><i class="fa fa-upload"></i>Get Picture of Child</label>
+<<<<<<< HEAD
         <input type="text" id="child-name" name="name" placeholder="Child Name" />
+=======
+        <input type="text" id="child-name" name="name" placeholder="Child Name"/>
+        <!--<input type="text" id="child-name" pattern="([A-Za-z] [A-Za-z])( [A-Za-z])?( [A-Za-z])?" name="name" placeholder="Child Name"/>-->
+>>>>>>> d92885f22ee44e70acfef9fc70de87c06208c6f8
         <button onclick="readURL();">Add</button>
 
         <button onclick="removePhoto();">Remove selected photo</button>
@@ -116,8 +135,8 @@
         </div>
 
         <div id="bottom">
-            <button class="confirm" onclick="confirmPhoto();">Confirm</button>
             <button id="back" onclick="back('3','1');"><i class="fas fa-backward"></i> Back</button>
+            <button class="confirm" onclick="confirmPhoto();">Confirm</button>
         </div>
 
     </section>
@@ -173,26 +192,47 @@
         <h2>Add Question</h2>
         <select id="questionSection">
             <option value="consultation">Consultation</option>
-            <option value="activities">Activities</option>
         </select>
+<<<<<<< HEAD
         <input type="text" id="question-name" name="name" placeholder="Question" />
         <input type="file" class="inputfile" id="question-image" name="fileQuestion" accept="image/*" onchange="fileUploaded('file-text-question', 'question-type');" />
+=======
+        <label class="label">Do you like/Would you like</label>
+        <input type="text" id="question-name" name="name" placeholder="Question"/>
+        <label class="label">?/today?</label>
+        <input type="file" class="inputfile" id="question-image" name="fileQuestion" accept="image/*" onchange="fileUploaded('file-text-question', 'question-type');"/>
+>>>>>>> d92885f22ee44e70acfef9fc70de87c06208c6f8
         <label id="file-text-question" for="question-image"><i class="fa fa-upload"></i>Upload Question Image</label>
         <select id="questionTypeSelect">
             <option value="feedback">Feedback</option>
             <option value="food">Food</option>
             <option value="activities">Activities</option>
-            <option value="today">Today</option>
         </select>
         <button onclick="addQuestion();">Add Question</button>
         <br>
+        <h2>Change PIN</h2>
         <label class="label">Old PIN</label>
         <input type="text" class="pin-input" id="oldPIN" name="old-pin" pattern="[0-9]{4}" maxlength="4">
         <label class="label">New PIN</label>
         <input type="text" class="pin-input" id="newPIN" name="new-pin" pattern="[0-9]{4}" maxlength="4">
+<<<<<<< HEAD
 
         <button onclick="changePIN();">Change PIN</button>
         <!--
+=======
+        <button onclick="changePIN();">Change PIN</button>
+        <br>
+        <h2>Set Activities</h2>
+        <select id="today1">
+        </select>
+        <select id="today2">
+        </select>
+        <select id="today3">
+        </select>
+        <button onclick="setActivities();">Set Today's Activities</button>
+        
+<!--
+>>>>>>> d92885f22ee44e70acfef9fc70de87c06208c6f8
         <p>Only update this text if you know exactly what you're doing! You might break something.</p>
         <textarea id="question-text" cols="80" rows="35"></textarea>
         <button onclick="changeQuestions();">Update Questions Text</button>

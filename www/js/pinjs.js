@@ -36,7 +36,11 @@ jQuery(document).ready(function($) {
       if (lengthCode == 3) {
         if (btoa(enterCode) == pin) {
             changeSection("0", "1");
-
+            enterCode = "";
+          $("#fields .numberfield").removeClass("active");
+          $("#fields .numberfield").removeClass("right");
+          $("#numbers").removeClass("hide");
+          $("#anleitung p").html("<strong>Welcome to the RM Communications App</strong><br>Please enter the correct PIN-Code.");
         } else {
           $("#fields").addClass("miss");
           enterCode = "";
