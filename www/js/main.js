@@ -179,15 +179,38 @@ function loadQuestions(qMode) {
     questionnaires.allDocs({
         include_docs: true
     }).then(function (result) {
-        aQuestions = result.rows.filter(function (row) {
-            return row.doc.questionnaire == qMode;
-        }).map(function (row) {
-            return row.doc;
-        });
+        if(qMode == "activities") {
+            
+            preferences.get("activities").then(function(data) {
+                questions = data.value;
+                aQuestions = []
+                for(var q in questions) {
+                    var toPush = result.rows.filter(function (row) {
+                        return row.doc._id == questions[q];
+                    });
+//                    }).map(function (row) {
+//                        return row.doc;
+//                    });
+                    
+                    aQuestions.push(toPush[0].doc);
+                }
+                
+            });
+            
+        } else {
+            aQuestions = result.rows.filter(function (row) {
+                return row.doc.questionnaire == "consultation";
+            }).map(function (row) {
+                return row.doc;
+            }); 
+        }
+        
     }).catch(function (err) {
         console.log("question fetching error ", err);
     });
 }
+
+
 
 loadQuestions(questionMode);
 
@@ -267,15 +290,15 @@ function getHTML(sentence) {
 function nextQuestion() {
     //console.log("currentQuestion", currentQuestion);
     //console.log("aQuestions", aQuestions);
-
     if (currentQuestion >= aQuestions.length) {
         //alert("End Of questions!");
         changeSection("4", "3");
         currentQuestion = 0;
     } else {
+        
         currentQuestionData = aQuestions[currentQuestion];
         
-        if(currentQuestionData["type"] == "food" || currentQuestionData["type"] == "today" || currentQuestionData["type"] == "activity" || currentQuestionData["type"] == "activities") {
+        if(currentQuestionData["type"] == "food" || currentQuestionData["type"] == "activities") {
             if(questionMode == "consultation") {
                 currentQuestionData["question"] = "Do you like " + currentQuestionData["question"] + "?";
             } else {
@@ -322,12 +345,45 @@ function addQuestion() {
 function admin() {
     changeSection("1", "5");
 //    $("#question-text").text();
+    
+    questionnaires.allDocs({
+        include_docs: true
+    }).then(function (result) {
+        aQuestions = result.rows.filter(function (row) {
+            return row.doc.questionnaire == "consultation" && row.doc.type == "activities";
+        }).forEach(function (row) {
+            
+            for(var i = 1; i < 4; i++) {
+                var option = $('<option>' + "Would you like " + row.doc.question + " today?" + '</option>').attr({
+                    'value': row.doc._id
+                }).appendTo('#today'+i);  
+            }
+            
+        });
+    }).catch(function (err) {
+        console.log("question fetching error ", err);
+    });
+    
+}
+
+function setActivities() {
+    preferences.get('activities').then(function(doc) {
+          return preferences.put({
+            _id: 'activities',
+            _rev: doc._rev,
+            value: [$("#today1 option:selected").val(), $("#today2 option:selected").val(), $("#today3 option:selected").val()]
+          });
+        }).then(function(row) {
+            alert("Questions Set!");
+        }).catch(function (err) {
+            alert("Question Activity Settings Error");
+          console.log(err);
+        });
 }
 
 function back(current, next) {
     changeSection(current, next);
 }
-
 
 function review() {
     changeSection("1", "2");
