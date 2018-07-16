@@ -247,7 +247,8 @@ function Print() {
 }
 
 
-function storeAnswer(question, answer) {
+function storeAnswer(oQuestion, answer) {
+    question = oQuestion.question;
     var today = new Date();
     var dd = today.getDate();
     var mm = today.getMonth() + 1; //January is 0!
@@ -266,7 +267,8 @@ function storeAnswer(question, answer) {
     var answerRecord = {
         //_id: currentChild.name + "-" + question + "-" + today,
         testing: testingMode,
-        question: question,
+        question: question, 
+        type: oQuestion.type,
         child: currentChild.name,
         date: today,
         answer: answer
@@ -282,7 +284,7 @@ function storeAnswer(question, answer) {
 function skipQuestion() {
     currentQuestion += 1;
     fadequestions();
-    storeAnswer(aQuestions[currentQuestion].question, "Question Skipped");
+    storeAnswer(aQuestions[currentQuestion], "Question Skipped");
 }
 
 function getHTML(sentence) {
@@ -544,7 +546,7 @@ function submitQuestion(questionDiv) {
 
             var id = photoElements[i].getAttribute("value");
             //console.log("aQuestions["+currentQuestion+"]", aQuestions[currentQuestion]);
-            storeAnswer(aQuestions[currentQuestion].question, id);
+            storeAnswer(aQuestions[currentQuestion], id);
 
             currentQuestion += 1;
             fadequestions();
