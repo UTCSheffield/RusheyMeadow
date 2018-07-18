@@ -1,11 +1,5 @@
-/*global
-    document, PouchDB, console, localStorage, window, $, setTimeout
-*/
+/*global document, PouchDB, console, localStorage, window, $, setTimeout*/
 
-//DONE: Upload file and set it as image
-//DONE: Save that proccess so whenever the webpage is loaded then the new images are added again
-//DONE: Remove images from the list
-//DONE: Format images correctly
 
 var pin = "";
 
@@ -14,8 +8,8 @@ var sCouchBaseURL = null;
 var preferences = null;
 var preferencesRemote = null;
 
-jQuery(document).ready(function($) {
-  $(document).ready(function() {
+//jQuery(document).ready(function($) {
+//  $(document).ready(function() {
 
     sCouchBaseURL = 'https://admin:a49e11246037@couchdb-009fed.smileupps.com/';
 
@@ -33,8 +27,8 @@ jQuery(document).ready(function($) {
     preferences.get("PIN").then(function(data) {
         pin = data.value;
     });
-  }); 
-});
+//  }); 
+//});
 
 var testingMode = true;
 
@@ -386,20 +380,76 @@ function addQuestion() {
     }
 }
 
+function removeQuestion() {
+    questionnaires.get($("#questionList option:selected").val()).then(function(q) {
+        return questionnaires.remove(q);
+
+    }).then(function() {
+        $('#today1').empty();
+        $('#today2').empty();
+        $('#today3').empty();
+        $('#today4').empty();
+        $("#questionList").empty();
+        syncQuestions();
+         questionnaires.allDocs({
+            include_docs: true
+        }).then(function (result) {
+            for(var i = 1; i < 5; i++) {
+                var none = $('<option>' + "None" + '</option>').attr({
+                    'value': null
+                }).appendTo('#today'+i);
+            }
+            result.rows.forEach(function(q) {
+                var option = $('<option>' + q.doc.question + '</option>').attr({
+                    'value': q.doc._id
+                }).appendTo('#questionList');  
+            });
+            aQuestions = result.rows.filter(function (row) {
+                return row.doc.questionnaire == "consultation" && row.doc.type == "activities";
+            }).forEach(function (row) {
+
+                for(var i = 1; i < 5; i++) {
+                    var option = $('<option>' + "Would you like " + row.doc.question + " today?" + '</option>').attr({
+                        'value': row.doc._id
+                    }).appendTo('#today'+i);  
+                }
+
+            });
+        }).catch(function (err) {
+            console.log("question fetching error ", err);
+        });
+        alert("Question Removed");
+    }).catch(function (err) {
+        console.log("Error Deleting Question: ", err);
+    });
+}
+
 function admin() {
     changeSection("1", "5");
 //    $("#question-text").text();
     $('#today1').empty();
     $('#today2').empty();
     $('#today3').empty();
+    $('#today4').empty();
+    $("#questionList").empty();
     questionnaires.allDocs({
         include_docs: true
     }).then(function (result) {
+        for(var i = 1; i < 5; i++) {
+            var none = $('<option>' + "None" + '</option>').attr({
+                'value': null
+            }).appendTo('#today'+i);
+        }
+        result.rows.forEach(function(q) {
+            var option = $('<option>' + q.doc.question + '</option>').attr({
+                'value': q.doc._id
+            }).appendTo('#questionList');  
+        });
         aQuestions = result.rows.filter(function (row) {
             return row.doc.questionnaire == "consultation" && row.doc.type == "activities";
         }).forEach(function (row) {
             
-            for(var i = 1; i < 4; i++) {
+            for(var i = 1; i < 5; i++) {
                 var option = $('<option>' + "Would you like " + row.doc.question + " today?" + '</option>').attr({
                     'value': row.doc._id
                 }).appendTo('#today'+i);  
@@ -417,7 +467,7 @@ function setActivities() {
           return preferences.put({
             _id: 'activities',
             _rev: doc._rev,
-            value: [$("#today1 option:selected").val(), $("#today2 option:selected").val(), $("#today3 option:selected").val()]
+            value: [$("#today1 option:selected").val(), $("#today2 option:selected").val(), $("#today3 option:selected").val(), $("#today4 option:selected").val()]
           });
         }).then(function(row) {
             alert("Questions Set!");
@@ -465,8 +515,26 @@ function review() {
                     
                     answerData = answersAll.rows.filter(function (row) {
                         return row.doc.child == child.name;
+                    }).sort(function(a, b) {
+                        
+//                        console.log(a.date.split("/"));
+                        
+                        var aDate = new Date();
+//                        aDate.setDate(a.date.split("/")[0]);
+//                        aDate.setMonth(a.date.split("/")[1]);
+//                        aDate.setFullYear(a.date.split("/")[2]);
+//                        
+//                        console.log(aDate);
+                        
+                        var bDate = new Date();
+//                        bDate.setDate(b.date.split("/")[0]);
+//                        bDate.setMonth(b.date.split("/")[1]);
+//                        bDate.setFullYear(b.date.split("/")[2]);
+//                        
+//                        console.log(bDate);
+                        
+                        return aDate.valueOf() - bDate.valueOf();
                     });
-                    console.log(answerData);
                     for(a in answerData) {
                         answer = answerData[a].doc;
                         var q = $("<h3>" + answer.date + ": " + answer.question + " " + answer.answer + "</h3>").appendTo('#data-' + newCount);
