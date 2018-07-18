@@ -56,16 +56,19 @@ var currentTimeout = 0;
 
 var answers = new PouchDB('answers');
 var answersRemote = new PouchDB(sCouchBaseURL + 'answers/');
+function syncAnswers() {
+    answers.sync(answersRemote, {
+        live: true
+    }).on('changed', function (data) {
+        console.log("answers in sync data", data);
+        // yay, we're in sync!
+    }).on('error', function (err) {
+        console.log("Error syncing answers", err);
+        // boo, we hit an error!
+    });
+}
+syncAnswers();
 
-answers.sync(answersRemote, {
-    live: true
-}).on('changed', function (data) {
-    console.log("answers in sync data", data);
-    // yay, we're in sync!
-}).on('error', function (err) {
-    console.log("Error syncing answers", err);
-    // boo, we hit an error!
-});
 
 var children = new PouchDB('children');
 var childrenRemote = new PouchDB(sCouchBaseURL + 'children/');
@@ -90,7 +93,6 @@ function listChildren() {
     children.allDocs({
         include_docs: true
     }).then(function (result) {
-        console.log("result", result.rows);
 
         $('#photos-container').children().remove();
 
@@ -219,21 +221,16 @@ function loadQuestions(qMode) {
                 }).map(function (row) {
                     return row.doc;
                 });
-                console.log("TO PUSH:")
-                console.log(toPush);
                 for (push in toPush) {
                     aQuestions.push(toPush[push]);
                 }
             }
-            console.log(aQuestions)
         }
         
     }).catch(function (err) {
         console.log("question fetching error ", err);
     });
 }
-
-
 
 loadQuestions(questionMode);
 
