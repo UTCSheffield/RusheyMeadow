@@ -211,11 +211,21 @@ function loadQuestions(qMode) {
             });
             
         } else {
-            aQuestions = result.rows.filter(function (row) {
-                return row.doc.questionnaire == "consultation";
-            }).map(function (row) {
-                return row.doc;
-            }); 
+            aQuestions = []
+            var types = ["feedback", "activities", "food"];
+            for (t in types) {
+                var toPush = result.rows.filter(function (row) {
+                    return row.doc.questionnaire == "consultation" && row.doc.type == types[t];
+                }).map(function (row) {
+                    return row.doc;
+                });
+                console.log("TO PUSH:")
+                console.log(toPush);
+                for (push in toPush) {
+                    aQuestions.push(toPush[push]);
+                }
+            }
+            console.log(aQuestions)
         }
         
     }).catch(function (err) {
