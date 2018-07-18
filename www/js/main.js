@@ -381,19 +381,21 @@ function addQuestion() {
         var reader = new FileReader();
 
         reader.onload = function (e) {
-            var questionNew = {
-//                _id: pecName,
-                type: questionType,
-                question: questionName,
-                picture: e.target.result,
-                questionnaire: questionSection
-            };
+            resizeImage(e.target.result, function(src) {
+                var questionNew = {
+    //                _id: pecName,
+                    type: questionType,
+                    question: questionName,
+                    picture: src,
+                    questionnaire: questionSection
+                };
 
-            questionnaires.post(questionNew).then(function (result) {
-                alert("Question Added");
-                syncQuestions();
-            }).catch(function (err) {
-                console.log("put question error", err);
+                questionnaires.post(questionNew).then(function (result) {
+                    alert("Question Added");
+                    syncQuestions();
+                }).catch(function (err) {
+                    console.log("put question error", err);
+                });
             });
         };
 
@@ -746,9 +748,10 @@ function addPECSymbol() {
         var reader = new FileReader();
 
         reader.onload = function (e) {
+            resizeImage(e.target.result, function(src) {
             var symbolNew = {
                 _id: pecName,
-                source: e.target.result
+                source: src
             };
 
             symbols.post(symbolNew).then(function (result) {
@@ -756,6 +759,7 @@ function addPECSymbol() {
                 syncSymbols();
             }).catch(function (err) {
                 console.log("put symbol error", err);
+            });
             });
         };
 
@@ -834,19 +838,24 @@ function readURL() {
         var reader = new FileReader();
 
         reader.onload = function (e) {
-            var child = {
-                _id: childName,
-                source: e.target.result,
-                name: childName,
-                test: testingMode
-            };
+            resizeImage(e.target.result, function(src) {
+                
+                var child = {
+                    _id: childName,
+                    source: src,
+                    name: childName,
+                    test: testingMode
+                };
 
-            children.post(child).then(function (result) {
-                createImage(child.source, child.name);
-                syncChildren();
-            }).catch(function (err) {
-                console.log("put child error", err);
+                children.post(child).then(function (result) {
+                    createImage(child.source, child.name);
+                    syncChildren();
+                }).catch(function (err) {
+                    console.log("put child error", err);
+                });
+                
             });
+            
         };
 
         reader.readAsDataURL(input.files[0]);
@@ -854,4 +863,31 @@ function readURL() {
         alert("You did not enter a photo. Please try again.")
     }
 }
+
+function resizeImage(data, callback)
+{
+    var img = document.createElement('img');
+
+    img.onload = function()
+    {        
+        var canvas = document.createElement('canvas');
+        var ctx = canvas.getContext('2d');
+
+        var ratio = 300 / img.width;
+
+        canvas.width = 300;
+        canvas.height = img.height * ratio;
+
+        ctx.drawImage(this, 0, 0, 300, img.height * ratio);
+
+        var dataURI = canvas.toDataURL();
+        
+        callback(dataURI);
+        
+    };
+
+    img.src = data;
+    
+}
+
 
