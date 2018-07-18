@@ -277,7 +277,8 @@ function storeAnswer(oQuestion, answer) {
         type: oQuestion.type,
         child: currentChild.name,
         date: today,
-        answer: answer
+        answer: answer,
+        time: Date.now()
     };
 
     answers.post(answerRecord).then(function (result) {
@@ -528,24 +529,7 @@ function review() {
                     answerData = answersAll.rows.filter(function (row) {
                         return row.doc.child == child.name;
                     }).sort(function(a, b) {
-                        
-//                        console.log(a.date.split("/"));
-                        
-                        var aDate = new Date();
-//                        aDate.setDate(a.date.split("/")[0]);
-//                        aDate.setMonth(a.date.split("/")[1]);
-//                        aDate.setFullYear(a.date.split("/")[2]);
-//                        
-//                        console.log(aDate);
-                        
-                        var bDate = new Date();
-//                        bDate.setDate(b.date.split("/")[0]);
-//                        bDate.setMonth(b.date.split("/")[1]);
-//                        bDate.setFullYear(b.date.split("/")[2]);
-//                        
-//                        console.log(bDate);
-                        
-                        return aDate.valueOf() - bDate.valueOf();
+                        return a.time - b.time;
                     });
                     for(a in answerData) {
                         answer = answerData[a].doc;
