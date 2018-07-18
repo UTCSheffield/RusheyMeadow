@@ -340,7 +340,7 @@ function nextQuestion() {
         clearTimeout(currentTimeout);
         currentTimeout = setTimeout(function () {
             $("#skip").fadeIn(400);
-        }, 60000);
+        }, 20000);
     }
 }
 
