@@ -1,6 +1,5 @@
 /*global document, PouchDB, console, localStorage, window, $, setTimeout*/
 
-
 var pin = "";
 
 var sCouchBaseURL = null;
@@ -116,6 +115,19 @@ var Sounds = [
     "sounds/343835__tristan-lohengrin__happy-8bit-loop-01.flac"//,
     //"sounds/398941__enviromaniac2__happyloop.flac"
 ]
+
+for(s in Sounds) {
+    //Create audio object with the sound in, with id of sound name
+    var audio = $('<audio></audio>').attr({
+        'id': "audio" + s,
+        
+    }).appendTo('body'); 
+    
+    var source = $("<source />").attr({
+        'src': Sounds[s],
+        'type': "audio/flac"
+    }).appendTo('#audio'+s);
+}
 
 var symbols = new PouchDB('pec');
 var symbolsRemote = new PouchDB(sCouchBaseURL + 'pec/');
@@ -598,9 +610,12 @@ function review() {
 }
 
 function PlaySound() {
-    var audio = document.getElementById("audio");
-    var x = Math.floor(Math.random() * Sounds.length);
-    audio.src = Sounds[x];
+//    var audio = document.getElementById("audio");
+//    var x = Math.floor(Math.random() * Sounds.length);
+//    audio.src = Sounds[x];
+//    audio.play();
+        var x = Math.floor(Math.random() * Sounds.length);
+    var audio = document.getElementById("audio"+x);
     audio.play();
 }
 
@@ -805,6 +820,7 @@ function readURL() {
     var input = document.getElementById("photo-selector");
     var childName = document.getElementById("child-name").value;
     
+    //INITIALS CODE (UNCOMMENT TO USE)
 //    childName = childName.toUpperCase();
 //    var initials = childName.split(" ");
 //    
