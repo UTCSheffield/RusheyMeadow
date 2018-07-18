@@ -841,7 +841,7 @@ function readURL() {
                     _id: childName,
                     source: src,
                     name: childName,
-                    test: testingMode
+                    testing: testingMode
                 };
 
                 children.post(child).then(function (result) {
@@ -887,4 +887,27 @@ function resizeImage(data, callback)
     
 }
 
+function deleteTestData() {
+    answers.allDocs({
+        include_docs: true
+    }).then(function (answersAll) {
 
+        answersAll.rows.filter(function (row) {
+            return row.doc.testing == true;
+        }).forEach(function(row) {
+            row.remove();
+        });
+
+    });
+    children.allDocs({
+        include_docs: true
+    }).then(function (childrenAll) {
+
+        childrenAll.rows.filter(function (row) {
+            return row.doc.testing == true;
+        }).forEach(function(row) {
+            row.remove();
+        });
+
+    });
+}
